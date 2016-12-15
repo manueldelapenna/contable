@@ -1,4 +1,4 @@
-# repair
+# contable
 
 Instalación
 
@@ -28,6 +28,3 @@ Ej:
 
 5)php bin/console assets:install
 6)php bin/console cache:clear (limpiar manualmente si es necesario)
-
-# contable
-# contable
