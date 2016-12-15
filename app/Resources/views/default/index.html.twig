@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>MY COMPUTER Informática</h1>
+    
+    {% if is_granted("ROLE_ADMIN") %}
+        <br>
+        <a class="btn btn-primary btn-lg" href="{{path('customer_index')}}"><span class="glyphicon glyphicon-user"></span> Clientes</a>
+    {% endif %}
+         
+     
+{% endblock %}

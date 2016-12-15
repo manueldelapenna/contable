@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    
+    
+        {{ form_start(delete_form) }}
+            <a class="btn btn-success" href="{{ path('user_index') }}"><span class="glyphicon glyphicon-list"></span> {{ 'back to the list'|trans }}</a>
+            <a class="btn btn-default" href="{{ path('user_show', { 'id': user.id }) }}"><span class="glyphicon glyphicon-remove"></span> {{ 'Cancel'|trans }}</a>
+            {% if app.user.id != user.id %}
+                <button class="btn btn-danger" onclick="return confirm('{{ 'Are you sure?'|trans }}')" type="submit"><span class="glyphicon glyphicon-trash"></span> {{ 'delete'|trans }}</button>
+            {% endif %}
+        {{ form_end(delete_form) }}
+    
+
+
+    <h1>{{ 'User edit'|trans }}</h1>
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <div class='form-group'>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <span class="label label-success">Si no se marca ningún rol el usuario no entra al sistema de ventas</span>
+                <br>
+                <span class="label label-warning">ROLE_ADMIN permite el acceso al sistema pero no al manejo de usuarios ni tablas de referencias</span>
+                <br>
+                <span class="label label-danger">ROLE_SUPER_ADMIN acceso total al sistema</span>
+                <br>
+                <br>
+                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-edit"></span> {{ 'edit'|trans }}</button>
+                
+            </div>
+        </div>
+    {{ form_end(edit_form) }}
+    
+            
+    
+
+{% endblock %}

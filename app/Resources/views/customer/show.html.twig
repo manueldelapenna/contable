@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'Customer'|trans }}</h1>
+
+    <a class="btn btn-success" href="{{ path('customer_index') }}"><span class="glyphicon glyphicon-list"></span> {{ 'back to the list'|trans }}</a>
+    <a class="btn btn-primary" href="{{ path('customer_edit', { 'id': customer.id }) }}"><span class="glyphicon glyphicon-edit"></span> {{ 'edit'|trans }}</a>
+
+    <br>
+    <br>
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>Nº Cliente</th>
+                <td>{{ customer.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Created at'|trans }}</th>
+                <td>{% if customer.createdAt %}{{ customer.createdAt|date('d/m/Y') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Name'|trans }}</th>
+                <td>{{ customer.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Iva condition'|trans }}</th>
+                <td>{{ customer.ivaCondition.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Cuit dni'|trans }}</th>
+                <td>{{ customer.cuitDni }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Address'|trans }}</th>
+                <td>{{ customer.address }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'City'|trans }}</th>
+                <td>{{ customer.city }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Customer.State'|trans }}</th>
+                <td>{{ customer.state }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Zipcode'|trans }}</th>
+                <td>{{ customer.zipcode }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Phones'|trans }}</th>
+                <td>{{ customer.phones }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Email'|trans }}</th>
+                <td>{{ customer.email }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Observations'|trans }}</th>
+                <td>{{ customer.observations }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        
+{% endblock %}

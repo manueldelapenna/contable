@@ -1,0 +1,11 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+    {{ form_widget(form) }}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-edit"></span> {{ 'profile.edit.submit'|trans }}</button>
+            <a class="btn btn-default" href="{{path('homepage')}}"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+        </div>
+    </div>
+{{ form_end(form) }}

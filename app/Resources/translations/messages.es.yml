@@ -1,0 +1,71 @@
+edit: Editar
+show: Mostrar
+delete: Eliminar
+Actions: Acciones
+Cancel: Cancelar
+back to the list: Volver al listado
+create: Crear
+YAre you sure?: ¿Está seguro que desea borrar el elemento?
+Yes: Sí
+
+User edit: Editar Usuario
+User creation: Nuevo Usuario
+User: Usuario
+
+Username: Nombre de usuario
+Firstname: Nombre
+Lastname: Apellido
+Enabled: Habilitado
+
+Customer list: Clientes
+Customer edit: Editar Cliente
+Customer creation: Nuevo Cliente
+Customer Name: Cliente
+
+New reparation: Nueva reparación
+Due: Deuda
+Reparation list: Reparaciones
+Created at: Fecha de alta
+Name: Nombre
+Iva condition: Condición frente al IVA
+Cuit dni: CUIT/DNI
+Phones: Telefono/s
+Address: Domicilio
+Zipcode: Código Postal
+City: Ciudad
+Observations: Observaciones
+State: Estado
+Customer.State: Provincia
+Customer: Cliente
+Customer Number: Numero de cliente
+Reparation: Reparacion
+Reparation edit: Editar reparación
+Reparation number: Número de reparación
+Brand: Marca
+Model: Modelo
+Series: Serie
+Joystick: Joystick
+Battery: Batería
+Charger: Cargador
+Diagnostic: Diagnostico
+Client description: Descripción del cliente
+Technical report: Informe técnico
+Budget: Presupuesto
+Payment: Pago
+Budg.: Presup.
+Entry date: F. Ingreso
+Estimate delivery date: F. estimada entrega
+Effective delivery date: F. efectiva entrega
+Repair time state: Estado con respecto a fecha entrega
+Repairstate edit: Editar estado de reparación
+Repairstate creation: Nuevo estado de reparación
+Ivacondition edit: Editar condición frente al IVA
+Ivacondition creation: Nueva condición frente al IVA
+
+Print: Imprimir
+reparation.all: Todas las reparaciones
+reparation.delayed: Reparaciones retrasadas
+reparation.ok: Reparaciones dentro del tiempo pactado
+reparation.warning: Reparaciones cerca de tiempo de entrega
+reparation.without_date: Reparaciones sin fecha pactada
+reparation.finished: Reparaciones terminadas

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    {{ form_start(delete_form) }}
+        <a class="btn btn-success" href="{{ path('user_index') }}"><span class="glyphicon glyphicon-list"></span> {{ 'back to the list'|trans }}</a>
+        <a class="btn btn-primary" href="{{ path('user_edit', { 'id': user.id }) }}"><span class="glyphicon glyphicon-edit"></span> {{ 'edit'|trans }}</a>
+
+        {% if app.user.id != user.id %}
+            <button class="btn btn-danger" onclick="return confirm('{{ 'Are you sure?'|trans }}')" type="submit"><span class="glyphicon glyphicon-trash"></span> {{ 'delete'|trans }}</button>
+        {% endif %}
+    {{ form_end(delete_form) }}
+
+    <h1>{{ 'User'|trans }}</h1>
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>{{'Username' | trans}}</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>{{'Firstname' | trans}}</th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr>
+                <th>{{'Lastname' | trans}}</th>
+                <td>{{ user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email | trans }}</td>
+            </tr>
+            <tr>
+                <th>{{'Enabled' | trans}}</th>
+                <td>{% if user.enabled %} {{ 'Yes'|trans }}{%else%}{{ 'No'|trans }} {%endif%} </td>
+            </tr>
+            <tr>
+                <th>{{'Roles' | trans}}</th>
+                <td>
+                    {% for rol in user.roles %}    
+                        {{ rol }} ;
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <span class="label label-warning">ROLE_ADMIN permite el acceso al sistema pero no al manejo de usuarios ni tablas de referencias</span>
+                    <br>
+                    <span class="label label-danger">ROLE_SUPER_ADMIN acceso total al sistema</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+                
+                
+
+            
+
+    
+{% endblock %}

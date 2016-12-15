@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(delete_form) }}
+        <a class="btn btn-success" href="{{ path('customer_index') }}"><span class="glyphicon glyphicon-list"></span> {{ 'back to the list'|trans }}</a>
+        <a class="btn btn-default" href="{{ path('customer_show', { 'id': customer.id }) }}"><span class="glyphicon glyphicon-remove"></span> {{ 'Cancel'|trans }}</a>
+        <button class="btn btn-danger" onclick="return confirm('{{ 'Are you sure?'|trans }}')" type="submit"><span class="glyphicon glyphicon-trash"></span> {{ 'delete'|trans }}</button>
+        
+    {{ form_end(delete_form) }}
+    
+
+    <h1>{{ 'Customer edit'|trans }}</h1>
+    
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10"><button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-edit"></span> {{ 'edit'|trans }}</button></div>
+            
+        </div>
+    {{ form_end(edit_form) }}
+
+    
+{% endblock %}
