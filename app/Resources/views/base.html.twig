@@ -53,7 +53,6 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ventas <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                           <li><a href="{{path('customer_index')}}">Clientes</a></li>
-                          <li><a href="{{path('category_index')}}">Categorías de productos</a></li>
                         </ul>
                       </li>
                       {% endif %}
@@ -61,6 +60,8 @@
                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrar <span class="caret"></span></a>
                         <ul class="dropdown-menu">
+                          <li><a href="{{path('category_index')}}">Categorías de productos</a></li>
+                          <li><a href="{{path('provider_index')}}">Proveedores</a></li>
                           <li><a href="{{path('user_index')}}">Usuarios</a></li>
                         </ul>
                       </li>
