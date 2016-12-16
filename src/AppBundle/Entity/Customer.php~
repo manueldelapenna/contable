@@ -38,7 +38,7 @@ class Customer
     /**
      * @var string
      *
-     * @ORM\Column(name="cuit_dni", type="string", length=255, nullable=true)
+     * @ORM\Column(name="cuit_dni", type="string", length=255)
      */
     private $cuitDni;
 
@@ -96,7 +96,19 @@ class Customer
      * @ORM\JoinColumn(name="iva_condition_id", nullable=false, referencedColumnName="id")
      */
     private $ivaCondition;
-
+    
+    
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTime("now"));
+        
+    }
+    
+    public function __toString() {
+        
+        return $this->name;
+        
+    }
 
     /**
      * Get id
@@ -366,4 +378,5 @@ class Customer
 
         return $this;
     }
+        
 }

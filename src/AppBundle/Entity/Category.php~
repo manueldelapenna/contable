@@ -7,13 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * IvaCondition
+ * Category
  *
- * @ORM\Table(name="iva_condition")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\IvaConditionRepository")
+ * @ORM\Table(name="category")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
  * @UniqueEntity("name")
  */
-class IvaCondition
+class Category
 {
     /**
      * @var int
@@ -32,20 +32,21 @@ class IvaCondition
     private $name;
     
     /**
-     * @ORM\OneToMany(targetEntity="Customer", mappedBy="ivaCondition")
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
      */
-    private $customers;
+    private $children;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    private $parent;
+    
+    public function __construct() {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 
-    public function __construct()
-    {
-        $this->customers = new ArrayCollection();
-    }
-    
-    public function __toString() {
-        return $this->getName();
-    }
-    
     /**
      * Get id
      *
@@ -61,7 +62,7 @@ class IvaCondition
      *
      * @param string $name
      *
-     * @return IvaCondition
+     * @return Category
      */
     public function setName($name)
     {
@@ -79,21 +80,5 @@ class IvaCondition
     {
         return $this->name;
     }
-    
-    function getCustomers() {
-        return $this->customers;
-    }
-
-
-    /**
-     * Get customers
-     *
-     * @return Array Customer
-     */
-    public function getCostumers()
-    {
-        return $this->customers;
-
-    }
-
 }
+
