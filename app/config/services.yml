@@ -27,6 +27,10 @@ services:
     app.datatable.provider:
         class: AppBundle\Datatables\ProviderDatatable
         parent: sg_datatables.datatable.abstract
+    
+    app.datatable.product:
+        class: AppBundle\Datatables\ProductDatatable
+        parent: sg_datatables.datatable.abstract
       
     app.form.registration:
         class: AppBundle\Form\RegistrationType
