@@ -96,4 +96,28 @@ class IvaCondition
 
     }
 
+
+    /**
+     * Add customer
+     *
+     * @param \AppBundle\Entity\Customer $customer
+     *
+     * @return IvaCondition
+     */
+    public function addCustomer(\AppBundle\Entity\Customer $customer)
+    {
+        $this->customers[] = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Remove customer
+     *
+     * @param \AppBundle\Entity\Customer $customer
+     */
+    public function removeCustomer(\AppBundle\Entity\Customer $customer)
+    {
+        $this->customers->removeElement($customer);
+    }
 }

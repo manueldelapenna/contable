@@ -1,0 +1,375 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * Product
+ *
+ * @ORM\Table(name="product")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
+ * @UniqueEntity("name")
+ * @UniqueEntity("code")
+ */
+class Product
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255, unique=true)
+     */
+    private $code;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Provider", inversedBy="products")
+     * @ORM\JoinColumn(name="provider_id", referencedColumnName="id")
+     */
+    private $provider;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="provider_code", type="string", length=255, nullable=true)
+     */
+    private $providerCode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Tax", inversedBy="products")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     */
+    private $tax;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="price", type="float")
+     */
+    private $price;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="stock", type="float")
+     */
+    private $stock;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="min_stock", type="float")
+     */
+    private $minStock;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="max_stock", type="float")
+     */
+    private $maxStock;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return Product
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set providerCode
+     *
+     * @param string $providerCode
+     *
+     * @return Product
+     */
+    public function setProviderCode($providerCode)
+    {
+        $this->providerCode = $providerCode;
+
+        return $this;
+    }
+
+    /**
+     * Get providerCode
+     *
+     * @return string
+     */
+    public function getProviderCode()
+    {
+        return $this->providerCode;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Product
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Product
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     *
+     * @return Product
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set stock
+     *
+     * @param float $stock
+     *
+     * @return Product
+     */
+    public function setStock($stock)
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * Get stock
+     *
+     * @return float
+     */
+    public function getStock()
+    {
+        return $this->stock;
+    }
+
+    /**
+     * Set minStock
+     *
+     * @param float $minStock
+     *
+     * @return Product
+     */
+    public function setMinStock($minStock)
+    {
+        $this->minStock = $minStock;
+
+        return $this;
+    }
+
+    /**
+     * Get minStock
+     *
+     * @return float
+     */
+    public function getMinStock()
+    {
+        return $this->minStock;
+    }
+
+    /**
+     * Set maxStock
+     *
+     * @param float $maxStock
+     *
+     * @return Product
+     */
+    public function setMaxStock($maxStock)
+    {
+        $this->maxStock = $maxStock;
+
+        return $this;
+    }
+
+    /**
+     * Get maxStock
+     *
+     * @return float
+     */
+    public function getMaxStock()
+    {
+        return $this->maxStock;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\Category $category
+     *
+     * @return Product
+     */
+    public function setCategory(\AppBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set provider
+     *
+     * @param \AppBundle\Entity\Provider $provider
+     *
+     * @return Product
+     */
+    public function setProvider(\AppBundle\Entity\Provider $provider = null)
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
+     * Get provider
+     *
+     * @return \AppBundle\Entity\Provider
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
+
+    /**
+     * Set tax
+     *
+     * @param \AppBundle\Entity\Tax $tax
+     *
+     * @return Product
+     */
+    public function setTax(\AppBundle\Entity\Tax $tax = null)
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * Get tax
+     *
+     * @return \AppBundle\Entity\Tax
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
+}
