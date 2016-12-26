@@ -31,6 +31,18 @@ services:
     app.datatable.product:
         class: AppBundle\Datatables\ProductDatatable
         parent: sg_datatables.datatable.abstract
+        
+    app.datatable.purchaseorder:
+        class: AppBundle\Datatables\PurchaseOrderDatatable
+        parent: sg_datatables.datatable.abstract
+        
+    app.datatable.orderstate:
+        class: AppBundle\Datatables\OrderStateDatatable
+        parent: sg_datatables.datatable.abstract
+        
+    app.datatable.salespoint:
+        class: AppBundle\Datatables\SalesPointDatatable
+        parent: sg_datatables.datatable.abstract
       
     app.form.registration:
         class: AppBundle\Form\RegistrationType

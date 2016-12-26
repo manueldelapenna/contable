@@ -300,5 +300,76 @@ class Product
     {
         return $this->maxStock;
     }
-}
 
+    /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\Category $category
+     *
+     * @return Product
+     */
+    public function setCategory(\AppBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set provider
+     *
+     * @param \AppBundle\Entity\Provider $provider
+     *
+     * @return Product
+     */
+    public function setProvider(\AppBundle\Entity\Provider $provider = null)
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
+     * Get provider
+     *
+     * @return \AppBundle\Entity\Provider
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
+
+    /**
+     * Set tax
+     *
+     * @param \AppBundle\Entity\Tax $tax
+     *
+     * @return Product
+     */
+    public function setTax(\AppBundle\Entity\Tax $tax = null)
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * Get tax
+     *
+     * @return \AppBundle\Entity\Tax
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
+}

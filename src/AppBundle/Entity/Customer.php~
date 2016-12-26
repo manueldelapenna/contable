@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Customer
@@ -97,10 +98,16 @@ class Customer
      */
     private $ivaCondition;
     
+    /**
+     * @ORM\OneToMany(targetEntity="PurchaseOrder", mappedBy="customer")
+     */
+    private $orders;
+    
     
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime("now"));
+        $this->orders = new ArrayCollection();
         
     }
     
@@ -379,4 +386,38 @@ class Customer
         return $this;
     }
         
+
+    /**
+     * Add order
+     *
+     * @param \AppBundle\Entity\PurchaseOrder $order
+     *
+     * @return Customer
+     */
+    public function addOrder(\AppBundle\Entity\PurchaseOrder $order)
+    {
+        $this->orders[] = $order;
+
+        return $this;
+    }
+
+    /**
+     * Remove order
+     *
+     * @param \AppBundle\Entity\PurchaseOrder $order
+     */
+    public function removeOrder(\AppBundle\Entity\PurchaseOrder $order)
+    {
+        $this->orders->removeElement($order);
+    }
+
+    /**
+     * Get orders
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
 }
