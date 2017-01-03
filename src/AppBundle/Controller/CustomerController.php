@@ -193,6 +193,18 @@ class CustomerController extends Controller {
             return $response;
         }
     }
+    /**
+     * @Route("/findall/", name="customer_findall")
+     * @Method("GET")
+     */
+    public function findallAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $customers = $em->getRepository('AppBundle:Customer')->findByAttribute('name', 'text', $request->query->get('q'));
+
+        return new JsonResponse($customers);
+            
+    }
         
 
 }

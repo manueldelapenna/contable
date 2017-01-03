@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Nuevo Pedido</h1>
 
-    <div class="form-horizontal">
+    {#<div class="form-horizontal">
         <div class="form-group">
             <label class="col-sm-2 control-label">Nombre/CUIT/DNI de Cliente</label>
             <div class="col-sm-6">
@@ -26,11 +26,8 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div>#}
     
-
-
-
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <input type="submit" value="Create" />
@@ -41,122 +38,5 @@
             <a href="{{ path('purchaseorder_index') }}">Back to the list</a>
         </li>
     </ul>
-
-    <script type="text/javascript">
-        $('#customer-search').keyup(function(e) {
-            clearTimeout(delayTimer);
-            delayTimer = setTimeout(function() {
-                getCustomers();
-            }, 700); // Will do the ajax stuff after 1000 ms, or 1 s
-        });
-        
-        var delayTimer;
-                
-        function getCustomers() {
-            
-            var value = $('#customer-search').val();
-
-            if (value.length > 0) {
-                console.log('entra');
-                var path = "{{ path('customer_search', {'attribute': '-attribute', 'value': '-value'})}}"
-                path = path.replace("-attribute", 'name');
-                path = path.replace("-value", value);
-                $.ajax({
-                    type: "POST",
-                    url: path,
-                    //si lo quiero en otro formato tengo que agregarle al data un format: 'formato'
-                    data: {},
-                    success: function (response) {
-                        $('#results').html('');
-                        var customers = JSON.parse(response.customers);
-                        if(customers.length > 0){
-                            $('#results').show();
-                            $('#results').attr('size',(Math.min(customers.length,10)));
-                            $.each(customers, function (index, customer) {
-                                console.log(customer.name);
-                                 $('#results').append('<option value="' + customer.id + '">' + customer.name +'</option>');
-                            });
-                        }else{
-                            $('#results').append('<option value="">No se encontraron coincidencias</option>');
-                        }
-                    },
-                    error: function (response) {
-                        alert(response.error);
-                    }
-                });
-            }else{
-                $('#results').hide();
-                $('#results').append('<option value="">Ingrese el nombre de cliente</option>');
-            }
-        }
-
-    $(document).ready(function() {
-        var path = "{{ path('customer_search', {'attribute': '-attribute', 'value': '-value'})}}"
-                    path = path.replace("-attribute", 'name');
-                    path = path.replace("-value", 'manuel');
-        $(".js-data-example-ajax").select2({
-        minimumInputLength: 2,
-        //tags: [],
-        ajax: {
-            url: path,
-            dataType: 'json',
-            type: "POST",
-            quietMillis: 50,
-            processResults: function (data) {
-            return {
-
-                results: $.map(data.customers, function (item) {
-                    return {
-                        text: item.name,
-                        //slug: item.name,
-                        id: item.id
-                    }
-                })
-
-            };
-          }
-        }
-    });
-    });
-    
-  {#  var value = $('#customer-search').val();
-    var path = "{{ path('customer_search', {'attribute': '-attribute', 'value': '-value'})}}";
-    path = path.replace("-attribute", 'name');
-    path = path.replace("-value", value);
-
-    $(".js-data-example-ajax").select2({
-    
-  ajax: {
-    url: path,
-    dataType: 'json',
-    delay: 250,
-    data: function (params) {
-      return {
-        q: params.term, // search term
-        page: params.page
-      };
-    },
-    processResults: function (data, params) {
-      // parse the results into the format expected by Select2
-      // since we are using custom formatting functions we do not need to
-      // alter the remote JSON data, except to indicate that infinite
-      // scrolling can be used
-      params.page = params.page || 1;
-
-      return {
-        results: data.items,
-        pagination: {
-          more: (params.page * 30) < data.total_count
-        }
-      };
-    },
-    cache: true
-  },
-  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-  minimumInputLength: 1,
-  templateResult: formatRepo, // omitted for brevity, see the source of this page
-  templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-});#}
-    </script>
 
 {% endblock %}

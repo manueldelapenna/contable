@@ -12,6 +12,7 @@
         <link rel="stylesheet" href={{ asset("css/featherlight.min.css")}}>
         <link rel="stylesheet" href={{ asset("css/bootstrap-slider.min.css")}}>
         <link rel="stylesheet" href={{ asset("css/select2.min.css")}} />
+        <link rel="stylesheet" href={{ asset("css/bootstrap-select.min.css")}} />
         <link rel="stylesheet" href={{ asset("css/main.css")}} />
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -30,6 +31,7 @@
         <script src={{asset('js/select2.full.min.js')}}></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+        <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 </head>

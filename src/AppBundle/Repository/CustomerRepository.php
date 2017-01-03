@@ -10,12 +10,13 @@ namespace AppBundle\Repository;
  */
 class CustomerRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findByAttribute($attribute, $value)
+    public function findByAttribute($attribute, $alias, $value)
     {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT c FROM AppBundle:Customer c where c.$attribute like '%$value%' order by c.name asc"
+                "SELECT c.id, c.name as $alias FROM AppBundle:Customer c where c.$attribute like :value order by c.name asc"
             )
+            ->setParameter('value', '%' . $value . '%')
             ->getResult();
     }
 }
