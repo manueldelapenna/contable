@@ -1,0 +1,23 @@
+{#{% block form_widget_simple %}
+    {% set type = type|default('text') %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock form_widget_simple %}#}
+
+<tr id='appbundle_purchaseorder_orderItems___name__'>
+    <td class="actions"></td>
+    <td>
+        <input id="appbundle_purchaseorder_orderItems___name___productCode" class="form-control" name="appbundle_purchaseorder[orderItems][__name__][productCode]" required="required" maxlength="255" value="" type="text">
+    </td>
+    <td class="text-right">
+        <input id="appbundle_purchaseorder_orderItems___name___productQuantity" class="form-control" name="appbundle_purchaseorder[orderItems][__name__][productQuantity]" required="required" value="" type="text">
+    </td>
+    <td>
+        <input id="appbundle_purchaseorder_orderItems___name___productDescription" class="form-control" name="appbundle_purchaseorder[orderItems][__name__][productDescription]" required="required" maxlength="255" value="" type="text">
+    </td>
+    <td class="text-right">
+        <input id="appbundle_purchaseorder_orderItems___name___unitPrice" class="form-control" name="appbundle_purchaseorder[orderItems][__name__][unitPrice]" required="required" value="" type="text">
+    </td>
+    <td class="text-right"><input class="form-control" type='text' disabled></td>
+</tr>
+
+{#&lt;div&#x20;id&#x3D;&quot;appbundle_purchaseorder_orderItems___name__&quot;&gt;&lt;div&#x20;class&#x3D;&quot;form-group&quot;&gt;&lt;label&#x20;class&#x3D;&quot;col-sm-2&#x20;control-label&#x20;required&quot;&#x20;for&#x3D;&quot;appbundle_purchaseorder_orderItems___name___productCode&quot;&gt;Product&#x20;code&lt;&#x2F;label&gt;&lt;div&#x20;class&#x3D;&quot;col-sm-10&quot;&gt;&lt;input&#x20;type&#x3D;&quot;text&quot;&#x20;id&#x3D;&quot;appbundle_purchaseorder_orderItems___name___productCode&quot;&#x20;name&#x3D;&quot;appbundle_purchaseorder&#x5B;orderItems&#x5D;&#x5B;__name__&#x5D;&#x5B;productCode&#x5D;&quot;&#x20;required&#x3D;&quot;required&quot;&#x20;maxlength&#x3D;&quot;255&quot;&#x20;class&#x3D;&quot;form-control&quot;&#x20;&#x2F;&gt;&lt;&#x2F;div&gt;&#x0A;&lt;&#x2F;div&gt;&lt;div&#x20;class&#x3D;&quot;form-group&quot;&gt;&lt;label&#x20;class&#x3D;&quot;col-sm-2&#x20;control-label&#x20;required&quot;&#x20;for&#x3D;&quot;appbundle_purchaseorder_orderItems___name___productQuantity&quot;&gt;Product&#x20;quantity&lt;&#x2F;label&gt;&lt;div&#x20;class&#x3D;&quot;col-sm-10&quot;&gt;&lt;input&#x20;type&#x3D;&quot;text&quot;&#x20;id&#x3D;&quot;appbundle_purchaseorder_orderItems___name___productQuantity&quot;&#x20;name&#x3D;&quot;appbundle_purchaseorder&#x5B;orderItems&#x5D;&#x5B;__name__&#x5D;&#x5B;productQuantity&#x5D;&quot;&#x20;required&#x3D;&quot;required&quot;&#x20;class&#x3D;&quot;form-control&quot;&#x20;&#x2F;&gt;&lt;&#x2F;div&gt;&#x0A;&lt;&#x2F;div&gt;&lt;div&#x20;class&#x3D;&quot;form-group&quot;&gt;&lt;label&#x20;class&#x3D;&quot;col-sm-2&#x20;control-label&#x20;required&quot;&#x20;for&#x3D;&quot;appbundle_purchaseorder_orderItems___name___productDescription&quot;&gt;Product&#x20;description&lt;&#x2F;label&gt;&lt;div&#x20;class&#x3D;&quot;col-sm-10&quot;&gt;&lt;input&#x20;type&#x3D;&quot;text&quot;&#x20;id&#x3D;&quot;appbundle_purchaseorder_orderItems___name___productDescription&quot;&#x20;name&#x3D;&quot;appbundle_purchaseorder&#x5B;orderItems&#x5D;&#x5B;__name__&#x5D;&#x5B;productDescription&#x5D;&quot;&#x20;required&#x3D;&quot;required&quot;&#x20;maxlength&#x3D;&quot;255&quot;&#x20;class&#x3D;&quot;form-control&quot;&#x20;&#x2F;&gt;&lt;&#x2F;div&gt;&#x0A;&lt;&#x2F;div&gt;&lt;div&#x20;class&#x3D;&quot;form-group&quot;&gt;&lt;label&#x20;class&#x3D;&quot;col-sm-2&#x20;control-label&#x20;required&quot;&#x20;for&#x3D;&quot;appbundle_purchaseorder_orderItems___name___unitPrice&quot;&gt;Unit&#x20;price&lt;&#x2F;label&gt;&lt;div&#x20;class&#x3D;&quot;col-sm-10&quot;&gt;&lt;input&#x20;type&#x3D;&quot;text&quot;&#x20;id&#x3D;&quot;appbundle_purchaseorder_orderItems___name___unitPrice&quot;&#x20;name&#x3D;&quot;appbundle_purchaseorder&#x5B;orderItems&#x5D;&#x5B;__name__&#x5D;&#x5B;unitPrice&#x5D;&quot;&#x20;required&#x3D;&quot;required&quot;&#x20;class&#x3D;&quot;form-control&quot;&#x20;&#x2F;&gt;&lt;&#x2F;div&gt;&#x0A;&lt;&#x2F;div&gt;&lt;&#x2F;div&gt;">#}

@@ -50,7 +50,7 @@ class OrderItem
     private $unitPrice;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems")
+     * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems", cascade={"persist"})
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;

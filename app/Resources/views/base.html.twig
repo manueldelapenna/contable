@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html>
-    <meta charset="UTF-8" />
-    <title>{% block title %}Sistema Contable{% endblock %}</title>
-    {% block stylesheets %}
-        <link rel="stylesheet" href={{ asset("css/bootstrap.min.css")}}>
-        <link rel="stylesheet" href={{ asset("css/font-awesome.min.css")}}>
-        <link rel="stylesheet" href={{ asset("css/bootstrap-glyphicons.css")}}/>
-        <link rel="stylesheet" href={{ asset("css/daterangepicker.min.css")}}>
-        <link rel="stylesheet" href={{ asset("css/datatables.min.css")}}>
-        <link rel="stylesheet" href={{ asset("css/bootstrap-editable.css")}}/>
-        <link rel="stylesheet" href={{ asset("css/featherlight.min.css")}}>
-        <link rel="stylesheet" href={{ asset("css/bootstrap-slider.min.css")}}>
-        <link rel="stylesheet" href={{ asset("css/select2.min.css")}} />
-        <link rel="stylesheet" href={{ asset("css/bootstrap-select.min.css")}} />
-        <link rel="stylesheet" href={{ asset("css/main.css")}} />
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Sistema Contable{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href={{ asset("css/bootstrap.min.css")}}>
+            <link rel="stylesheet" href={{ asset("css/font-awesome.min.css")}}>
+            <link rel="stylesheet" href={{ asset("css/bootstrap-glyphicons.css")}}/>
+            <link rel="stylesheet" href={{ asset("css/daterangepicker.min.css")}}>
+            <link rel="stylesheet" href={{ asset("css/datatables.min.css")}}>
+            <link rel="stylesheet" href={{ asset("css/bootstrap-editable.css")}}/>
+            <link rel="stylesheet" href={{ asset("css/featherlight.min.css")}}>
+            <link rel="stylesheet" href={{ asset("css/bootstrap-slider.min.css")}}>
+            <link rel="stylesheet" href={{ asset("css/select2.min.css")}} />
+            <link rel="stylesheet" href={{ asset("css/bootstrap-select.min.css")}} />
+            <link rel="stylesheet" href={{ asset("css/main.css")}} />
 
+            <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        {% endblock %}
+        {% block head_javascripts %}
+            <script src={{asset("js/jquery.min.js")}}></script>
+            <script src={{asset("js/moment-with-locales.min.js")}}></script>
+            <script src={{asset("js/bootstrap.min.js")}}></script>
+            <script src={{asset("js/daterangepicker.min.js")}}></script>
+            <script src={{asset("js/datatables.min.js")}}></script>
+            <script src={{asset("js/bootstrap-editable.min.js")}}></script>
+            <script src={{asset("js/featherlight.min.js")}}></script>
+            <script src={{asset("js/jquery.highlight.js")}}></script>
+            <script src={{asset("js/bootstrap-slider.min.js")}}></script>
+            <script src={{asset('js/select2.full.min.js')}}></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+            <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        
-    {% endblock %}
-    {% block head_javascripts %}
-        <script src={{asset("js/jquery.min.js")}}></script>
-        <script src={{asset("js/moment-with-locales.min.js")}}></script>
-        <script src={{asset("js/bootstrap.min.js")}}></script>
-        <script src={{asset("js/daterangepicker.min.js")}}></script>
-        <script src={{asset("js/datatables.min.js")}}></script>
-        <script src={{asset("js/bootstrap-editable.min.js")}}></script>
-        <script src={{asset("js/featherlight.min.js")}}></script>
-        <script src={{asset("js/jquery.highlight.js")}}></script>
-        <script src={{asset("js/bootstrap-slider.min.js")}}></script>
-        <script src={{asset('js/select2.full.min.js')}}></script>
-        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
-        <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
-    {% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-</head>
+    </head>
     <body>
         {% block menu %}
             <nav class="navbar navbar-default">

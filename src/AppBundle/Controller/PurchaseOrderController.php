@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\PurchaseOrder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Purchaseorder controller.
@@ -52,11 +54,18 @@ class PurchaseOrderController extends Controller
         $purchaseOrder = new Purchaseorder();
         $form = $this->createForm('AppBundle\Form\PurchaseOrderType', $purchaseOrder);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            
             $em->persist($purchaseOrder);
-            $em->flush($purchaseOrder);
+            
+            foreach($purchaseOrder->getOrderItems() as $item){
+                $item->setOrder($purchaseOrder);
+                $em->persist($item);
+            }
+            
+            $em->flush();
 
             return $this->redirectToRoute('purchaseorder_show', array('id' => $purchaseOrder->getId()));
         }
@@ -96,15 +105,21 @@ class PurchaseOrderController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            
+            foreach($purchaseOrder->getOrderItems() as $item){
+                $item->setOrder($purchaseOrder);
+                $this->getDoctrine()->getManager()->persist($item);
+            }
+            
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('purchaseorder_edit', array('id' => $purchaseOrder->getId()));
         }
 
-        return $this->render('purchaseorder/edit.html.twig', array(
+        return $this->render('purchaseorder/new.html.twig', array(
             'purchaseOrder' => $purchaseOrder,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form' => $editForm->createView(),
+            //'delete_form' => $deleteForm->createView(),
         ));
     }
 

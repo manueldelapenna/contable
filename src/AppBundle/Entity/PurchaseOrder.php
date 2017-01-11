@@ -76,7 +76,7 @@ class PurchaseOrder
     private $salesPoint;
     
     /**
-     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"all"}, orphanRemoval=true)
      */
     private $orderItems;
     
@@ -91,9 +91,12 @@ class PurchaseOrder
         $this->comments = new ArrayCollection();
         
     }
+    
+    public function __toString() {
+        return (string)$this->getId();
+    }
 
-
-    /**
+        /**
      * Get id
      *
      * @return int

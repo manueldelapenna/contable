@@ -42,6 +42,10 @@ class OrderState
         $this->orders = new ArrayCollection();
         
     }
+    
+    public function __toString() {
+        return $this->getName();
+    }
 
 
     /**

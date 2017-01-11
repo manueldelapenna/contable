@@ -1,42 +1,215 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Nuevo Pedido</h1>
+{% form_theme form _self %}
+{% macro prototype(item, i) %}
+        <tr id='appbundle_purchaseorder_orderItems_{{i}}'>
+            <td class="actions"></td>
+            <td>{{ form_widget(item.productCode) }}</td>
+            <td class="text-right">{{ form_widget(item.productQuantity) }}</td>
+            <td>{{ form_widget(item.productDescription) }}</td>
+            <td class="text-right">{{ form_widget(item.unitPrice) }}</td>
+            <td class="text-right"><input class="form-control" type='text' disabled></td>
+        </tr>
+{% endmacro %}
 
-    {#<div class="form-horizontal">
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Nombre/CUIT/DNI de Cliente</label>
-            <div class="col-sm-6">
-                <input class="form-control" id="customer-search" type="text"/>
-            </div>
-            <div class="col-sm-4">
-                <input type="button" class="btn btn-default"  value="Buscar"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-2">
-            </div>
-            <div class="col-sm-4">
-                <select id="results" class="selectpicker" data-live-search="true" style="display:none">
-                </select>
-            </div>
-            <div class="col-sm-6">
-                <select class="js-data-example-ajax">
-                    <option value="" selected="selected">Ingrese Nombre/CUIT/DNI Cliente</option>
-                </select>
-            </div>
-        </div>
-    </div>#}
-    
+
+
+{% block body %}
+
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Nuevo Pedido</div>
+                    <div class="panel-body">
+                        <div class="col-sm-6">
+                            <div class="form-group {{ form.customer.vars.errors|length > 0 ? 'has-error' : '' }}">
+                               <label class="col-sm-12" >Cliente</label>
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.customer) }}
+                                    {{ form_errors(form.customer) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group {{ form.date.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                <label class="col-sm-12" >Fecha</label>
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.date) }}
+                                    {{ form_errors(form.date) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group {{ form.salesPoint.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                <label class="col-sm-12" >Punto de venta</label>
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.salesPoint) }}
+                                    {{ form_errors(form.salesPoint) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group {{ form.orderState.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                <label class="col-sm-12" >Estado de pedido</label>
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.orderState) }}
+                                    {{ form_errors(form.orderState) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Detalle Pedido</div>
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <a href="#" class="btn btn-success" id="add-another-item">Agregar item</a>
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <td style="width: 80px;"></td>
+                                            <td style="width: 150px;"><strong>Código</strong></td>
+                                            <td style="width: 80px;" class="text-right"><strong>Cantidad</strong></td>
+                                            <td><strong>Descripcion</strong></td>
+                                            <td style="width: 150px;" class="text-right"><strong>Precio unitario</strong></td>
+                                            <td style="width: 200px;" class="text-right"><strong>Total ítem</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appbundle_purchaseorder_orderItems" data-prototype="
+                                                        {% filter escape %}
+                                                            {{ include('item_layout.html.twig') }}
+                                                        {% endfilter %}">
+
+                                            {% set i = 0 %}
+                                            {% for item in form.orderItems %}
+
+                                                    {{_self.prototype(item, i)}}
+                                                    {% set i = i + 1 %}
+
+                                            {% endfor %}
+
+                                        
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-right"></td>
+                                            <td></td>
+                                            <td class="text-right"></td>
+                                            <td class="text-right"></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>   
+                                        <tr>
+                                            <td class="highrow"></td>
+                                            <td class="highrow"></td>
+                                            <td class="highrow"></td>
+                                            <td class="highrow"></td>
+                                            <td class="highrow text-right"><strong>Subtotal</strong></td>
+                                            <td class="highrow text-right {{ form.subtotal.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                                {{ form_widget(form.subtotal) }}
+                                                {{ form_errors(form.subtotal) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow text-right"><strong>Descuento</strong></td>
+                                            <td class="highrow text-right {{ form.discountAmount.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                                {{ form_widget(form.discountAmount) }}
+                                                {{ form_errors(form.discountAmount) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow text-right"><strong>Envío</strong></td>
+                                            <td class="highrow text-right {{ form.shippingAmount.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                                {{ form_widget(form.shippingAmount) }}
+                                                {{ form_errors(form.shippingAmount) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow text-right"><strong>Total</strong></td>
+                                            <td class="highrow text-right {{ form.total.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                                {{ form_widget(form.total) }}
+                                                {{ form_errors(form.total) }}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>      
+                                    
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <input type="submit" value="Create" />
     {{ form_end(form) }}
 
+    
     <ul>
         <li>
             <a href="{{ path('purchaseorder_index') }}">Back to the list</a>
         </li>
     </ul>
+
+            <script type="text/javascript">
+    // realiza un seguimiento de cuántos campos de correo electrónico se han pintado
+    var itemsCount = '{{ (form.orderItems) | length }}';
+    
+    var collectionHolder = $('#appbundle_purchaseorder_orderItems');
+
+    jQuery(document).ready(function() {
+        
+        jQuery('#add-another-item').click(function() {
+            var itemList = jQuery('#appbundle_purchaseorder_orderItems');
+            var newWidget = itemList.attr('data-prototype');
+            newWidget = newWidget.replace(/__name__/g, itemsCount);
+            newWidget = newWidget.replace('label__', '');
+            
+            jQuery('#appbundle_purchaseorder_orderItems').append(newWidget);
+            addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + itemsCount + ' .actions'));
+            itemsCount++;
+             return false;
+        });
+
+        for(var i=0;i<itemsCount;i++){
+            addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + i + ' .actions'));
+        }
+        
+    });
+    
+    function addTagFormDeleteLink($tagFormLi) {
+        var $removeFormA = $('<button class="btn btn-danger">Borrar ítem</button>');
+        $tagFormLi.append($removeFormA);
+
+        $removeFormA.on('click', function(e) {
+            // evita crear el enlace con una "#" en la URL
+            e.preventDefault();
+
+            // quita el li de la etiqueta del formulario
+            $tagFormLi.parent().remove();
+        });
+    }
+</script>
+
+      
 
 {% endblock %}
