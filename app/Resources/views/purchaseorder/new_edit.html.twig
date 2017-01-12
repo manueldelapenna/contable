@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Nuevo Pedido</div>
+                    <div class="panel-heading">{% if isNew %} Nuevo {% else %} Editar {% endif %} Pedido</div>
                     <div class="panel-body">
                         <div class="col-sm-6">
                             <div class="form-group {{ form.customer.vars.errors|length > 0 ? 'has-error' : '' }}">
@@ -68,16 +68,15 @@
                     <div class="panel-body">
                         <div class="col-sm-12">
                             <div class="table-responsive">
-                                <a href="#" class="btn btn-success" id="add-another-item">Agregar item</a>
-                                <table class="table table-condensed">
+                                <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
-                                            <td style="width: 80px;"></td>
-                                            <td style="width: 150px;"><strong>Código</strong></td>
-                                            <td style="width: 80px;" class="text-right"><strong>Cantidad</strong></td>
-                                            <td><strong>Descripcion</strong></td>
-                                            <td style="width: 150px;" class="text-right"><strong>Precio unitario</strong></td>
-                                            <td style="width: 200px;" class="text-right"><strong>Total ítem</strong></td>
+                                            <td style="width: 80px;"><a href="#" class="btn btn-success" id="add-another-item"><span class="glyphicon glyphicon-plus"></span> Ítem</a></td>
+                                            <td style="width: 150px; text-align: center; vertical-align: middle;"><strong>Código</strong></td>
+                                            <td style="width: 80px; text-align: center; vertical-align: middle;" class="text-right"><strong>Cantidad</strong></td>
+                                            <td><strong style="text-align: center; vertical-align: middle;">Descripcion</strong></td>
+                                            <td style="width: 150px; text-align: center; vertical-align: middle;" class="text-right"><strong>Precio unitario</strong></td>
+                                            <td style="width: 200px; text-align: center; vertical-align: middle;" class="text-right"><strong>Total ítem</strong></td>
                                         </tr>
                                     </thead>
                                     <tbody id="appbundle_purchaseorder_orderItems" data-prototype="
@@ -92,16 +91,7 @@
                                                     {% set i = i + 1 %}
 
                                             {% endfor %}
-
                                         
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-right"></td>
-                                            <td></td>
-                                            <td class="text-right"></td>
-                                            <td class="text-right"></td>
-                                        </tr>
                                     </tbody>
                                     <tfoot>   
                                         <tr>
@@ -172,8 +162,9 @@
 
             <script type="text/javascript">
     // realiza un seguimiento de cuántos campos de correo electrónico se han pintado
+    var itemsIndex = '{{ (form.orderItems) | length }}';
     var itemsCount = '{{ (form.orderItems) | length }}';
-    
+   
     var collectionHolder = $('#appbundle_purchaseorder_orderItems');
 
     jQuery(document).ready(function() {
@@ -181,31 +172,41 @@
         jQuery('#add-another-item').click(function() {
             var itemList = jQuery('#appbundle_purchaseorder_orderItems');
             var newWidget = itemList.attr('data-prototype');
-            newWidget = newWidget.replace(/__name__/g, itemsCount);
+            newWidget = newWidget.replace(/__name__/g, itemsIndex);
             newWidget = newWidget.replace('label__', '');
             
             jQuery('#appbundle_purchaseorder_orderItems').append(newWidget);
-            addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + itemsCount + ' .actions'));
+            addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + itemsIndex + ' .actions'));
+            itemsIndex++;
             itemsCount++;
              return false;
         });
 
-        for(var i=0;i<itemsCount;i++){
+        for(var i=0;i<itemsIndex;i++){
             addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + i + ' .actions'));
+        }
+
+        if({{isNew}}){
+            $('#add-another-item').click();
         }
         
     });
     
     function addTagFormDeleteLink($tagFormLi) {
-        var $removeFormA = $('<button class="btn btn-danger">Borrar ítem</button>');
+        var $removeFormA = $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Ítem</a>');
         $tagFormLi.append($removeFormA);
-
+        
         $removeFormA.on('click', function(e) {
             // evita crear el enlace con una "#" en la URL
             e.preventDefault();
 
-            // quita el li de la etiqueta del formulario
-            $tagFormLi.parent().remove();
+            if(itemsCount > 1){
+                // quita el li de la etiqueta del formulario
+                $tagFormLi.parent().remove();
+                itemsCount--;
+            }else{
+                alert('El pedido debe tener al menos 1 item');
+            }
         });
     }
 </script>

@@ -87,6 +87,7 @@ class PurchaseOrder
     
     public function __construct()
     {
+        $this->setDate(new \DateTime("now"));
         $this->orderItems = new ArrayCollection();
         $this->comments = new ArrayCollection();
         

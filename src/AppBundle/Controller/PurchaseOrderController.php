@@ -70,9 +70,10 @@ class PurchaseOrderController extends Controller
             return $this->redirectToRoute('purchaseorder_show', array('id' => $purchaseOrder->getId()));
         }
 
-        return $this->render('purchaseorder/new.html.twig', array(
+        return $this->render('purchaseorder/new_edit.html.twig', array(
             'purchaseOrder' => $purchaseOrder,
             'form' => $form->createView(),
+            'isNew' => 1,
         ));
     }
 
@@ -116,9 +117,10 @@ class PurchaseOrderController extends Controller
             return $this->redirectToRoute('purchaseorder_edit', array('id' => $purchaseOrder->getId()));
         }
 
-        return $this->render('purchaseorder/new.html.twig', array(
+        return $this->render('purchaseorder/new_edit.html.twig', array(
             'purchaseOrder' => $purchaseOrder,
             'form' => $editForm->createView(),
+            'isNew' => 0,
             //'delete_form' => $deleteForm->createView(),
         ));
     }

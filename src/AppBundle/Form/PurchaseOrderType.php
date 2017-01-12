@@ -30,7 +30,13 @@ class PurchaseOrderType extends AbstractType
                       'cache_timeout' => 60000, // if 'cache' is true
                       'placeholder' => 'Nombre del cliente',
                      ])
-            ->add('date')
+            ->add('date', DateTimeType::class, [
+                                                'widget' => 'single_text',
+                                                'format' => 'dd/MM/yyyy hh:mm:ss',
+                                                'attr' => [
+                                                            'disabled' => 'disabled',
+                                                           ]
+                                                ])
             ->add('orderState')
             ->add('salesPoint')
             ->add('orderItems', CollectionType::class, array(
