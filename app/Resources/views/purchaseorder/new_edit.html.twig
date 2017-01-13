@@ -143,8 +143,8 @@
                         
                         <div class="col-sm-12">
                             <div class="pull-right">
-                                <input class="btn btn-success " type="submit" value="Confirmar" />
-                                <a class="btn btn-danger" href="{{ path('purchaseorder_index') }}">Descartar</a>
+                                <input class="btn btn-success " type="submit" value="Guardar" />
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#discardOrder">Descartar</button>
                             </div>
                         </div>
 
@@ -155,6 +155,47 @@
         </div>
     </div>
     
+    
+    <div id="discardOrder" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Descartar pedido</h4>
+            </div>
+            <div class="modal-body">
+              <p>¿Está seguro que desea descartar el pedido?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <a class="btn btn-danger" href="{{ path('purchaseorder_index') }}">Descartar pedido</a>
+            </div>
+          </div>
+
+        </div>
+    </div>
+            
+    <div id="itemError" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+              <p>El pedido debe tener al menos 1 item.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+            </div>
+          </div>
+
+        </div>
+    </div>
     
     
 
@@ -184,7 +225,7 @@
                 addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + i + ' .actions'));
             }
 
-            if({{isNew}}){
+            if({{isNew}} && itemsCount == 0){
                 $('#add-another-item').click();
             }
 
@@ -203,7 +244,7 @@
                     $tagFormLi.parent().remove();
                     itemsCount--;
                 }else{
-                    alert('El pedido debe tener al menos 1 item');
+                    $('#itemError').modal();
                 }
             });
         }
