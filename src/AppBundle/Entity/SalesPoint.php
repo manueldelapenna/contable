@@ -37,11 +37,14 @@ class SalesPoint
     private $orders;
     
     
-        public function __construct()
-        {
-            $this->orders = new ArrayCollection();
-
-        }
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
+    
+    public function __toString() {
+        return $this->getName();
+    }
 
 
     /**

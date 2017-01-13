@@ -13,9 +13,7 @@
 {% endmacro %}
 
 
-
 {% block body %}
-
     {{ form_start(form) }}
         <div class="row">
             <div class="col-sm-12">
@@ -74,7 +72,7 @@
                                             <td style="width: 80px;"><a href="#" class="btn btn-success" id="add-another-item"><span class="glyphicon glyphicon-plus"></span> Ítem</a></td>
                                             <td style="width: 150px; text-align: center; vertical-align: middle;"><strong>Código</strong></td>
                                             <td style="width: 80px; text-align: center; vertical-align: middle;" class="text-right"><strong>Cantidad</strong></td>
-                                            <td><strong style="text-align: center; vertical-align: middle;">Descripcion</strong></td>
+                                            <td style="text-align: center; vertical-align: middle;"><strong>Descripcion</strong></td>
                                             <td style="width: 150px; text-align: center; vertical-align: middle;" class="text-right"><strong>Precio unitario</strong></td>
                                             <td style="width: 200px; text-align: center; vertical-align: middle;" class="text-right"><strong>Total ítem</strong></td>
                                         </tr>
@@ -86,7 +84,6 @@
 
                                             {% set i = 0 %}
                                             {% for item in form.orderItems %}
-
                                                     {{_self.prototype(item, i)}}
                                                     {% set i = i + 1 %}
 
@@ -140,77 +137,76 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                                {{ form_widget(form.orderItems) }}
                             </div>
                         </div>      
-                                    
+                        
+                        <div class="col-sm-12">
+                            <div class="pull-right">
+                                <input class="btn btn-success " type="submit" value="Confirmar" />
+                                <a class="btn btn-danger" href="{{ path('purchaseorder_index') }}">Descartar</a>
+                            </div>
+                        </div>
 
+                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
     
-    <ul>
-        <li>
-            <a href="{{ path('purchaseorder_index') }}">Back to the list</a>
-        </li>
-    </ul>
-
-            <script type="text/javascript">
-    // realiza un seguimiento de cuántos campos de correo electrónico se han pintado
-    var itemsIndex = '{{ (form.orderItems) | length }}';
-    var itemsCount = '{{ (form.orderItems) | length }}';
-   
-    var collectionHolder = $('#appbundle_purchaseorder_orderItems');
-
-    jQuery(document).ready(function() {
-        
-        jQuery('#add-another-item').click(function() {
-            var itemList = jQuery('#appbundle_purchaseorder_orderItems');
-            var newWidget = itemList.attr('data-prototype');
-            newWidget = newWidget.replace(/__name__/g, itemsIndex);
-            newWidget = newWidget.replace('label__', '');
-            
-            jQuery('#appbundle_purchaseorder_orderItems').append(newWidget);
-            addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + itemsIndex + ' .actions'));
-            itemsIndex++;
-            itemsCount++;
-             return false;
-        });
-
-        for(var i=0;i<itemsIndex;i++){
-            addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + i + ' .actions'));
-        }
-
-        if({{isNew}}){
-            $('#add-another-item').click();
-        }
-        
-    });
     
-    function addTagFormDeleteLink($tagFormLi) {
-        var $removeFormA = $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Ítem</a>');
-        $tagFormLi.append($removeFormA);
-        
-        $removeFormA.on('click', function(e) {
-            // evita crear el enlace con una "#" en la URL
-            e.preventDefault();
 
-            if(itemsCount > 1){
-                // quita el li de la etiqueta del formulario
-                $tagFormLi.parent().remove();
-                itemsCount--;
-            }else{
-                alert('El pedido debe tener al menos 1 item');
+    <script type="text/javascript">
+        // realiza un seguimiento de cuántos campos de correo electrónico se han pintado
+        var itemsIndex = '{{ (form.orderItems) | length }}';
+        var itemsCount = '{{ (form.orderItems) | length }}';
+
+        var collectionHolder = $('#appbundle_purchaseorder_orderItems');
+
+        jQuery(document).ready(function() {
+
+            jQuery('#add-another-item').click(function() {
+                var itemList = jQuery('#appbundle_purchaseorder_orderItems');
+                var newWidget = itemList.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, itemsIndex);
+                newWidget = newWidget.replace('label__', '');
+
+                jQuery('#appbundle_purchaseorder_orderItems').append(newWidget);
+                addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + itemsIndex + ' .actions'));
+                itemsIndex++;
+                itemsCount++;
+                 return false;
+            });
+
+            for(var i=0;i<itemsIndex;i++){
+                addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + i + ' .actions'));
             }
-        });
-    }
-</script>
 
-      
+            if({{isNew}}){
+                $('#add-another-item').click();
+            }
+
+        });
+
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Ítem</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // evita crear el enlace con una "#" en la URL
+                e.preventDefault();
+
+                if(itemsCount > 1){
+                    // quita el li de la etiqueta del formulario
+                    $tagFormLi.parent().remove();
+                    itemsCount--;
+                }else{
+                    alert('El pedido debe tener al menos 1 item');
+                }
+            });
+        }
+    </script>
 
 {% endblock %}

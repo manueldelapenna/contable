@@ -51,7 +51,7 @@ class OrderItem
     
     /**
      * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $order;
 

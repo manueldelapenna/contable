@@ -59,19 +59,19 @@ class PurchaseOrder
     
     /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      */
     private $customer;
     
     /**
      * @ORM\ManyToOne(targetEntity="OrderState", inversedBy="orders")
-     * @ORM\JoinColumn(name="order_state_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="order_state_id", referencedColumnName="id", nullable=false)
      */
     private $orderState;
     
     /**
      * @ORM\ManyToOne(targetEntity="SalesPoint", inversedBy="orders")
-     * @ORM\JoinColumn(name="sales_point_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="sales_point_id", referencedColumnName="id", nullable=false)
      */
     private $salesPoint;
     

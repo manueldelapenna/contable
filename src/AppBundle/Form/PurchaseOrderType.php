@@ -7,7 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 
 class PurchaseOrderType extends AbstractType
@@ -20,6 +22,7 @@ class PurchaseOrderType extends AbstractType
         $builder
                 ->add('customer', Select2EntityType::class, [
                       'multiple' => false,
+                      'required' => true,
                       'remote_route' => 'customer_findall',
                       'class' => '\AppBundle\Entity\Customer',
                       'primary_key' => 'id',
@@ -34,21 +37,32 @@ class PurchaseOrderType extends AbstractType
                                                 'widget' => 'single_text',
                                                 'format' => 'dd/MM/yyyy hh:mm:ss',
                                                 'attr' => [
-                                                            'disabled' => 'disabled',
+                                                            'readonly' => 'readonly',
+
                                                            ]
                                                 ])
-            ->add('orderState')
-            ->add('salesPoint')
+            ->add('orderState', EntityType::class, array(
+                                                        'class' => 'AppBundle:OrderState',
+                                                        'placeholder' => 'Seleccione un estado',
+                                                        'empty_data'  => null,
+                                                        'required' => true
+                                                        ))
+            ->add('salesPoint', EntityType::class, array(
+                                                        'class' => 'AppBundle:SalesPoint',
+                                                        'placeholder' => 'Seleccione un punto de venta',
+                                                        'empty_data'  => null,
+                                                        'required' => true
+                                                        ))
             ->add('orderItems', CollectionType::class, array(
                   'entry_type'   => OrderItemType::class,
                   'allow_add' => true,
                   'allow_delete' => true,
                   'prototype' => true,
                   ))
-            ->add('subtotal')
-            ->add('discountAmount')
-            ->add('shippingAmount')
-            ->add('total');
+            ->add('subtotal', TextType::class, array('attr' => array('autocomplete' => 'off')))
+            ->add('discountAmount', TextType::class, array('attr' => array('autocomplete' => 'off')))
+            ->add('shippingAmount', TextType::class, array('attr' => array('autocomplete' => 'off')))
+            ->add('total', TextType::class, array('attr' => array('autocomplete' => 'off')));
     }
     
     /**
