@@ -9,7 +9,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
 
 class PurchaseOrderType extends AbstractType
@@ -59,10 +60,10 @@ class PurchaseOrderType extends AbstractType
                   'allow_delete' => true,
                   'prototype' => true,
                   ))
-            ->add('subtotal', TextType::class, array('attr' => array('autocomplete' => 'off')))
-            ->add('discountAmount', TextType::class, array('attr' => array('autocomplete' => 'off')))
-            ->add('shippingAmount', TextType::class, array('attr' => array('autocomplete' => 'off')))
-            ->add('total', TextType::class, array('attr' => array('autocomplete' => 'off')));
+            ->add('subtotal', MoneyType::class, array('currency' => 'USD', 'attr' => array('autocomplete' => 'off',)))
+            ->add('discountAmount', MoneyType::class, array('currency' => 'USD', 'attr' => array('autocomplete' => 'off')))
+            ->add('shippingAmount', MoneyType::class, array('currency' => 'USD', 'attr' => array('autocomplete' => 'off')))
+            ->add('total', MoneyType::class, array('currency' => 'USD', 'attr' => array('autocomplete' => 'off')));
     }
     
     /**

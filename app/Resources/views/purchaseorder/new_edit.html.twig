@@ -4,10 +4,10 @@
 {% macro prototype(item, i) %}
         <tr id='appbundle_purchaseorder_orderItems_{{i}}'>
             <td class="actions"></td>
-            <td>{{ form_widget(item.productCode) }}</td>
-            <td class="text-right">{{ form_widget(item.productQuantity) }}</td>
-            <td>{{ form_widget(item.productDescription) }}</td>
-            <td class="text-right">{{ form_widget(item.unitPrice) }}</td>
+            <td class="{{ item.productCode.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productCode) }}{{ form_errors(item.productCode) }}</td>
+            <td class="text-right {{ item.productQuantity.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productQuantity) }}{{ form_errors(item.productQuantity) }}</td>
+            <td class="{{ item.productDescription.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productDescription) }}{{ form_errors(item.productDescription) }}</td>
+            <td class="text-right {{ item.unitPrice.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.unitPrice) }}{{ form_errors(item.unitPrice) }}</td>
             <td class="text-right"><input class="form-control" type='text' disabled></td>
         </tr>
 {% endmacro %}
@@ -71,7 +71,7 @@
                                         <tr>
                                             <td style="width: 80px;"><a href="#" class="btn btn-success" id="add-another-item"><span class="glyphicon glyphicon-plus"></span> Ítem</a></td>
                                             <td style="width: 150px; text-align: center; vertical-align: middle;"><strong>Código</strong></td>
-                                            <td style="width: 80px; text-align: center; vertical-align: middle;" class="text-right"><strong>Cantidad</strong></td>
+                                            <td style="width: 90px; text-align: center; vertical-align: middle;" class="text-right"><strong>Cantidad</strong></td>
                                             <td style="text-align: center; vertical-align: middle;"><strong>Descripcion</strong></td>
                                             <td style="width: 150px; text-align: center; vertical-align: middle;" class="text-right"><strong>Precio unitario</strong></td>
                                             <td style="width: 200px; text-align: center; vertical-align: middle;" class="text-right"><strong>Total ítem</strong></td>
