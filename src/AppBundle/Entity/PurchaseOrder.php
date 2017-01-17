@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * PurchaseOrder
@@ -33,32 +34,48 @@ class PurchaseOrder
      * @var float
      *
      * @ORM\Column(name="subtotal", type="float")
+     *
+     *  * @Assert\Range(
+     *      min = 0.0001,
+     *      minMessage = "El valor debe ser mayor a 0",
+     * )
      */
-    
     private $subtotal;
 
     /**
      * @var float
      *
      * @ORM\Column(name="discount_amount", type="float")
+     * 
+     * @Assert\Range(
+     *      min = 0.00,
+     *      minMessage = "El valor debe ser mayor o igual a 0",
+     * )
      */
-    
     private $discountAmount;
 
     /**
      * @var float
      *
      * @ORM\Column(name="shipping_amount", type="float")
+     * 
+     * @Assert\Range(
+     *      min = 0.00,
+     *      minMessage = "El valor debe ser mayor o igual a 0",
+     * )
      */
-    
     private $shippingAmount;
 
     /**
      * @var float
      *
      * @ORM\Column(name="total", type="float")
+     * 
+     * @Assert\Range(
+     *      min = 0.01,
+     *      minMessage = "El valor debe ser mayor a 0",
+     * )
      */
-    
     private $total;
     
     /**
@@ -81,9 +98,8 @@ class PurchaseOrder
     
     /**
      * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"all"}, orphanRemoval=true)
+     * @Assert\Valid()
      */
-    
-    
     private $orderItems;
     
     /**

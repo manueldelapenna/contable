@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * OrderItem
@@ -33,8 +34,12 @@ class OrderItem
      * @var float
      * 
      * @ORM\Column(name="product_quantity", type="float")
+     *
+     * @Assert\Range(
+     *      min = 0.0001,
+     *      minMessage = "El valor debe ser mayor a 0",
+     * )
      */
-    
     private $productQuantity;
 
     /**
@@ -48,8 +53,12 @@ class OrderItem
      * @var float
      *
      * @ORM\Column(name="unit_price", type="float")
+     *
+     * @Assert\Range(
+     *      min = 0.0001,
+     *      minMessage = "El valor debe ser mayor a 0",
+     * )
      */
-    
     private $unitPrice;
     
     /**
