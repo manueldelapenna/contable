@@ -66,9 +66,20 @@ class PurchaseOrderController extends Controller
             }
             
             $em->flush();
+            
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Los cambios fueron guardados correctamente'
+            );
 
             return $this->redirectToRoute('purchaseorder_show', array('id' => $purchaseOrder->getId()));
         }
+        
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->get('session')->getFlashBag()->add(
+                    'danger', 'Se produjeron errores al intentar guardar los cambios.'
+            );
+        }
+        
 
         return $this->render('purchaseorder/new_edit.html.twig', array(
             'purchaseOrder' => $purchaseOrder,
@@ -113,8 +124,18 @@ class PurchaseOrderController extends Controller
             }
             
             $this->getDoctrine()->getManager()->flush();
+            
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Los cambios fueron guardados correctamente'
+            );
 
             return $this->redirectToRoute('purchaseorder_edit', array('id' => $purchaseOrder->getId()));
+        }
+        
+        if ($editForm->isSubmitted() && !$editForm->isValid()) {
+            $this->get('session')->getFlashBag()->add(
+                    'danger', 'Se produjeron errores al intentar guardar los cambios.'
+            );
         }
 
         return $this->render('purchaseorder/new_edit.html.twig', array(
