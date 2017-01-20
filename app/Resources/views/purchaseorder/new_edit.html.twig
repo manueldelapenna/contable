@@ -5,10 +5,10 @@
         <tr id='appbundle_purchaseorder_orderItems_{{i}}'>
             <td class="actions"></td>
             <td class="{{ item.productCode.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productCode) }}{{ form_errors(item.productCode) }}</td>
-            <td class="text-right {{ item.productQuantity.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productQuantity) }}{{ form_errors(item.productQuantity) }}</td>
+            <td class="{{ item.productQuantity.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productQuantity, { 'attr': {'onchange': 'updateTotals(' ~ i ~ ' )', 'onkeyup': 'updateTotals(' ~ i ~ ' )'} }) }}{{ form_errors(item.productQuantity) }}</td>
             <td class="{{ item.productDescription.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productDescription) }}{{ form_errors(item.productDescription) }}</td>
-            <td class="text-right {{ item.unitPrice.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.unitPrice) }}{{ form_errors(item.unitPrice) }}</td>
-            <td class="text-right"><input class="form-control" type='text' disabled></td>
+            <td class="{{ item.unitPrice.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.unitPrice, { 'attr': {'onchange': 'updateTotals(' ~ i ~ ' )', 'onkeyup': 'updateTotals(' ~ i ~ ' )'} }) }}{{ form_errors(item.unitPrice) }}</td>
+            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' disabled></div></td>
         </tr>
 {% endmacro %}
 
@@ -17,7 +17,7 @@
     {{ form_start(form) }}
         <div class="row">
             <div class="col-sm-12">
-                <div class="panel panel-default">
+                <div class="panel panel-default" id="items-and-amounts">
                     <div class="panel-heading">{% if isNew %} Nuevo {% else %} Editar {% endif %} Pedido</div>
                     <div class="panel-body">
                         <div class="col-sm-6">
@@ -223,6 +223,7 @@
 
             for(var i=0;i<itemsIndex;i++){
                 addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + i + ' .actions'));
+                updateTotals(i);
             }
 
             if({{isNew}} && itemsCount == 0){
@@ -246,8 +247,39 @@
                 }else{
                     $('#itemError').modal();
                 }
+                updateTotals();
             });
         }
+        
+        function updateTotals(index){
+            console.log(this);
+            if(typeof index !== 'undefined'){
+                var quantity = $('#appbundle_purchaseorder_orderItems_' + index + '_productQuantity').val();
+                var unitPrice = $('#appbundle_purchaseorder_orderItems_' + index + '_unitPrice').val();
+                $('#total-item-' + index).val((parseFloat(quantity) * parseFloat(unitPrice)).toFixed(2));
+            }
+            
+            var subtotal = 0;
+            
+            for(var i=0;i<itemsIndex;i++){
+                if($('#total-item-' + i).length){
+                    subtotal = subtotal + parseFloat($('#total-item-' + i).val());
+                }
+            }
+                        
+            $('#appbundle_purchaseorder_subtotal').val(subtotal.toFixed(2));
+            
+            var discountAmount = $('#appbundle_purchaseorder_discountAmount').val();
+            var shippingAmount = $('#appbundle_purchaseorder_shippingAmount').val();
+            
+            $('#appbundle_purchaseorder_total').val((subtotal + parseFloat(discountAmount) + parseFloat(shippingAmount)).toFixed(2));
+            
+            
+            //actualiza subtotal, y total
+        }
+    
+            
+        
     </script>
 
 {% endblock %}
