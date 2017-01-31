@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByAttribute($attribute, $value)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT p.code, p.name, p.price FROM AppBundle:Product p where p.$attribute = :value"
+            )
+            ->setParameter('value', $value)
+            ->getResult();
+    }
 }

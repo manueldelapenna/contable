@@ -16,7 +16,7 @@ class OrderItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('productCode', TextType::class, array('attr' => array('autocomplete' => 'off')))
+        $builder->add('productCode', TextType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'item-product-code')))
                 ->add('productQuantity', NumberType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'text-right')))
                 ->add('productDescription', TextType::class, array('attr' => array('autocomplete' => 'off')))
                 ->add('unitPrice', MoneyType::class, array('currency' => 'USD', 'scale' => 4, 'attr' => array('autocomplete' => 'off', 'class' => 'text-right', 'onchange' => 'updateTotals(this)', 'onkeyup' => 'updateTotals(this)')));

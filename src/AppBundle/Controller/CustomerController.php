@@ -7,13 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Customer;
-use AppBundle\Form\CustomerType;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * Customer controller.
@@ -162,37 +156,6 @@ class CustomerController extends Controller {
         ;
     }
     
-    /**
-     * @Route("/search/{attribute}/{value}", name="customer_search")
-     * @Method({"POST"})
-     */
-    public function searchAction(Request $request, $attribute, $value)
-    {
-        if($request->isXmlHttpRequest())
-        {
-            $encoders = array(new JsonEncoder());
-            $normalizer = new ObjectNormalizer();
- 
-            $serializer = new Serializer(array($normalizer), $encoders);
- 
-            $em = $this->getDoctrine()->getManager();
-            $customers =  $em->getRepository('AppBundle:Customer')->findByAttribute($attribute, $value);
-            
-            $response = new JsonResponse();
-            $response->setStatusCode(200);
-            
-            $normalizer->setCircularReferenceHandler(function ($object) {
-                return $object->getId();
-            });
-            
-            $response->setData(array(
-                'response' => 'success',
-                'customers' => $serializer->serialize($customers, 'json')
-            ));
-            
-            return $response;
-        }
-    }
     /**
      * @Route("/findall/", name="customer_findall")
      * @Method("GET")

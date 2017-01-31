@@ -252,7 +252,6 @@
         }
         
         function updateTotals(index){
-            console.log(this);
             if(typeof index !== 'undefined'){
                 var quantity = $('#appbundle_purchaseorder_orderItems_' + index + '_productQuantity').val();
                 var unitPrice = $('#appbundle_purchaseorder_orderItems_' + index + '_unitPrice').val();
@@ -278,6 +277,24 @@
             //actualiza subtotal, y total
         }
     
+        $('.item-product-code').change(function() {
+            var itemProductCodeId = ($(this).attr('id'));
+            var index =  this.id.match(/\d+/);
+            
+            $.ajax({
+                url: "{{path('product_find_by_code')}}", 
+                type: 'GET',
+                data: {'q': $('#' + itemProductCodeId).val()},
+                success: function(result){
+                            if(result.length > 0){
+                                $('#appbundle_purchaseorder_orderItems_' + index + '_productDescription').val(result[0].name);
+                                $('#appbundle_purchaseorder_orderItems_' + index + '_unitPrice').val(result[0].price);
+                            }
+                            
+                        }
+            });
+
+        });
             
         
     </script>

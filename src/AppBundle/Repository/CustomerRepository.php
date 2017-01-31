@@ -14,7 +14,7 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT c.id, c.name as $alias FROM AppBundle:Customer c where c.$attribute like :value order by c.name asc"
+                "SELECT c.id, c.$attribute as $alias FROM AppBundle:Customer c where c.$attribute like :value order by c.name asc"
             )
             ->setParameter('value', '%' . $value . '%')
             ->getResult();
