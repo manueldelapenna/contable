@@ -65,6 +65,17 @@
                     <div class="panel-heading">Detalle Pedido</div>
                     <div class="panel-body">
                         <div class="col-sm-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                  <select id="product-search" class="form-control"></select>
+                                </div>
+                                <div class="form-group text-right">
+                                    <button type="button" class="btn btn-success" onclick='addProduct()'>Agregar</button>
+                                    <button type="button" class="btn btn-default" onclick='removeSearch()'>Borrar busqueda</button>
+                                </div>
+                            </div>    
+                        </div>
+                        <div class="col-sm-12">
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered">
                                     <thead>
@@ -214,7 +225,7 @@
                 newWidget = newWidget.replace(/__name__/g, itemsIndex);
                 newWidget = newWidget.replace('label__', '');
 
-                jQuery('#appbundle_purchaseorder_orderItems').append(newWidget);
+                $('#appbundle_purchaseorder_orderItems').append(newWidget);
                 addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + itemsIndex + ' .actions'));
                 itemsIndex++;
                 itemsCount++;
@@ -277,9 +288,13 @@
             //actualiza subtotal, y total
         }
     
-        $('.item-product-code').change(function() {
-            var itemProductCodeId = ($(this).attr('id'));
-            var index =  this.id.match(/\d+/);
+        {#$('.item-product-code').change(function() {
+            updateFromCode(this);
+        });#}
+        
+        function updateFromCode(element){
+            var itemProductCodeId = ($(element).attr('id'));
+            var index =  element.id.match(/\d+/);
             
             $.ajax({
                 url: "{{path('product_find_by_code')}}", 
@@ -289,12 +304,47 @@
                             if(result.length > 0){
                                 $('#appbundle_purchaseorder_orderItems_' + index + '_productDescription').val(result[0].name);
                                 $('#appbundle_purchaseorder_orderItems_' + index + '_unitPrice').val(result[0].price);
+                                updateTotals(index);;
                             }
+                            
                             
                         }
             });
 
+        }
+        
+        $("#product-search").select2({
+            placeholder: 'Ingrese nombre de producto',
+            minimumInputLength: 3,
+            language: 'es',
+            ajax: {
+                url: "{{path('product_find_by_name')}}",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                  return {
+                    results: data
+                  };
+                },
+                cache: true
+            }
         });
+        
+        function addProduct(){
+            var searchText = $('#product-search').val();
+            if(searchText !== null){
+                $('#add-another-item').click();
+                $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productCode').val(searchText);
+                $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productCode').change();
+                $('#product-search').text('');
+            }else{
+                alert('seleccione un producto');
+            }
+        }
+        
+        function removeSearch(){
+            $('#product-search').text('');
+        }
             
         
     </script>

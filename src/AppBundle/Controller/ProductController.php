@@ -158,4 +158,17 @@ class ProductController extends Controller
         return new JsonResponse($product);
             
     }
+    
+    /**
+     * @Route("/find/name", name="product_find_by_name")
+     * @Method("GET")
+     */
+    public function findByNameAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository('AppBundle:Product')->findByName('name', $request->query->get('q'));
+
+        return new JsonResponse($product);
+            
+    }
 }
