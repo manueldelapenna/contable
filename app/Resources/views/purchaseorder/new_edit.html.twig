@@ -70,8 +70,8 @@
                                   <select id="product-search" class="form-control"></select>
                                 </div>
                                 <div class="form-group text-right">
-                                    <button type="button" class="btn btn-success" onclick='addProduct()'>Agregar</button>
-                                    <button type="button" class="btn btn-default" onclick='removeSearch()'>Borrar busqueda</button>
+                                    <button type="button" class="btn btn-success" onclick='addProduct()'><span class="glyphicon glyphicon-plus"></span> Agregar</button>
+                                    <button type="button" class="btn btn-default" onclick='removeSearch()'><span class="glyphicon glyphicon-erase"></span> Borrar busqueda</button>
                                 </div>
                             </div>    
                         </div>
@@ -154,8 +154,9 @@
                         
                         <div class="col-sm-12">
                             <div class="pull-right">
-                                <input class="btn btn-success" type="submit" value="Guardar" />
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#discardOrder">Descartar</button>
+{#                                <input class="btn btn-success" type="submit" value="Guardar" />#}
+                                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#discardOrder"><span class="glyphicon glyphicon-trash"></span> Descartar</button>
                             </div>
                         </div>
 
@@ -181,7 +182,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <a class="btn btn-danger" href="{{ path('purchaseorder_index') }}">Descartar pedido</a>
+              <a class="btn btn-danger" href="{{ path('purchaseorder_index') }}"><span class="glyphicon glyphicon-trash"></span> Descartar pedido</a>
             </div>
           </div>
 
@@ -199,6 +200,26 @@
             </div>
             <div class="modal-body">
               <p>El pedido debe tener al menos 1 item.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+            </div>
+          </div>
+
+        </div>
+    </div>
+            
+    <div id="productError" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+              <p>Seleccione un producto.</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
@@ -310,7 +331,7 @@
         }
         
         $("#product-search").select2({
-            placeholder: 'Ingrese nombre de producto',
+            placeholder: 'Ingrese nombre de producto a buscar',
             minimumInputLength: 3,
             language: 'es',
             ajax: {
@@ -334,7 +355,7 @@
                 $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productCode').change();
                 $('#product-search').text('');
             }else{
-                alert('seleccione un producto');
+                $('#productError').modal();
             }
         }
         
