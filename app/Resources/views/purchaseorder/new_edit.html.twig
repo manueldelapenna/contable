@@ -288,10 +288,6 @@
             //actualiza subtotal, y total
         }
     
-        {#$('.item-product-code').change(function() {
-            updateFromCode(this);
-        });#}
-        
         function updateFromCode(element){
             var itemProductCodeId = ($(element).attr('id'));
             var index =  element.id.match(/\d+/);
