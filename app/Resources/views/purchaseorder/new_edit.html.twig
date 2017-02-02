@@ -350,7 +350,13 @@
         function addProduct(){
             var searchText = $('#product-search').val();
             if(searchText !== null){
-                $('#add-another-item').click();
+                var code = $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productCode').val();
+                var quantity = $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productQuantity').val();
+                var description = $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productDescription').val();
+                var unitPrice = $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_unitPrice').val();
+                if(code !== '' || quantity !== '' || description !== '' || unitPrice !== ''){
+                    $('#add-another-item').click();
+                }
                 $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productCode').val(searchText);
                 $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productCode').change();
                 $('#product-search').text('');
