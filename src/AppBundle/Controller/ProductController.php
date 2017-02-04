@@ -166,7 +166,7 @@ class ProductController extends Controller
     public function findByNameAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $product = $em->getRepository('AppBundle:Product')->findByName('name', $request->query->get('q'));
+        $product = $em->getRepository('AppBundle:Product')->findByName($request->query->get('q'));
 
         return new JsonResponse($product);
             

@@ -21,12 +21,12 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
     }
     
-    public function findByName($attribute, $value)
+    public function findByName($value)
     {
     
         return $this->getEntityManager()
         ->createQuery(
-            "SELECT p.code as id, p.name as text FROM AppBundle:Product p where p.$attribute like :value"
+            "SELECT p.code as id, concat(p.code, ' | ' ,p.name, ' | $', p.price) as text FROM AppBundle:Product p where p.name like :value"
         )
         ->setParameter('value', '%' . $value . '%')
         ->getResult();
