@@ -8,7 +8,7 @@
             <td class="{{ item.productQuantity.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productQuantity, { 'attr': {'onchange': 'updateTotals(' ~ i ~ ' )', 'onkeyup': 'updateTotals(' ~ i ~ ' )'} }) }}{{ form_errors(item.productQuantity) }}</td>
             <td class="{{ item.productDescription.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productDescription) }}{{ form_errors(item.productDescription) }}</td>
             <td class="{{ item.unitPrice.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.unitPrice, { 'attr': {'onchange': 'updateTotals(' ~ i ~ ' )', 'onkeyup': 'updateTotals(' ~ i ~ ' )'} }) }}{{ form_errors(item.unitPrice) }}</td>
-            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' disabled></div></td>
+            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' readonly></div></td>
         </tr>
 {% endmacro %}
 

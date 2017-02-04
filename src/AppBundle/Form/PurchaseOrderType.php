@@ -59,10 +59,10 @@ class PurchaseOrderType extends AbstractType
                   'allow_delete' => true,
                   'prototype' => true,
                   ))
-            ->add('subtotal', MoneyType::class, array('currency' => 'USD', 'scale' => 2, 'attr' => array('autocomplete' => 'off', 'disabled' => 'disabled', 'class' => 'text-right')))
+            ->add('subtotal', MoneyType::class, array('currency' => 'USD', 'scale' => 2, 'attr' => array('autocomplete' => 'off', 'readonly' => true, 'class' => 'text-right')))
             ->add('discountAmount', MoneyType::class, array('currency' => 'USD', 'scale' => 2, 'attr' => array('autocomplete' => 'off', 'class' => 'text-right', 'onchange' => 'updateTotals()', 'onkeyup' => 'updateTotals()')))
             ->add('shippingAmount', MoneyType::class, array('currency' => 'USD', 'scale' => 2, 'attr' => array('autocomplete' => 'off', 'class' => 'text-right', 'onchange' => 'updateTotals()', 'onkeyup' => 'updateTotals()')))
-            ->add('total', MoneyType::class, array('currency' => 'USD', 'scale' => 2, 'attr' => array('autocomplete' => 'off', 'class' => 'text-right', 'disabled' => 'disabled')));
+            ->add('total', MoneyType::class, array('currency' => 'USD', 'scale' => 2, 'attr' => array('autocomplete' => 'off', 'class' => 'text-right', 'readonly' => true)));
     }
     
     /**
