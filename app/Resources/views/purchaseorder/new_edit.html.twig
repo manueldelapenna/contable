@@ -303,7 +303,7 @@
             var discountAmount = $('#appbundle_purchaseorder_discountAmount').val();
             var shippingAmount = $('#appbundle_purchaseorder_shippingAmount').val();
             
-            $('#appbundle_purchaseorder_total').val((subtotal + parseFloat(discountAmount) + parseFloat(shippingAmount)).toFixed(2));
+            $('#appbundle_purchaseorder_total').val((subtotal - parseFloat(discountAmount) + parseFloat(shippingAmount)).toFixed(2));
             
             
             //actualiza subtotal, y total
