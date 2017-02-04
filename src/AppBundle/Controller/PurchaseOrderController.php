@@ -7,7 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Repository\ProductRepository;
 
 /**
  * Purchaseorder controller.
@@ -52,26 +54,44 @@ class PurchaseOrderController extends Controller
     public function newAction(Request $request)
     {
         $purchaseOrder = new Purchaseorder();
+        $purchaseOrder->setDiscountAmount(0);
+        $purchaseOrder->setShippingAmount(0);
         $form = $this->createForm('AppBundle\Form\PurchaseOrderType', $purchaseOrder);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
             
-            $em->persist($purchaseOrder);
-            
-            foreach($purchaseOrder->getOrderItems() as $item){
-                $item->setOrder($purchaseOrder);
-                $em->persist($item);
-            }
-            
-            $em->flush();
-            
-            $this->get('session')->getFlashBag()->add(
-                    'success', 'Los cambios fueron guardados correctamente'
-            );
+            try {
+                $em->persist($purchaseOrder);
+                foreach($purchaseOrder->getOrderItems() as $item){
 
-            return $this->redirectToRoute('purchaseorder_show', array('id' => $purchaseOrder->getId()));
+                    $item->setOrder($purchaseOrder);
+                    $product = $em->getRepository('AppBundle:Product')->findByCode($item->getProductCode());
+                    if($product){
+                        $product->setStock($product->getStock() - $item->getProductQuantity());
+                        $em->persist($product);
+                    }
+                    $em->persist($item);
+                }
+
+                $em->flush();
+                $em->getConnection()->commit();
+
+                $this->get('session')->getFlashBag()->add(
+                        'success', 'Los cambios fueron guardados correctamente'
+                );
+
+                return $this->redirectToRoute('purchaseorder_show', array('id' => $purchaseOrder->getId()));
+                    
+            } catch (Exception $e) {
+                $em->getConnection()->rollBack();
+                
+                $this->get('session')->getFlashBag()->add(
+                    'danger', 'Se produjeron errores al intentar guardar los cambios. ' . $e->getMessage()
+                );
+            }
         }
         
         if ($form->isSubmitted() && !$form->isValid()) {
@@ -79,7 +99,6 @@ class PurchaseOrderController extends Controller
                     'danger', 'Se produjeron errores al intentar guardar los cambios.'
             );
         }
-        
 
         return $this->render('purchaseorder/new_edit.html.twig', array(
             'purchaseOrder' => $purchaseOrder,

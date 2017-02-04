@@ -32,4 +32,16 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
         ->getResult();
     
     }
+    
+    public function findByCode($value)
+    {
+    
+        return $this->getEntityManager()
+        ->createQuery(
+            "SELECT p FROM AppBundle:Product p where p.code = :value"
+        )
+        ->setParameter('value', $value)
+        ->getOneOrNullResult();
+    
+    }
 }
