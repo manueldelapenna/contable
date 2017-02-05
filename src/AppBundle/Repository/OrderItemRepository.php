@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class OrderItemRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByOrderId($value)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT i FROM AppBundle:OrderItem i where i.order = :value"
+            )
+            ->setParameter('value', $value)
+            ->getResult();
+    }
 }

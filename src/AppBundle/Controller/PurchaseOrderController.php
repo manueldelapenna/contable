@@ -65,14 +65,18 @@ class PurchaseOrderController extends Controller
             
             try {
                 $em->persist($purchaseOrder);
+                
                 foreach($purchaseOrder->getOrderItems() as $item){
 
-                    $item->setOrder($purchaseOrder);
+                    //descuenta stock
                     $product = $em->getRepository('AppBundle:Product')->findByCode($item->getProductCode());
                     if($product){
                         $product->setStock($product->getStock() - $item->getProductQuantity());
                         $em->persist($product);
                     }
+                    
+                    //guarda item
+                    $item->setOrder($purchaseOrder);
                     $em->persist($item);
                 }
 
@@ -137,18 +141,55 @@ class PurchaseOrderController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             
-            foreach($purchaseOrder->getOrderItems() as $item){
-                $item->setOrder($purchaseOrder);
-                $this->getDoctrine()->getManager()->persist($item);
-            }
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction();
             
-            $this->getDoctrine()->getManager()->flush();
-            
-            $this->get('session')->getFlashBag()->add(
-                    'success', 'Los cambios fueron guardados correctamente'
-            );
+            try {
+                
+                //devuelve stock pedido previo
+                $previousItems = $em->getRepository('AppBundle:OrderItem')->findByOrderId($purchaseOrder->getId());
+                foreach($previousItems as $item){
+                    $oldItem = $em
+                      ->getUnitOfWork()
+                      ->getOriginalEntityData($item);
+                    
+                    $product = $em->getRepository('AppBundle:Product')->findByCode($oldItem['productCode']);
+                    if($product){
+                        $product->setStock($product->getStock() + $oldItem['productQuantity']);
+                        $em->persist($product);
+                    }
+                }
 
-            return $this->redirectToRoute('purchaseorder_edit', array('id' => $purchaseOrder->getId()));
+                foreach($purchaseOrder->getOrderItems() as $item){
+                    //descuenta nuevamente stock
+                    $product = $em->getRepository('AppBundle:Product')->findByCode($item->getProductCode());
+                    if($product){
+                        $product->setStock($product->getStock() - $item->getProductQuantity());
+                        $em->persist($product);
+                    }
+                    
+                    //guarda item
+                    $item->setOrder($purchaseOrder);
+                    $em->persist($item);
+                }
+
+                $em->flush();
+                
+                $em->getConnection()->commit();
+
+                $this->get('session')->getFlashBag()->add(
+                        'success', 'Los cambios fueron guardados correctamente'
+                );
+
+                return $this->redirectToRoute('purchaseorder_edit', array('id' => $purchaseOrder->getId()));
+            
+            } catch (Exception $e) {
+                $em->getConnection()->rollBack();
+                
+                $this->get('session')->getFlashBag()->add(
+                    'danger', 'Se produjeron errores al intentar guardar los cambios. ' . $e->getMessage()
+                );
+            }
         }
         
         if ($editForm->isSubmitted() && !$editForm->isValid()) {
