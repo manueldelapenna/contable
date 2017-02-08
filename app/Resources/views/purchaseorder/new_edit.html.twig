@@ -181,8 +181,16 @@
               <p>¿Está seguro que desea descartar el pedido?</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <a class="btn btn-danger" href="{{ path('purchaseorder_index') }}"><span class="glyphicon glyphicon-trash"></span> Descartar pedido</a>
+              
+              {% if delete_form is defined %}
+                {{ form_start(delete_form) }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span> Descartar pedido</button>
+                {{ form_end(delete_form) }}
+            {% else %}
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-danger" href="{{ path('purchaseorder_index') }}"><span class="glyphicon glyphicon-trash"></span> Descartar pedido</a>
+            {% endif %}
             </div>
           </div>
 

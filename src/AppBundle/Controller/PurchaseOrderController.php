@@ -202,7 +202,7 @@ class PurchaseOrderController extends Controller
             'purchaseOrder' => $purchaseOrder,
             'form' => $editForm->createView(),
             'isNew' => 0,
-            //'delete_form' => $deleteForm->createView(),
+            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -218,12 +218,50 @@ class PurchaseOrderController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $em = $this->getDoctrine()->getManager();
-            $em->remove($purchaseOrder);
-            $em->flush($purchaseOrder);
-        }
+            $em->getConnection()->beginTransaction();
+            
+            try {
+                
+                //devuelve stock pedido previo
+                $previousItems = $em->getRepository('AppBundle:OrderItem')->findByOrderId($purchaseOrder->getId());
+                foreach($previousItems as $item){
+                    $oldItem = $em
+                      ->getUnitOfWork()
+                      ->getOriginalEntityData($item);
+                    
+                    $product = $em->getRepository('AppBundle:Product')->findByCode($oldItem['productCode']);
+                    if($product){
+                        $product->setStock($product->getStock() + $oldItem['productQuantity']);
+                        $em->persist($product);
+                    }
+                }
+                
+                $em->remove($purchaseOrder);
+                
+                $em->flush();
+                
+                $em->getConnection()->commit();
 
+                $this->get('session')->getFlashBag()->add(
+                        'success', 'El pedido se borró correctamente. Se devolvió el stock correctamente'
+                );
+
+                
+            
+            } catch (Exception $e) {
+                $em->getConnection()->rollBack();
+                
+                $this->get('session')->getFlashBag()->add(
+                    'danger', 'Se produjeron errores al borrar el elemento. ' . $e->getMessage()
+                );
+            }
+        }
+        
         return $this->redirectToRoute('purchaseorder_index');
+
+        
     }
 
     /**
