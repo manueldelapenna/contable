@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Invoice</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ invoice.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if invoice.date %}{{ invoice.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Subtotal</th>
+                <td>{{ invoice.subtotal }}</td>
+            </tr>
+            <tr>
+                <th>Discountamount</th>
+                <td>{{ invoice.discountAmount }}</td>
+            </tr>
+            <tr>
+                <th>Shippingamount</th>
+                <td>{{ invoice.shippingAmount }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ invoice.total }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('invoice_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

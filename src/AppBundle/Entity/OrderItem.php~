@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * OrderItem
@@ -28,10 +29,16 @@ class OrderItem
      */
     private $productCode;
 
+    
     /**
      * @var float
-     *
+     * 
      * @ORM\Column(name="product_quantity", type="float")
+     *
+     * @Assert\Range(
+     *      min = 0.0001,
+     *      minMessage = "El valor debe ser mayor a 0",
+     * )
      */
     private $productQuantity;
 
@@ -45,13 +52,18 @@ class OrderItem
     /**
      * @var float
      *
-     * @ORM\Column(name="unit_price", type="float")
+     * @ORM\Column(name="unit_price", type="decimal", precision=12, scale=4)
+     *
+     * @Assert\Range(
+     *      min = 0.0001,
+     *      minMessage = "El valor debe ser mayor a 0",
+     * )
      */
     private $unitPrice;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems", cascade={"persist"})
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $order;
 

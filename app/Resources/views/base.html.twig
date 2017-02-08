@@ -58,6 +58,7 @@
                         <ul class="dropdown-menu">
                           <li><a href="{{path('customer_index')}}">Clientes</a></li>
                           <li><a href="{{path('purchaseorder_index')}}">Pedidos</a></li>
+                          <li><a href="{{path('invoice_index')}}">Facturas</a></li>
                           <li><a href="{{path('product_index')}}">Productos</a></li>
                         </ul>
                       </li>
@@ -75,8 +76,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tablas Referencia <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                            <li><a href="{{path('ivacondition_index')}}">Condicion frente IVA</a></li>
+                           <li><a href="{{path('salescondition_index')}}">Condiciones de venta</a></li>
                            <li><a href="{{path('orderstate_index')}}">Estados de pedidos</a></li>
                            <li><a href="{{path('salespoint_index')}}">Puntos de venta</a></li>
+                           
                         </ul>
                       </li>
                       {% endif %}

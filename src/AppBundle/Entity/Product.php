@@ -73,7 +73,7 @@ class Product
     /**
      * @var float
      *
-     * @ORM\Column(name="price", type="float")
+     * @ORM\Column(name="price", type="decimal", precision=12, scale=4)
      */
     private $price;
 

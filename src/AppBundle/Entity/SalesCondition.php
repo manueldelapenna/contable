@@ -7,13 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * SalesPoint
+ * SalesCondition
  *
- * @ORM\Table(name="sales_point")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SalesPointRepository")
+ * @ORM\Table(name="sales_condition")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SalesConditionRepository")
  * @UniqueEntity("name")
  */
-class SalesPoint
+class SalesCondition
 {
     /**
      * @var int
@@ -32,19 +32,12 @@ class SalesPoint
     private $name;
     
     /**
-     * @ORM\OneToMany(targetEntity="PurchaseOrder", mappedBy="salesPoint")
-     */
-    private $orders;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Invoice", mappedBy="salesPoint")
+     * @ORM\OneToMany(targetEntity="Invoice", mappedBy="salesCondition")
      */
     private $invoices;
     
-    
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
         $this->invoices = new ArrayCollection();
     }
     
@@ -68,7 +61,7 @@ class SalesPoint
      *
      * @param string $name
      *
-     * @return SalesPoint
+     * @return SalesCondition
      */
     public function setName($name)
     {
@@ -88,45 +81,11 @@ class SalesPoint
     }
 
     /**
-     * Add order
-     *
-     * @param \AppBundle\Entity\PurchaseOrder $order
-     *
-     * @return SalesPoint
-     */
-    public function addOrder(\AppBundle\Entity\PurchaseOrder $order)
-    {
-        $this->orders[] = $order;
-
-        return $this;
-    }
-
-    /**
-     * Remove order
-     *
-     * @param \AppBundle\Entity\PurchaseOrder $order
-     */
-    public function removeOrder(\AppBundle\Entity\PurchaseOrder $order)
-    {
-        $this->orders->removeElement($order);
-    }
-
-    /**
-     * Get orders
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOrders()
-    {
-        return $this->orders;
-    }
-
-    /**
      * Add invoice
      *
      * @param \AppBundle\Entity\Invoice $invoice
      *
-     * @return SalesPoint
+     * @return SalesCondition
      */
     public function addInvoice(\AppBundle\Entity\Invoice $invoice)
     {

@@ -19,6 +19,10 @@ services:
     app.datatable.ivacondition:
         class: AppBundle\Datatables\IvaConditionDatatable
         parent: sg_datatables.datatable.abstract
+    
+    app.datatable.invoice:
+        class: AppBundle\Datatables\InvoiceDatatable
+        parent: sg_datatables.datatable.abstract
         
     app.datatable.category:
         class: AppBundle\Datatables\CategoryDatatable
@@ -42,6 +46,10 @@ services:
         
     app.datatable.salespoint:
         class: AppBundle\Datatables\SalesPointDatatable
+        parent: sg_datatables.datatable.abstract
+        
+    app.datatable.salescondition:
+        class: AppBundle\Datatables\SalesConditionDatatable
         parent: sg_datatables.datatable.abstract
       
     app.form.registration:

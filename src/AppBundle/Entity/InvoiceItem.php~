@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * OrderItem
+ * InvoiceItem
  *
- * @ORM\Table(name="order_item")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderItemRepository")
+ * @ORM\Table(name="invoice_item")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\InvoiceItemRepository")
  */
-class OrderItem
+class InvoiceItem
 {
     /**
      * @var int
@@ -62,10 +62,10 @@ class OrderItem
     private $unitPrice;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="invoiceItems")
+     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $order;
+    private $invoice;
 
 
     /**
@@ -83,7 +83,7 @@ class OrderItem
      *
      * @param string $productCode
      *
-     * @return OrderItem
+     * @return InvoiceItem
      */
     public function setProductCode($productCode)
     {
@@ -107,7 +107,7 @@ class OrderItem
      *
      * @param float $productQuantity
      *
-     * @return OrderItem
+     * @return InvoiceItem
      */
     public function setProductQuantity($productQuantity)
     {
@@ -131,7 +131,7 @@ class OrderItem
      *
      * @param string $productDescription
      *
-     * @return OrderItem
+     * @return InvoiceItem
      */
     public function setProductDescription($productDescription)
     {
@@ -155,7 +155,7 @@ class OrderItem
      *
      * @param float $unitPrice
      *
-     * @return OrderItem
+     * @return InvoiceItem
      */
     public function setUnitPrice($unitPrice)
     {
@@ -175,26 +175,26 @@ class OrderItem
     }
 
     /**
-     * Set order
+     * Set invoice
      *
-     * @param \AppBundle\Entity\PurchaseOrder $order
+     * @param \AppBundle\Entity\Invoice $invoice
      *
-     * @return OrderItem
+     * @return InvoiceItem
      */
-    public function setOrder(\AppBundle\Entity\PurchaseOrder $order = null)
+    public function setInvoice(\AppBundle\Entity\Invoice $invoice = null)
     {
-        $this->order = $order;
+        $this->invoice = $invoice;
 
         return $this;
     }
 
     /**
-     * Get order
+     * Get invoice
      *
-     * @return \AppBundle\Entity\PurchaseOrder
+     * @return \AppBundle\Entity\Invoice
      */
-    public function getOrder()
+    public function getInvoice()
     {
-        return $this->order;
+        return $this->invoice;
     }
 }

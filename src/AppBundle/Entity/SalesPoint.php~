@@ -36,12 +36,21 @@ class SalesPoint
      */
     private $orders;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Invoice", mappedBy="salesPoint")
+     */
+    private $invoices;
     
-        public function __construct()
-        {
-            $this->orders = new ArrayCollection();
-
-        }
+    
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
+    }
+    
+    public function __toString() {
+        return $this->getName();
+    }
 
 
     /**
@@ -110,5 +119,39 @@ class SalesPoint
     public function getOrders()
     {
         return $this->orders;
+    }
+
+    /**
+     * Add invoice
+     *
+     * @param \AppBundle\Entity\Invoice $invoice
+     *
+     * @return SalesPoint
+     */
+    public function addInvoice(\AppBundle\Entity\Invoice $invoice)
+    {
+        $this->invoices[] = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * Remove invoice
+     *
+     * @param \AppBundle\Entity\Invoice $invoice
+     */
+    public function removeInvoice(\AppBundle\Entity\Invoice $invoice)
+    {
+        $this->invoices->removeElement($invoice);
+    }
+
+    /**
+     * Get invoices
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInvoices()
+    {
+        return $this->invoices;
     }
 }
