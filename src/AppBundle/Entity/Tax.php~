@@ -46,6 +46,11 @@ class Tax
     public function __construct() {
         $this->products = new ArrayCollection();
     }
+    
+    public function __toString() {
+        return $this->getName();
+    }
+
 
 
     /**

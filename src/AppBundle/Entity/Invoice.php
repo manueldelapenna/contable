@@ -7,12 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * PurchaseOrder
+ * Invoice
  *
- * @ORM\Table(name="purchase_order")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PurchaseOrderRepository")
+ * @ORM\Table(name="invoice")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\InvoiceRepository")
  */
-class PurchaseOrder
+class Invoice
 {
     /**
      * @var int
@@ -79,39 +79,41 @@ class PurchaseOrder
     private $total;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="invoices")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      */
     private $customer;
     
     /**
-     * @ORM\ManyToOne(targetEntity="OrderState", inversedBy="orders")
-     * @ORM\JoinColumn(name="order_state_id", referencedColumnName="id", nullable=false)
-     */
-    private $orderState;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="SalesPoint", inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity="SalesPoint", inversedBy="invoices")
      * @ORM\JoinColumn(name="sales_point_id", referencedColumnName="id", nullable=false)
      */
     private $salesPoint;
     
     /**
-     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"all"}, orphanRemoval=true)
-     * @Assert\Valid()
+     * @ORM\ManyToOne(targetEntity="SalesCondition", inversedBy="invoices")
+     * @ORM\JoinColumn(name="sales_condition_id", referencedColumnName="id", nullable=false)
      */
-    private $orderItems;
+    private $salesCondition;
     
     /**
-     * @ORM\OneToMany(targetEntity="OrderComment", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="InvoiceItem", mappedBy="invoice", cascade={"all"}, orphanRemoval=true)
+     * @Assert\Valid()
      */
-    private $comments;
+    private $invoiceItems;
+    
+    /**
+     * One Invoice has One PurchaseOrder.
+     * @ORM\OneToOne(targetEntity="PurchaseOrder")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false)
+     */
+    private $order;
+    
     
     public function __construct()
     {
         $this->setDate(new \DateTime("now"));
-        $this->orderItems = new ArrayCollection();
-        $this->comments = new ArrayCollection();
+        $this->invoiceItems = new ArrayCollection();
         
     }
     
@@ -134,7 +136,7 @@ class PurchaseOrder
      *
      * @param \DateTime $date
      *
-     * @return PurchaseOrder
+     * @return Invoice
      */
     public function setDate($date)
     {
@@ -158,7 +160,7 @@ class PurchaseOrder
      *
      * @param float $subtotal
      *
-     * @return PurchaseOrder
+     * @return Invoice
      */
     public function setSubtotal($subtotal)
     {
@@ -182,7 +184,7 @@ class PurchaseOrder
      *
      * @param float $shippingAmount
      *
-     * @return PurchaseOrder
+     * @return Invoice
      */
     public function setShippingAmount($shippingAmount)
     {
@@ -206,7 +208,7 @@ class PurchaseOrder
      *
      * @param float $total
      *
-     * @return PurchaseOrder
+     * @return Invoice
      */
     public function setTotal($total)
     {
@@ -230,7 +232,7 @@ class PurchaseOrder
      *
      * @param float $discountAmount
      *
-     * @return PurchaseOrder
+     * @return Invoice
      */
     public function setDiscountAmount($discountAmount)
     {
@@ -254,7 +256,7 @@ class PurchaseOrder
      *
      * @param \AppBundle\Entity\Customer $customer
      *
-     * @return PurchaseOrder
+     * @return Invoice
      */
     public function setCustomer(\AppBundle\Entity\Customer $customer = null)
     {
@@ -274,35 +276,11 @@ class PurchaseOrder
     }
 
     /**
-     * Set orderState
-     *
-     * @param \AppBundle\Entity\OrderState $orderState
-     *
-     * @return PurchaseOrder
-     */
-    public function setOrderState(\AppBundle\Entity\OrderState $orderState = null)
-    {
-        $this->orderState = $orderState;
-
-        return $this;
-    }
-
-    /**
-     * Get orderState
-     *
-     * @return \AppBundle\Entity\OrderState
-     */
-    public function getOrderState()
-    {
-        return $this->orderState;
-    }
-
-    /**
      * Set salesPoint
      *
      * @param \AppBundle\Entity\SalesPoint $salesPoint
      *
-     * @return PurchaseOrder
+     * @return Invoice
      */
     public function setSalesPoint(\AppBundle\Entity\SalesPoint $salesPoint = null)
     {
@@ -320,72 +298,87 @@ class PurchaseOrder
     {
         return $this->salesPoint;
     }
-
+    
     /**
-     * Add orderItem
+     * Set salesCondition
      *
-     * @param \AppBundle\Entity\OrderItem $orderItem
+     * @param \AppBundle\Entity\SalesCondition $salesCondition
      *
-     * @return PurchaseOrder
+     * @return Invoice
      */
-    public function addOrderItem(\AppBundle\Entity\OrderItem $orderItem)
+    public function setSalesCondition(\AppBundle\Entity\SalesCondition $salesCondition = null)
     {
-        $this->orderItems[] = $orderItem;
+        $this->salesCondition = $salesCondition;
 
         return $this;
     }
 
     /**
-     * Remove orderItem
+     * Get salesCondition
      *
-     * @param \AppBundle\Entity\OrderItem $orderItem
+     * @return \AppBundle\Entity\SalesCondition
      */
-    public function removeOrderItem(\AppBundle\Entity\OrderItem $orderItem)
+    public function getSalesCondition()
     {
-        $this->orderItems->removeElement($orderItem);
+        return $this->salesCondition;
     }
 
     /**
-     * Get orderItems
+     * Add invoiceItem
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @param \AppBundle\Entity\InvoiceItem $invoiceItem
+     *
+     * @return Invoice
      */
-    public function getOrderItems()
+    public function addInvoiceItem(\AppBundle\Entity\InvoiceItem $invoiceItem)
     {
-        return $this->orderItems;
-    }
-
-    /**
-     * Add comment
-     *
-     * @param \AppBundle\Entity\OrderComment $comment
-     *
-     * @return PurchaseOrder
-     */
-    public function addComment(\AppBundle\Entity\OrderComment $comment)
-    {
-        $this->comments[] = $comment;
+        $this->invoiceItems[] = $invoiceItem;
 
         return $this;
     }
 
     /**
-     * Remove comment
+     * Remove invoiceItem
      *
-     * @param \AppBundle\Entity\OrderComment $comment
+     * @param \AppBundle\Entity\InvoiceItem $invoiceItem
      */
-    public function removeComment(\AppBundle\Entity\OrderComment $comment)
+    public function removeInvoiceItem(\AppBundle\Entity\InvoiceItem $invoiceItem)
     {
-        $this->comments->removeElement($comment);
+        $this->invoiceItems->removeElement($invoiceItem);
     }
 
     /**
-     * Get comments
+     * Get invoiceItems
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getComments()
+    public function getInvoiceItems()
     {
-        return $this->comments;
+        return $this->invoiceItems;
+    }
+
+
+    /**
+     * Set order
+     *
+     * @param \AppBundle\Entity\PurchaseOrder $order
+     *
+     * @return Invoice
+     */
+    public function setOrder(\AppBundle\Entity\PurchaseOrder $order)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return \AppBundle\Entity\PurchaseOrder
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }
