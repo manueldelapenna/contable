@@ -173,6 +173,9 @@ class PurchaseOrderDatatable extends AbstractDatatableView
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),
+                       'render_if' => function($row) {
+                            return $row['orderState']['name'] === 'Abierto';
+                        },
                     )
                 )
             ))

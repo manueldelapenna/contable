@@ -117,6 +117,22 @@ class Invoice
         
     }
     
+    public static function createFromOrder(PurchaseOrder $purchaseOrder, SalesCondition $salesCondition){
+        
+        $invoice = new self();
+        $invoice->setCustomer($purchaseOrder->getCustomer());
+        $invoice->setOrder($purchaseOrder);
+        $invoice->setSalesCondition($salesCondition);
+        $invoice->setSalesPoint($purchaseOrder->getSalesPoint());
+        $invoice->setDiscountAmount($purchaseOrder->getDiscountAmount());
+        $invoice->setShippingAmount($purchaseOrder->getShippingAmount());
+        $invoice->setSubtotal($purchaseOrder->getSubtotal());
+        $invoice->setTotal($purchaseOrder->getTotal());
+        
+        return $invoice;
+    }
+    
+    
     public function __toString() {
         return (string)$this->getId();
     }

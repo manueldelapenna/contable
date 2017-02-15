@@ -10,4 +10,15 @@ namespace AppBundle\Repository;
  */
 class InvoiceRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByOrderId($orderId)
+    {
+    
+        return $this->getEntityManager()
+        ->createQuery(
+            "SELECT i FROM AppBundle:Invoice i where i.order = :value"
+        )
+        ->setParameter('value', $orderId)
+        ->getOneOrNullResult();
+    
+    }
 }

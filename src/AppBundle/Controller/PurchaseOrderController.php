@@ -6,10 +6,14 @@ use AppBundle\Entity\PurchaseOrder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Repository\ProductRepository;
+use AppBundle\Entity\Invoice;
+use AppBundle\Entity\InvoiceItem;
+use AppBundle\Entity\SalesCondition;
+use AppBundle\Repository\InvoiceRepository;
+
 
 /**
  * Purchaseorder controller.
@@ -204,6 +208,69 @@ class PurchaseOrderController extends Controller
             'isNew' => 0,
             'delete_form' => $deleteForm->createView(),
         ));
+    }
+    
+    /**
+     * Generates a invoice for an existing purchaseOrder entity.
+     *
+     * @Route("/{id}/generateinvoice/{salesConditionId}", name="purchaseorder_generate_invoice", options={"expose"=true})
+     * @ParamConverter("salesCondition", options={"id" = "salesConditionId"})
+     * @Method({"GET", "POST"})
+     */
+    public function invoiceOrderAction(Request $request, PurchaseOrder $purchaseOrder, SalesCondition $salesCondition)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        //si ya fue facturado
+        if($em->getRepository('AppBundle:Invoice')->findByOrderId($purchaseOrder->getId())){
+            $this->get('session')->getFlashBag()->add(
+                'danger', 'Ya existe una factura para este pedido. La misma no pudo ser generada'
+            );
+            
+            return $this->redirectToRoute('purchaseorder_show', array('id' => $purchaseOrder->getId()));
+        }
+        
+        //si el estado no es abierto
+        if($purchaseOrder->getOrderState()->getId() != 1){
+            $this->get('session')->getFlashBag()->add(
+                'danger', 'Error al generar la factura, únicamente se pueden facturar pedidos en estado ABIERTO.'
+            );
+            
+            return $this->redirectToRoute('purchaseorder_show', array('id' => $purchaseOrder->getId()));
+            
+        }
+        
+        $em->getConnection()->beginTransaction();
+        try {
+
+            $invoice = Invoice::createFromOrder($purchaseOrder, $salesCondition);
+            $em->persist($invoice);
+
+            $orderState = $this->getDoctrine()->getRepository('AppBundle:OrderState')->find(2);
+            $purchaseOrder->setOrderState($orderState);
+            $em->persist($purchaseOrder);
+
+            foreach($purchaseOrder->getOrderItems() as $orderItem){
+                $invoiceItem = InvoiceItem::createForInvoiceFromOrderItem($invoice, $orderItem);
+                $em->persist($invoiceItem);
+            }
+
+            $em->flush();
+            $em->getConnection()->commit();
+
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'La factura fue generada correctamente'
+            );
+
+            return $this->redirectToRoute('invoice_show', array('id' => $invoice->getId()));
+
+        } catch (Exception $e) {
+            $em->getConnection()->rollBack();
+            $this->get('session')->getFlashBag()->add(
+                'danger', 'Se produjeron errores al intentar generar la factura. ' . $e->getMessage()
+            );
+        }
+                
     }
 
     /**
