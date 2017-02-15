@@ -1,0 +1,142 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * Account
+ *
+ * @ORM\Table(name="account")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AccountRepository")
+ */
+class Account
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="balance", type="decimal", precision=12, scale=4)
+     */
+    private $balance;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AccountMovement", mappedBy="account")
+     */
+    private $movements;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Customer", inversedBy="account")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
+     */
+    private $customer;
+    
+    public function __construct()
+    {
+        $this->movements = new ArrayCollection();
+        $this->balance = 0;
+        
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set balance
+     *
+     * @param string $balance
+     *
+     * @return Account
+     */
+    public function setBalance($balance)
+    {
+        $this->balance = $balance;
+
+        return $this;
+    }
+
+    /**
+     * Get balance
+     *
+     * @return string
+     */
+    public function getBalance()
+    {
+        return $this->balance;
+    }
+
+    /**
+     * Add movement
+     *
+     * @param \AppBundle\Entity\AccountMovement $movement
+     *
+     * @return Account
+     */
+    public function addMovement(\AppBundle\Entity\AccountMovement $movement)
+    {
+        $this->movements[] = $movement;
+
+        return $this;
+    }
+
+    /**
+     * Remove movement
+     *
+     * @param \AppBundle\Entity\AccountMovement $movement
+     */
+    public function removeMovement(\AppBundle\Entity\AccountMovement $movement)
+    {
+        $this->movements->removeElement($movement);
+    }
+
+    /**
+     * Get movements
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMovements()
+    {
+        return $this->movements;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param \AppBundle\Entity\Customer $customer
+     *
+     * @return Account
+     */
+    public function setCustomer(\AppBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return \AppBundle\Entity\Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+}

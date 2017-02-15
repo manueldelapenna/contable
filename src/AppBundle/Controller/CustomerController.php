@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Customer;
+use AppBundle\Entity\Account;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -168,6 +169,41 @@ class CustomerController extends Controller {
         return new JsonResponse($customers);
             
     }
+    
+    /**
+     * Creates CurrentAccount for a Customer entity.
+     *
+     * @Route("/{id}/createaccount", name="customer_create_account", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function createAccountAction(Customer $customer) {
         
+        if($customer->getId() == 1001){
+            $this->get('session')->getFlashBag()->add(
+                    'danger', 'No es posible crear la cuenta corriente para el cliente "Consumidor Final".'
+            );
+        
+        }elseif($customer->getAccount()){
+            $this->get('session')->getFlashBag()->add(
+                    'danger', 'El cliente ya posee una cuenta corriente.'
+            );
+            
+        }else{
+            $em = $this->getDoctrine()->getManager();
+            $account = new Account();
+            $account->setCustomer($customer);
+            $em->persist($account);        
+            $em->flush();
+            
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'La cuenta corriente se creó correctamente.'
+            );
+        }
+        
+        return $this->redirectToRoute('customer_show', array('id' => $customer->getId()));
+        
+        
+    }
+
 
 }

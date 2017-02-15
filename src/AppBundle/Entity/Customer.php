@@ -103,6 +103,11 @@ class Customer
      */
     private $orders;
     
+    /**
+     * @ORM\OneToOne(targetEntity="Account", mappedBy="customer")
+     */
+    private $account;
+    
     
     public function __construct()
     {
@@ -419,5 +424,29 @@ class Customer
     public function getOrders()
     {
         return $this->orders;
+    }
+
+    /**
+     * Set account
+     *
+     * @param \AppBundle\Entity\Account $account
+     *
+     * @return Customer
+     */
+    public function setAccount(\AppBundle\Entity\Account $account = null)
+    {
+        $this->account = $account;
+
+        return $this;
+    }
+
+    /**
+     * Get account
+     *
+     * @return \AppBundle\Entity\Account
+     */
+    public function getAccount()
+    {
+        return $this->account;
     }
 }

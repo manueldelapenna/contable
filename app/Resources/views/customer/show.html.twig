@@ -5,7 +5,11 @@
 
     <a class="btn btn-success" href="{{ path('customer_index') }}"><span class="glyphicon glyphicon-list"></span> {{ 'back to the list'|trans }}</a>
     <a class="btn btn-primary" href="{{ path('customer_edit', { 'id': customer.id }) }}"><span class="glyphicon glyphicon-edit"></span> {{ 'edit'|trans }}</a>
-
+    
+    {% if customer.account is null and customer.id != 1001 %}
+        <a class="btn btn-info" href="{{ path('customer_create_account', { 'id': customer.id }) }}"><span class="glyphicon glyphicon-usd"></span> Crear cuenta corriente</a>
+    {% endif %}
+    
     <br>
     <br>
 

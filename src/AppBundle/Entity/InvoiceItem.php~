@@ -67,6 +67,18 @@ class InvoiceItem
      */
     private $invoice;
 
+    
+    public static function createForInvoiceFromOrderItem(Invoice $invoice, OrderItem $orderItem){
+        
+        $invoiceItem = new self();
+        $invoiceItem->setInvoice($invoice);
+        $invoiceItem->setProductCode($orderItem->getProductCode());
+        $invoiceItem->setProductDescription($orderItem->getProductDescription());
+        $invoiceItem->setProductQuantity($orderItem->getProductQuantity());
+        $invoiceItem->setUnitPrice($orderItem->getUnitPrice());
+        
+        return $invoiceItem;
+    }
 
     /**
      * Get id

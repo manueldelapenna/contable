@@ -103,6 +103,11 @@ class Customer
      */
     private $orders;
     
+    /**
+     * @ORM\OneToOne(targetEntity="Account", mappedBy="customer")
+     */
+    private $account;
+    
     
     public function __construct()
     {
