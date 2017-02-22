@@ -17,7 +17,9 @@
                 <div class="panel-heading">Detalle del pedido</div>
                 <div class="panel-body">
                     <div class="col-sm-6">
-                        <label class="col-sm-12" >Cliente: {{purchaseOrder.customer.name}}</label>
+                        <label class="col-sm-12" >Cliente: {{purchaseOrder.customer.name}}
+                            <a class="btn btn-sm btn-info" href="{{ path('customer_show', { 'id': purchaseOrder.customer.id }) }}"><span class="glyphicon glyphicon-eye-open"></span> Ver</a>
+                        </label>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -130,15 +132,33 @@
               <h4 class="modal-title">Selección de condición de venta</h4>
             </div>
             <div class="modal-body">
-              <p>Seleccione condición de venta:</p>
+                 <div class="form-group">
+                    <label for="sales-condition-id">Condición de venta:</label>
+                    <select class="form-control" id="sales-condition-id">
+                        {% for salesCondition in salesConditions %}
+                            <option value='{{ salesCondition.id }}'>{{ salesCondition.name }}</option>
+                        {% endfor %}  
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p>Si no está disponible la opción Cuenta Corriente es porque el cliente no posee una.</p>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-warning" href="{{ path('purchaseorder_generate_invoice', { 'id': purchaseOrder.id, 'salesConditionId': 1 }) }}"><span class="glyphicon glyphicon-duplicate"></span> Facturar</a>
+                <button class="btn btn-warning" onclick="facturar()"<span class="glyphicon glyphicon-duplicate"></span> Facturar</a>
             </div>
           </div>
 
         </div>
     </div>
+            
+    <script>
+        function facturar(){
+            window.location.href = Routing.generate('purchaseorder_generate_invoice', {'id':  {{ purchaseOrder.id }}, 'salesConditionId': $('#sales-condition-id').val()});
+        }
+    </script>
 
 {% endblock %}

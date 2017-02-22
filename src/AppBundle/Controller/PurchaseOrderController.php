@@ -124,10 +124,17 @@ class PurchaseOrderController extends Controller
     public function showAction(PurchaseOrder $purchaseOrder)
     {
         $deleteForm = $this->createDeleteForm($purchaseOrder);
+        
+        if($purchaseOrder->getCustomer()->getAccount()){
+            $salesConditions = $this->getDoctrine()->getRepository('AppBundle:SalesCondition')->findAll();
+        }else{
+            $salesConditions = $this->getDoctrine()->getRepository('AppBundle:SalesCondition')->findBy(['id' => 1]);
+        }
 
         return $this->render('purchaseorder/show.html.twig', array(
             'purchaseOrder' => $purchaseOrder,
             'delete_form' => $deleteForm->createView(),
+            'salesConditions' => $salesConditions,
         ));
     }
 
