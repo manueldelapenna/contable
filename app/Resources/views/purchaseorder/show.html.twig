@@ -1,48 +1,124 @@
 {% extends 'base.html.twig' %}
 
+{% macro prototype(item, i) %}
+        <tr id='appbundle_purchaseorder_orderItems_{{i}}'>
+            <td>{{item.productCode}}</td>
+            <td class="text-right">{{item.productQuantity}}</td>
+            <td>{{item.productDescription}}</td>
+            <td class="text-right">{{item.unitPrice|number_format(4, '.', '')}}</td>
+            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' readonly value="{{(item.productQuantity * item.unitPrice) |number_format(2, '.', '')}}"></div></td>
+        </tr>
+{% endmacro %}
+
 {% block body %}
-    <h1>Purchaseorder</h1>
+    <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default" id="items-and-amounts">
+                    <div class="panel-heading">Detalle del pedido</div>
+                    <div class="panel-body">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12" >Cliente: {{purchaseOrder.customer.name}}</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-12" >Fecha y hora: {{ purchaseOrder.date|date('d/m/Y - H:i:s') }}</label>
+                                <div class="col-sm-12">
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-12" >Punto de venta: {{purchaseOrder.salesPoint.name}}</label>
+                                <div class="col-sm-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-12" >Estado de pedido: {{ purchaseOrder.orderState.name }}</label>
+                                <div class="col-sm-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ purchaseOrder.id }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{% if purchaseOrder.date %}{{ purchaseOrder.date|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Subtotal</th>
-                <td>{{ purchaseOrder.subtotal }}</td>
-            </tr>
-            <tr>
-                <th>Discountamount</th>
-                <td>{{ purchaseOrder.discountAmount }}</td>
-            </tr>
-            <tr>
-                <th>Shippingamount</th>
-                <td>{{ purchaseOrder.shippingAmount }}</td>
-            </tr>
-            <tr>
-                <th>Total</th>
-                <td>{{ purchaseOrder.total }}</td>
-            </tr>
-        </tbody>
-    </table>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Detalle Pedido</div>
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td style="width: 150px; text-align: center; vertical-align: middle;"><strong>Código</strong></td>
+                                            <td style="width: 90px; text-align: center; vertical-align: middle;" class="text-right"><strong>Cantidad</strong></td>
+                                            <td style="text-align: center; vertical-align: middle;"><strong>Descripcion</strong></td>
+                                            <td style="width: 150px; text-align: center; vertical-align: middle;" class="text-right"><strong>Precio unitario</strong></td>
+                                            <td style="width: 200px; text-align: center; vertical-align: middle;" class="text-right"><strong>Total ítem</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-    <ul>
-        <li>
-            <a href="{{ path('purchaseorder_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('purchaseorder_edit', { 'id': purchaseOrder.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                                            {% set i = 0 %}
+                                            {% for item in purchaseOrder.orderItems %}
+                                                    {{_self.prototype(item, i)}}
+                                                    {% set i = i + 1 %}
+
+                                            {% endfor %}
+                                        
+                                    </tbody>
+                                    <tfoot>   
+                                        <tr>
+                                            <td class="highrow"></td>
+                                            <td class="highrow"></td>
+                                            <td class="highrow"></td>
+                                            <td class="highrow text-right"><strong>Subtotal</strong></td>
+                                            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' readonly value="{{ purchaseOrder.subtotal|number_format(2, '.', '') }}"></div></td>
+                                                
+                                        </tr>
+                                        <tr>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow text-right"><strong>Descuento</strong></td>
+                                            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' readonly value="{{ purchaseOrder.discountAmount|number_format(2, '.', '') }}"></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow text-right"><strong>Envío</strong></td>
+                                            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' readonly value="{{ purchaseOrder.shippingAmount|number_format(2, '.', '') }}"></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow text-right"><strong>Total</strong></td>
+                                            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' readonly value="{{ purchaseOrder.total|number_format(2, '.', '') }}"></div></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                        
+                            </div>
+                        </div>      
+                        
+                        <div class="col-sm-12">
+                            <div class="pull-right">
+                                <a class="btn btn-success" href="{{ path('purchaseorder_index') }}"><span class="glyphicon glyphicon-list"></span> Volver al listado</a>
+                <a class="btn btn-primary" href="{{ path('purchaseorder_edit', { 'id': purchaseOrder.id }) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
