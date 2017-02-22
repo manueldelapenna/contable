@@ -142,6 +142,20 @@ class PurchaseOrderController extends Controller
         $deleteForm = $this->createDeleteForm($purchaseOrder);
         $editForm = $this->createForm('AppBundle\Form\PurchaseOrderType', $purchaseOrder);
         $editForm->handleRequest($request);
+        
+        $em = $this->getDoctrine()->getManager();
+        $oldPurchaseOrder = $em
+                      ->getUnitOfWork()
+                      ->getOriginalEntityData($purchaseOrder);
+        
+        if($oldPurchaseOrder['orderState']->getId() != 1){
+            $this->get('session')->getFlashBag()->add(
+                        'danger', 'Únicamente pueden editarse pedidos en estado ABIERTO'
+                );
+
+                return $this->redirectToRoute('purchaseorder_show', array('id' => $purchaseOrder->getId()));
+            
+        }
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             
@@ -185,7 +199,7 @@ class PurchaseOrderController extends Controller
                         'success', 'Los cambios fueron guardados correctamente'
                 );
 
-                return $this->redirectToRoute('purchaseorder_edit', array('id' => $purchaseOrder->getId()));
+                return $this->redirectToRoute('purchaseorder_show', array('id' => $purchaseOrder->getId()));
             
             } catch (Exception $e) {
                 $em->getConnection()->rollBack();
