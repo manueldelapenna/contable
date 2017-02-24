@@ -12,7 +12,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use AppBundle\Entity\Invoice;
 use AppBundle\Entity\InvoiceItem;
 use AppBundle\Entity\SalesCondition;
-use AppBundle\Repository\InvoiceRepository;
+use AppBundle\Entity\AccountMovement;
+
 
 
 /**
@@ -264,18 +265,36 @@ class PurchaseOrderController extends Controller
         $em->getConnection()->beginTransaction();
         try {
 
+            //crea la factura para la dicha orden
             $invoice = Invoice::createFromOrder($purchaseOrder, $salesCondition);
             $em->persist($invoice);
 
+            //busca el estado cerrado y lo asigna
             $orderState = $this->getDoctrine()->getRepository('AppBundle:OrderState')->find(2);
             $purchaseOrder->setOrderState($orderState);
             $em->persist($purchaseOrder);
 
+            //genera los items de factura
             foreach($purchaseOrder->getOrderItems() as $orderItem){
                 $invoiceItem = InvoiceItem::createForInvoiceFromOrderItem($invoice, $orderItem);
                 $em->persist($invoiceItem);
             }
 
+            // Si la condicion de venta es CTA CTE, genera el movimiento en la cuenta del cliente
+            if($salesCondition->getId() == 2){
+
+                $detail = 'Factura';
+                $amount = $invoice->getTotal();
+                $account = $invoice->getCustomer()->getAccount();
+                
+                $movement = AccountMovement::generateAccountMovementForAccount($detail, $amount, $account);
+                
+                $account->setBalance($account->getBalance() - $amount);
+                
+                $em->persist($account);
+                $em->persist($movement);
+            }
+            
             $em->flush();
             $em->getConnection()->commit();
 

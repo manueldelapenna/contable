@@ -17,8 +17,8 @@
                 <div class="panel-heading">Detalle del pedido</div>
                 <div class="panel-body">
                     <div class="col-sm-6">
-                        <label class="col-sm-12" >Cliente: {{purchaseOrder.customer.name}}
-                            <a class="btn btn-sm btn-info" href="{{ path('customer_show', { 'id': purchaseOrder.customer.id }) }}"><span class="glyphicon glyphicon-eye-open"></span> Ver</a>
+                        <label class="col-sm-12" >Cliente:
+                            <a class="btn btn-link" href="{{ path('customer_show', { 'id': purchaseOrder.customer.id }) }}">{{purchaseOrder.customer.name}}</a>
                         </label>
                     </div>
                     <div class="col-sm-6">
