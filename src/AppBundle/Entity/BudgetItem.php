@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * OrderItem
+ * BudgetItem
  *
- * @ORM\Table(name="order_item")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderItemRepository")
+ * @ORM\Table(name="budget_item")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BudgetItemRepository")
  */
-class OrderItem
+class BudgetItem
 {
     /**
      * @var int
@@ -62,22 +62,10 @@ class OrderItem
     private $unitPrice;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="PurchaseBudget", inversedBy="budgetItems")
+     * @ORM\JoinColumn(name="budget_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $order;
-	
-	public static function createForOrderFromBudgetItem(PurchaseOrder $order, BudgetItem $budgetItem){
-        
-        $orderItem = new self();
-        $orderItem->setOrder($order);
-        $orderItem->setProductCode($budgetItem->getProductCode());
-        $orderItem->setProductDescription($budgetItem->getProductDescription());
-        $orderItem->setProductQuantity($budgetItem->getProductQuantity());
-        $orderItem->setUnitPrice($budgetItem->getUnitPrice());
-        
-        return $orderItem;
-    }
+    private $budget;
 
 
     /**
@@ -95,7 +83,7 @@ class OrderItem
      *
      * @param string $productCode
      *
-     * @return OrderItem
+     * @return BudgetItem
      */
     public function setProductCode($productCode)
     {
@@ -119,7 +107,7 @@ class OrderItem
      *
      * @param float $productQuantity
      *
-     * @return OrderItem
+     * @return BudgetItem
      */
     public function setProductQuantity($productQuantity)
     {
@@ -143,7 +131,7 @@ class OrderItem
      *
      * @param string $productDescription
      *
-     * @return OrderItem
+     * @return BudgetItem
      */
     public function setProductDescription($productDescription)
     {
@@ -167,7 +155,7 @@ class OrderItem
      *
      * @param float $unitPrice
      *
-     * @return OrderItem
+     * @return BudgetItem
      */
     public function setUnitPrice($unitPrice)
     {
@@ -187,26 +175,26 @@ class OrderItem
     }
 
     /**
-     * Set order
+     * Set budget
      *
-     * @param \AppBundle\Entity\PurchaseOrder $order
+     * @param \AppBundle\Entity\PurchaseBudget $budget
      *
-     * @return OrderItem
+     * @return BudgetItem
      */
-    public function setOrder(\AppBundle\Entity\PurchaseOrder $order = null)
+    public function setBudget(\AppBundle\Entity\PurchaseBudget $budget = null)
     {
-        $this->order = $order;
+        $this->budget = $budget;
 
         return $this;
     }
 
     /**
-     * Get order
+     * Get budget
      *
-     * @return \AppBundle\Entity\PurchaseOrder
+     * @return \AppBundle\Entity\PurchaseBudget
      */
-    public function getOrder()
+    public function getBudget()
     {
-        return $this->order;
+        return $this->budget;
     }
 }
