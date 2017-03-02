@@ -7,12 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * PurchaseOrder
+ * Budget
  *
- * @ORM\Table(name="purchase_order")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PurchaseOrderRepository")
+ * @ORM\Table(name="budget")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BudgetRepository")
  */
-class PurchaseOrder
+class Budget
 {
     /**
      * @var int
@@ -79,53 +79,34 @@ class PurchaseOrder
     private $total;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="budgets")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      */
     private $customer;
     
     /**
-     * @ORM\ManyToOne(targetEntity="OrderState", inversedBy="orders")
-     * @ORM\JoinColumn(name="order_state_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="BudgetState", inversedBy="budgets")
+     * @ORM\JoinColumn(name="budget_state_id", referencedColumnName="id", nullable=false)
      */
-    private $orderState;
+    private $budgetState;
+	
+	/**
+     * One Product has One Order.
+     * @OneToOne(targetEntity="PurchaseOrder")
+     * @JoinColumn(name="order_id", referencedColumnName="id")
+     */
+    private $order;
     
     /**
-     * @ORM\ManyToOne(targetEntity="SalesPoint", inversedBy="orders")
-     * @ORM\JoinColumn(name="sales_point_id", referencedColumnName="id", nullable=false)
-     */
-    private $salesPoint;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="BudgetItem", mappedBy="budget", cascade={"all"}, orphanRemoval=true)
      * @Assert\Valid()
      */
-    private $orderItems;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="OrderComment", mappedBy="order")
-     */
-    private $comments;
+    private $budgetItems;
     
     public function __construct()
     {
         $this->setDate(new \DateTime("now"));
-        $this->orderItems = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-        
-    }
-	
-	public static function createFromBudget(Budget $Budget){
-        
-        $order = new self();
-		//setear estado
-        $order->setCustomer($budget->getCustomer());
-        $order->setDiscountAmount($budget->getDiscountAmount());
-        $order->setShippingAmount($budget->getShippingAmount());
-        $order->setSubtotal($budget->getSubtotal());
-        $order->setTotal($budget->getTotal());
-        
-        return $order;
+        $this->budgetItems = new ArrayCollection();
     }
     
     public function __toString() {
@@ -147,7 +128,7 @@ class PurchaseOrder
      *
      * @param \DateTime $date
      *
-     * @return PurchaseOrder
+     * @return Budget
      */
     public function setDate($date)
     {
@@ -171,7 +152,7 @@ class PurchaseOrder
      *
      * @param float $subtotal
      *
-     * @return PurchaseOrder
+     * @return Budget
      */
     public function setSubtotal($subtotal)
     {
@@ -195,7 +176,7 @@ class PurchaseOrder
      *
      * @param float $shippingAmount
      *
-     * @return PurchaseOrder
+     * @return Budget
      */
     public function setShippingAmount($shippingAmount)
     {
@@ -219,7 +200,7 @@ class PurchaseOrder
      *
      * @param float $total
      *
-     * @return PurchaseOrder
+     * @return Budget
      */
     public function setTotal($total)
     {
@@ -243,7 +224,7 @@ class PurchaseOrder
      *
      * @param float $discountAmount
      *
-     * @return PurchaseOrder
+     * @return Budget
      */
     public function setDiscountAmount($discountAmount)
     {
@@ -267,7 +248,7 @@ class PurchaseOrder
      *
      * @param \AppBundle\Entity\Customer $customer
      *
-     * @return PurchaseOrder
+     * @return Budget
      */
     public function setCustomer(\AppBundle\Entity\Customer $customer = null)
     {
@@ -287,118 +268,84 @@ class PurchaseOrder
     }
 
     /**
-     * Set orderState
+     * Set budgetState
      *
-     * @param \AppBundle\Entity\OrderState $orderState
+     * @param \AppBundle\Entity\BudgetState $budgetState
      *
-     * @return PurchaseOrder
+     * @return Budget
      */
-    public function setOrderState(\AppBundle\Entity\OrderState $orderState = null)
+    public function setBudgetState(\AppBundle\Entity\BudgetState $budgetState = null)
     {
-        $this->orderState = $orderState;
+        $this->budgetState = $budgetState;
 
         return $this;
     }
 
     /**
-     * Get orderState
+     * Get budgetState
      *
-     * @return \AppBundle\Entity\OrderState
+     * @return \AppBundle\Entity\BudgetState
      */
-    public function getOrderState()
+    public function getBudgetState()
     {
-        return $this->orderState;
+        return $this->budgetState;
     }
 
     /**
-     * Set salesPoint
+     * Add budgetItem
      *
-     * @param \AppBundle\Entity\SalesPoint $salesPoint
+     * @param \AppBundle\Entity\BudgetItem $budgetItem
      *
-     * @return PurchaseOrder
+     * @return Budget
      */
-    public function setSalesPoint(\AppBundle\Entity\SalesPoint $salesPoint = null)
+    public function addBudgetItem(\AppBundle\Entity\BudgetItem $budgetItem)
     {
-        $this->salesPoint = $salesPoint;
+        $this->budgetItems[] = $budgetItem;
 
         return $this;
     }
 
     /**
-     * Get salesPoint
+     * Remove budgetItem
      *
-     * @return \AppBundle\Entity\SalesPoint
+     * @param \AppBundle\Entity\BudgetItem $budgetItem
      */
-    public function getSalesPoint()
+    public function removeBudgetItem(\AppBundle\Entity\BudgetItem $budgetItem)
     {
-        return $this->salesPoint;
+        $this->budgetItems->removeElement($budgetItem);
     }
 
     /**
-     * Add orderItem
-     *
-     * @param \AppBundle\Entity\OrderItem $orderItem
-     *
-     * @return PurchaseOrder
-     */
-    public function addOrderItem(\AppBundle\Entity\OrderItem $orderItem)
-    {
-        $this->orderItems[] = $orderItem;
-
-        return $this;
-    }
-
-    /**
-     * Remove orderItem
-     *
-     * @param \AppBundle\Entity\OrderItem $orderItem
-     */
-    public function removeOrderItem(\AppBundle\Entity\OrderItem $orderItem)
-    {
-        $this->orderItems->removeElement($orderItem);
-    }
-
-    /**
-     * Get orderItems
+     * Get budgetItems
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getOrderItems()
+    public function getBudgetItems()
     {
-        return $this->orderItems;
+        return $this->budgetItems;
     }
-
-    /**
-     * Add comment
+	
+	/**
+     * Set order
      *
-     * @param \AppBundle\Entity\OrderComment $comment
+     * @param \AppBundle\Entity\PurchaseOrder $order
      *
-     * @return PurchaseOrder
+     * @return Invoice
      */
-    public function addComment(\AppBundle\Entity\OrderComment $comment)
+    public function setOrder(\AppBundle\Entity\PurchaseOrder $order)
     {
-        $this->comments[] = $comment;
+        $this->order = $order;
 
         return $this;
     }
 
     /**
-     * Remove comment
+     * Get order
      *
-     * @param \AppBundle\Entity\OrderComment $comment
+     * @return \AppBundle\Entity\PurchaseOrder
      */
-    public function removeComment(\AppBundle\Entity\OrderComment $comment)
+    public function getOrder()
     {
-        $this->comments->removeElement($comment);
-    }
-
-    /**
-     * Get comments
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getComments()
-    {
-        return $this->comments;
+        return $this->order;
     }
 }
