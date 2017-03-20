@@ -36,13 +36,14 @@ class Account
     
     /**
      * @ORM\OneToOne(targetEntity="Customer", inversedBy="account")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      */
     private $customer;
     
     public function __construct()
     {
         $this->movements = new ArrayCollection();
+        $this->balance = 0;
         
     }
 
@@ -113,5 +114,29 @@ class Account
     public function getMovements()
     {
         return $this->movements;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param \AppBundle\Entity\Customer $customer
+     *
+     * @return Account
+     */
+    public function setCustomer(\AppBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return \AppBundle\Entity\Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
     }
 }

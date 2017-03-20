@@ -114,6 +114,19 @@ class PurchaseOrder
         $this->comments = new ArrayCollection();
         
     }
+	
+	public static function createFromBudget(Budget $Budget){
+        
+        $order = new self();
+		//setear estado
+        $order->setCustomer($budget->getCustomer());
+        $order->setDiscountAmount($budget->getDiscountAmount());
+        $order->setShippingAmount($budget->getShippingAmount());
+        $order->setSubtotal($budget->getSubtotal());
+        $order->setTotal($budget->getTotal());
+        
+        return $order;
+    }
     
     public function __toString() {
         return (string)$this->getId();

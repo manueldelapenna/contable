@@ -47,6 +47,23 @@ class AccountMovement
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=false)
      */
     private $account;
+    
+    
+    public function __construct()
+    {
+        $this->setDate(new \DateTime("now"));
+        
+    }
+    
+    public static function generateAccountMovementForAccount($detail, $amount, Account $account){
+        
+        $movement = new self();
+        $movement->setDetail($detail);
+        $movement->setAmount($amount);
+        $movement->setAccount($account);
+        
+        return $movement;
+    }
 
     /**
      * Get id
