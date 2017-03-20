@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="invoice")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\InvoiceRepository")
  */
-class Invoice
+class Invoice extends LegalDocument
 {
     /**
      * @var int
@@ -108,6 +108,13 @@ class Invoice
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false)
      */
     private $order;
+    
+    /**
+     * One Invoice has One Document id.
+     * @ORM\OneToOne(targetEntity="LegalDocument")
+     * @ORM\JoinColumn(name="document_id", referencedColumnName="id")
+     */
+    protected $documentId;
     
     
     public function __construct()
@@ -396,5 +403,29 @@ class Invoice
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Set documentId
+     *
+     * @param \AppBundle\Entity\LegalDocument $documentId
+     *
+     * @return Invoice
+     */
+    public function setDocumentId(\AppBundle\Entity\LegalDocument $documentId = null)
+    {
+        $this->documentId = $documentId;
+
+        return $this;
+    }
+
+    /**
+     * Get documentId
+     *
+     * @return \AppBundle\Entity\LegalDocument
+     */
+    public function getDocumentId()
+    {
+        return $this->documentId;
     }
 }

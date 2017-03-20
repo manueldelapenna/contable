@@ -32,7 +32,7 @@ class BudgetState
     private $name;
     
     /**
-     * @ORM\OneToMany(targetEntity="PurchaseBudget", mappedBy="budgetState")
+     * @ORM\OneToMany(targetEntity="Budget", mappedBy="budgetState")
      */
     private $budgets;
     
@@ -85,11 +85,11 @@ class BudgetState
     /**
      * Add budget
      *
-     * @param \AppBundle\Entity\PurchaseBudget $budget
+     * @param \AppBundle\Entity\Budget $budget
      *
      * @return BudgetState
      */
-    public function addBudget(\AppBundle\Entity\PurchaseBudget $budget)
+    public function addBudget(\AppBundle\Entity\Budget $budget)
     {
         $this->budgets[] = $budget;
 
@@ -99,9 +99,9 @@ class BudgetState
     /**
      * Remove budget
      *
-     * @param \AppBundle\Entity\PurchaseBudget $budget
+     * @param \AppBundle\Entity\Budget $budget
      */
-    public function removeBudget(\AppBundle\Entity\PurchaseBudget $budget)
+    public function removeBudget(\AppBundle\Entity\Budget $budget)
     {
         $this->budgets->removeElement($budget);
     }
