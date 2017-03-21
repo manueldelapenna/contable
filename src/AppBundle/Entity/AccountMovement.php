@@ -5,13 +5,23 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AccountMovement
- * @ORM\MappedSuperclass
- *
+ * @ORM\Entity
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"invoiceAccountMovement" = "InvoiceAccountMovement", "debitNoteAccountMovement" = "DebitNoteAccountMovement"})
  */
 abstract class AccountMovement
 {
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
     /**
      * @var \DateTime
      *
@@ -46,11 +56,22 @@ abstract class AccountMovement
         
     }
     
-    public function generateAccountMovementForAccount($detail, $amount, Account $account){
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    public function generateAccountMovementForAccount($detail, $amount, Account $account, $document){
         
         $this->setDetail($detail);
         $this->setAmount($amount);
         $this->setAccount($account);
+        $this->setDocument($document);
        
     }
     

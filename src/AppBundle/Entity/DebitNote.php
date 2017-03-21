@@ -1,0 +1,233 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * DebitNote
+ *
+ * @ORM\Table(name="debit_note")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DebitNoteRepository")
+ */
+class DebitNote
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total", type="decimal", precision=12, scale=4)
+     * 
+     * @Assert\Range(
+     *      min = 0.01,
+     *      minMessage = "El valor debe ser mayor a 0",
+     * )
+     */
+    private $total;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="debitNotes")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
+     */
+    private $customer;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="SalesPoint", inversedBy="debitNotes")
+     * @ORM\JoinColumn(name="sales_point_id", referencedColumnName="id", nullable=false)
+     */
+    private $salesPoint;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="SalesCondition", inversedBy="debitNotes")
+     * @ORM\JoinColumn(name="sales_condition_id", referencedColumnName="id", nullable=false)
+     */
+    private $salesCondition;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="concept", type="string", length=255, nullable=false)
+     */
+    private $concept;
+    
+    public function __construct()
+    {
+        $this->setDate(new \DateTime("now"));
+    }
+    
+    public function __toString() {
+        return (string)$this->getId();
+    }
+
+        /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return DebitNote
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set total
+     *
+     * @param float $total
+     *
+     * @return DebitNote
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return float
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param \AppBundle\Entity\Customer $customer
+     *
+     * @return DebitNote
+     */
+    public function setCustomer(\AppBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return \AppBundle\Entity\Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * Set salesPoint
+     *
+     * @param \AppBundle\Entity\SalesPoint $salesPoint
+     *
+     * @return DebitNote
+     */
+    public function setSalesPoint(\AppBundle\Entity\SalesPoint $salesPoint = null)
+    {
+        $this->salesPoint = $salesPoint;
+
+        return $this;
+    }
+
+    /**
+     * Get salesPoint
+     *
+     * @return \AppBundle\Entity\SalesPoint
+     */
+    public function getSalesPoint()
+    {
+        return $this->salesPoint;
+    }
+    
+    /**
+     * Set salesCondition
+     *
+     * @param \AppBundle\Entity\SalesCondition $salesCondition
+     *
+     * @return DebitNote
+     */
+    public function setSalesCondition(\AppBundle\Entity\SalesCondition $salesCondition = null)
+    {
+        $this->salesCondition = $salesCondition;
+
+        return $this;
+    }
+
+    /**
+     * Get salesCondition
+     *
+     * @return \AppBundle\Entity\SalesCondition
+     */
+    public function getSalesCondition()
+    {
+        return $this->salesCondition;
+    }
+
+
+    /**
+     * Set concept
+     *
+     * @param string $concept
+     *
+     * @return DebitNote
+     */
+    public function setConcept($concept)
+    {
+        $this->concept = $concept;
+
+        return $this;
+    }
+
+    /**
+     * Get concept
+     *
+     * @return string
+     */
+    public function getConcept()
+    {
+        return $this->concept;
+    }
+}

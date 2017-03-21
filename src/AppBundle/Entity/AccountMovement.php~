@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * AccountMovement
+ * @ORM\MappedSuperclass
  *
- * @ORM\MappedSuperclass()
  */
-class AccountMovement
+abstract class AccountMovement
 {
 
     /**
@@ -46,14 +46,13 @@ class AccountMovement
         
     }
     
-    public static function generateAccountMovementForAccount($detail, $amount, Account $account){
+    public function generateAccountMovementForAccount($detail, $amount, Account $account, $document){
         
-        $movement = new self();
-        $movement->setDetail($detail);
-        $movement->setAmount($amount);
-        $movement->setAccount($account);
-        
-        return $movement;
+        $this->setDetail($detail);
+        $this->setAmount($amount);
+        $this->setAccount($account);
+        $this->setDocument($document);
+       
     }
     
     /**

@@ -286,10 +286,9 @@ class PurchaseOrderController extends Controller
                 $account = $invoice->getCustomer()->getAccount();
                 
                 $movement = new InvoiceAccountMovement();
-                $movement->generateAccountMovementForAccount($detail, $amount, $account);
-                $movement->setInvoice($invoice);
-                
-                $account->setBalance($account->getBalance() - $amount);
+                $movement->generateAccountMovementForAccount($detail, $amount, $account, $invoice);
+                        
+                $account->setBalance($account->getBalance() + $amount);
                 
                 $em->persist($account);
                 $em->persist($movement);

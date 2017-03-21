@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AccountMovement
+ * InvoiceAccountMovement
  *
  * @ORM\Table(name="invoice_account_movement")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\InvoiceAccountMovementRepository")
@@ -24,7 +24,7 @@ class InvoiceAccountMovement extends AccountMovement
     /**
      * One InvoiceAccountMovement has One Invoice.
      * @ORM\OneToOne(targetEntity="Invoice")
-     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id")
      */
     private $invoice;
     
@@ -34,8 +34,8 @@ class InvoiceAccountMovement extends AccountMovement
         
     }
     
-    public function generateAccountMovementForAccount($detail, $amount, Account $account){
-        parent::generateAccountMovementForAccount($detail, $amount, $account);
+    public function generateAccountMovementForAccount($detail, $amount, Account $account, $invoice){
+        parent::generateAccountMovementForAccount($detail, $amount, $account, $invoice);
     }
     
     /**
@@ -62,7 +62,7 @@ class InvoiceAccountMovement extends AccountMovement
 
         return $this;
     }
-
+    
     /**
      * Get invoice
      *
@@ -71,5 +71,27 @@ class InvoiceAccountMovement extends AccountMovement
     public function getInvoice()
     {
         return $this->invoice;
+    }
+    
+    /**
+     * Set document
+     *
+     * @param \AppBundle\Entity\Invoice $invoice
+     *
+     * @return InvoiceAccountMovement
+     */
+    public function setDocument(\AppBundle\Entity\Invoice $invoice)
+    {
+        $this->setInvoice($invoice);
+    }
+    
+    /**
+     * Get document
+     *
+     * @return \AppBundle\Entity\Invoice
+     */
+    public function getDocument()
+    {
+        return $this->getInvoice();
     }
 }
