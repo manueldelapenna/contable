@@ -36,6 +36,16 @@ class SalesCondition
      */
     private $invoices;
     
+    /**
+     * @ORM\OneToMany(targetEntity="DebitNote", mappedBy="salesCondition")
+     */
+    private $debitNotes ;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="CreditNote", mappedBy="salesCondition")
+     */
+    private $creditNotes;
+    
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -112,5 +122,73 @@ class SalesCondition
     public function getInvoices()
     {
         return $this->invoices;
+    }
+
+    /**
+     * Add debitNote
+     *
+     * @param \AppBundle\Entity\DebitNote $debitNote
+     *
+     * @return SalesCondition
+     */
+    public function addDebitNote(\AppBundle\Entity\DebitNote $debitNote)
+    {
+        $this->debitNotes[] = $debitNote;
+
+        return $this;
+    }
+
+    /**
+     * Remove debitNote
+     *
+     * @param \AppBundle\Entity\DebitNote $debitNote
+     */
+    public function removeDebitNote(\AppBundle\Entity\DebitNote $debitNote)
+    {
+        $this->debitNotes->removeElement($debitNote);
+    }
+
+    /**
+     * Get debitNotes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDebitNotes()
+    {
+        return $this->debitNotes;
+    }
+
+    /**
+     * Add creditNote
+     *
+     * @param \AppBundle\Entity\CreditNote $creditNote
+     *
+     * @return SalesCondition
+     */
+    public function addCreditNote(\AppBundle\Entity\CreditNote $creditNote)
+    {
+        $this->creditNotes[] = $creditNote;
+
+        return $this;
+    }
+
+    /**
+     * Remove creditNote
+     *
+     * @param \AppBundle\Entity\CreditNote $creditNote
+     */
+    public function removeCreditNote(\AppBundle\Entity\CreditNote $creditNote)
+    {
+        $this->creditNotes->removeElement($creditNote);
+    }
+
+    /**
+     * Get creditNotes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCreditNotes()
+    {
+        return $this->creditNotes;
     }
 }

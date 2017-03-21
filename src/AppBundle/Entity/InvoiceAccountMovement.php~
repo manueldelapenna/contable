@@ -24,7 +24,7 @@ class InvoiceAccountMovement extends AccountMovement
     /**
      * One InvoiceAccountMovement has One Invoice.
      * @ORM\OneToOne(targetEntity="Invoice")
-     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id")
      */
     private $invoice;
     

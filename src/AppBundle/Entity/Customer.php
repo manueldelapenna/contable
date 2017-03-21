@@ -104,6 +104,16 @@ class Customer
     private $orders;
     
     /**
+     * @ORM\OneToMany(targetEntity="CreditNote", mappedBy="customer")
+     */
+    private $creditNotes;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="DebitNote", mappedBy="customer")
+     */
+    private $debitNotes;
+    
+    /**
      * @ORM\OneToOne(targetEntity="Account", mappedBy="customer")
      */
     private $account;
@@ -448,5 +458,73 @@ class Customer
     public function getAccount()
     {
         return $this->account;
+    }
+
+    /**
+     * Add creditNote
+     *
+     * @param \AppBundle\Entity\CreditNotes $creditNote
+     *
+     * @return Customer
+     */
+    public function addCreditNote(\AppBundle\Entity\CreditNotes $creditNote)
+    {
+        $this->creditNotes[] = $creditNote;
+
+        return $this;
+    }
+
+    /**
+     * Remove creditNote
+     *
+     * @param \AppBundle\Entity\CreditNotes $creditNote
+     */
+    public function removeCreditNote(\AppBundle\Entity\CreditNotes $creditNote)
+    {
+        $this->creditNotes->removeElement($creditNote);
+    }
+
+    /**
+     * Get creditNotes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCreditNotes()
+    {
+        return $this->creditNotes;
+    }
+
+    /**
+     * Add debitNote
+     *
+     * @param \AppBundle\Entity\DebitNotes $debitNote
+     *
+     * @return Customer
+     */
+    public function addDebitNote(\AppBundle\Entity\DebitNotes $debitNote)
+    {
+        $this->debitNotes[] = $debitNote;
+
+        return $this;
+    }
+
+    /**
+     * Remove debitNote
+     *
+     * @param \AppBundle\Entity\DebitNotes $debitNote
+     */
+    public function removeDebitNote(\AppBundle\Entity\DebitNotes $debitNote)
+    {
+        $this->debitNotes->removeElement($debitNote);
+    }
+
+    /**
+     * Get debitNotes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDebitNotes()
+    {
+        return $this->debitNotes;
     }
 }

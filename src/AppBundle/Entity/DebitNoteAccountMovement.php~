@@ -24,7 +24,7 @@ class DebitNoteAccountMovement extends AccountMovement
     /**
      * One DebitNoteAccountMovement has One DebitNote.
      * @ORM\OneToOne(targetEntity="DebitNote")
-     * @ORM\JoinColumn(name="debit_note_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="debit_note_id", referencedColumnName="id")
      */
     private $debitNote;
     

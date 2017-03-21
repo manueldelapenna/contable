@@ -206,4 +206,28 @@ class DebitNote
         return $this->salesCondition;
     }
 
+
+    /**
+     * Set concept
+     *
+     * @param string $concept
+     *
+     * @return DebitNote
+     */
+    public function setConcept($concept)
+    {
+        $this->concept = $concept;
+
+        return $this;
+    }
+
+    /**
+     * Get concept
+     *
+     * @return string
+     */
+    public function getConcept()
+    {
+        return $this->concept;
+    }
 }
