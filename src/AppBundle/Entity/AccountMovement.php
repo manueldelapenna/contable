@@ -7,19 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AccountMovement
  *
- * @ORM\Table(name="account_movement")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AccountMovementRepository")
+ * @ORM\MappedSuperclass()
  */
 class AccountMovement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
 
     /**
      * @var \DateTime
@@ -55,26 +46,14 @@ class AccountMovement
         
     }
     
-    public static function generateAccountMovementForAccount($detail, $amount, Account $account){
+    public function generateAccountMovementForAccount($detail, $amount, Account $account){
         
-        $movement = new self();
-        $movement->setDetail($detail);
-        $movement->setAmount($amount);
-        $movement->setAccount($account);
-        
-        return $movement;
+        $this->setDetail($detail);
+        $this->setAmount($amount);
+        $this->setAccount($account);
+       
     }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
+    
     /**
      * Set date
      *

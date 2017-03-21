@@ -62,7 +62,7 @@ class BudgetItem
     private $unitPrice;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PurchaseBudget", inversedBy="budgetItems")
+     * @ORM\ManyToOne(targetEntity="Budget", inversedBy="budgetItems")
      * @ORM\JoinColumn(name="budget_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $budget;
@@ -177,11 +177,11 @@ class BudgetItem
     /**
      * Set budget
      *
-     * @param \AppBundle\Entity\PurchaseBudget $budget
+     * @param \AppBundle\Entity\Budget $budget
      *
      * @return BudgetItem
      */
-    public function setBudget(\AppBundle\Entity\PurchaseBudget $budget = null)
+    public function setBudget(\AppBundle\Entity\Budget $budget = null)
     {
         $this->budget = $budget;
 
@@ -191,7 +191,7 @@ class BudgetItem
     /**
      * Get budget
      *
-     * @return \AppBundle\Entity\PurchaseBudget
+     * @return \AppBundle\Entity\Budget
      */
     public function getBudget()
     {

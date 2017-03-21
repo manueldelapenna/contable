@@ -17,8 +17,10 @@ class InvoiceRepository extends \Doctrine\ORM\EntityRepository
         ->createQuery(
             "SELECT i FROM AppBundle:Invoice i where i.order = :value"
         )
-        ->setParameter('value', $orderId)
-        ->getOneOrNullResult();
+        ->setParameter('value', $orderId)->getFirstResult();
+        //->getOneOrNullResult();
+        
+        return $aaa;
     
     }
 }

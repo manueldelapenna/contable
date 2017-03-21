@@ -12,9 +12,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use AppBundle\Entity\Invoice;
 use AppBundle\Entity\InvoiceItem;
 use AppBundle\Entity\SalesCondition;
-use AppBundle\Entity\AccountMovement;
-
-
+use AppBundle\Entity\InvoiceAccountMovement;
 
 /**
  * Purchaseorder controller.
@@ -242,7 +240,6 @@ class PurchaseOrderController extends Controller
     public function invoiceOrderAction(Request $request, PurchaseOrder $purchaseOrder, SalesCondition $salesCondition)
     {
         $em = $this->getDoctrine()->getManager();
-        
         //si ya fue facturado
         if($em->getRepository('AppBundle:Invoice')->findByOrderId($purchaseOrder->getId())){
             $this->get('session')->getFlashBag()->add(
@@ -268,7 +265,7 @@ class PurchaseOrderController extends Controller
             //crea la factura para la dicha orden
             $invoice = Invoice::createFromOrder($purchaseOrder, $salesCondition);
             $em->persist($invoice);
-
+            
             //busca el estado cerrado y lo asigna
             $orderState = $this->getDoctrine()->getRepository('AppBundle:OrderState')->find(2);
             $purchaseOrder->setOrderState($orderState);
@@ -287,7 +284,9 @@ class PurchaseOrderController extends Controller
                 $amount = $invoice->getTotal();
                 $account = $invoice->getCustomer()->getAccount();
                 
-                $movement = AccountMovement::generateAccountMovementForAccount($detail, $amount, $account);
+                $movement = new InvoiceAccountMovement();
+                $movement->generateAccountMovementForAccount($detail, $amount, $account);
+                $movement->setInvoice($invoice);
                 
                 $account->setBalance($account->getBalance() - $amount);
                 
@@ -301,7 +300,7 @@ class PurchaseOrderController extends Controller
             $this->get('session')->getFlashBag()->add(
                     'success', 'La factura fue generada correctamente'
             );
-
+            
             return $this->redirectToRoute('invoice_show', array('id' => $invoice->getId()));
 
         } catch (Exception $e) {

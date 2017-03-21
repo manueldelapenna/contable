@@ -1,0 +1,47 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * AccountMovement
+ *
+ * @ORM\Table(name="invoice_account_movement")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\InvoiceAccountMovementRepository")
+ */
+class InvoiceAccountMovement extends AccountMovement
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /**
+     * One InvoiceAccountMovement has One Invoice.
+     * @ORM\OneToOne(targetEntity="Invoice")
+     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id", nullable=false)
+     */
+    private $invoice;
+    
+    public function __construct()
+    {
+        parent::__construct();
+        
+    }
+    
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+}
