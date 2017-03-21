@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class AccountRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findMovements()
+    {
+        
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT am FROM AppBundle:InvoiceAccountMovement am"
+            )
+            ->getResult();
+    }
 }

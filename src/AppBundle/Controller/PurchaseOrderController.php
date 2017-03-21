@@ -239,6 +239,7 @@ class PurchaseOrderController extends Controller
      */
     public function invoiceOrderAction(Request $request, PurchaseOrder $purchaseOrder, SalesCondition $salesCondition)
     {
+        
         $em = $this->getDoctrine()->getManager();
         //si ya fue facturado
         if($em->getRepository('AppBundle:Invoice')->findByOrderId($purchaseOrder->getId())){

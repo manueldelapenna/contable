@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * AccountMovement
+ * @ORM\MappedSuperclass
  *
  */
 abstract class AccountMovement
