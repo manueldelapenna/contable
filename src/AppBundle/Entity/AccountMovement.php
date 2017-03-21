@@ -7,9 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AccountMovement
  *
- * @ORM\MappedSuperclass()
  */
-class AccountMovement
+abstract class AccountMovement
 {
 
     /**
