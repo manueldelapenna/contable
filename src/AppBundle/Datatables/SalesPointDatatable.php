@@ -69,7 +69,7 @@ class SalesPointDatatable extends AbstractDatatableView
             'paging_type' => Style::FULL_NUMBERS_PAGINATION,
             'renderer' => '',
             'scroll_collapse' => false,
-            'search_delay' => 0,
+            'search_delay' => 1000,
             'state_duration' => 7200,
             'stripe_classes' => array(),
             'class' => Style::BOOTSTRAP_3_STYLE,

@@ -69,13 +69,13 @@ class CreditNoteDatatable extends AbstractDatatableView
             'paging_type' => Style::FULL_NUMBERS_PAGINATION,
             'renderer' => '',
             'scroll_collapse' => false,
-            'search_delay' => 0,
+            'search_delay' => 1000,
             'state_duration' => 7200,
             'stripe_classes' => array(),
-            'class' => Style::BASE_STYLE,
+            'class' => Style::BOOTSTRAP_3_STYLE,
             'individual_filtering' => false,
             'individual_filtering_position' => 'head',
-            'use_integration_options' => false,
+            'use_integration_options' => true,
             'force_dom' => false
         ));
 
