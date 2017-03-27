@@ -463,11 +463,11 @@ class Customer
     /**
      * Add creditNote
      *
-     * @param \AppBundle\Entity\CreditNotes $creditNote
+     * @param \AppBundle\Entity\CreditNote $creditNote
      *
      * @return Customer
      */
-    public function addCreditNote(\AppBundle\Entity\CreditNotes $creditNote)
+    public function addCreditNote(\AppBundle\Entity\CreditNote $creditNote)
     {
         $this->creditNotes[] = $creditNote;
 
@@ -477,9 +477,9 @@ class Customer
     /**
      * Remove creditNote
      *
-     * @param \AppBundle\Entity\CreditNotes $creditNote
+     * @param \AppBundle\Entity\CreditNote $creditNote
      */
-    public function removeCreditNote(\AppBundle\Entity\CreditNotes $creditNote)
+    public function removeCreditNote(\AppBundle\Entity\CreditNote $creditNote)
     {
         $this->creditNotes->removeElement($creditNote);
     }
@@ -501,7 +501,7 @@ class Customer
      *
      * @return Customer
      */
-    public function addDebitNote(\AppBundle\Entity\DebitNotes $debitNote)
+    public function addDebitNote(\AppBundle\Entity\DebitNote $debitNote)
     {
         $this->debitNotes[] = $debitNote;
 
@@ -511,9 +511,9 @@ class Customer
     /**
      * Remove debitNote
      *
-     * @param \AppBundle\Entity\DebitNotes $debitNote
+     * @param \AppBundle\Entity\DebitNote $debitNote
      */
-    public function removeDebitNote(\AppBundle\Entity\DebitNotes $debitNote)
+    public function removeDebitNote(\AppBundle\Entity\DebitNote $debitNote)
     {
         $this->debitNotes->removeElement($debitNote);
     }
