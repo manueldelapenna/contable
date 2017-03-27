@@ -66,6 +66,18 @@ class CreditNoteItem
      * @ORM\JoinColumn(name="creditNote_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $creditNote;
+    
+    public static function createForCreditNoteFromOrderItem(CreditNote $creditNote, OrderItem $orderItem){
+        
+        $creditNoteItem = new self();
+        $creditNoteItem->setCreditNote($creditNote);
+        $creditNoteItem->setProductCode($orderItem->getProductCode());
+        $creditNoteItem->setProductDescription($orderItem->getProductDescription());
+        $creditNoteItem->setProductQuantity($orderItem->getProductQuantity());
+        $creditNoteItem->setUnitPrice($orderItem->getUnitPrice());
+        
+        return $creditNoteItem;
+    }
 
     /**
      * Get id

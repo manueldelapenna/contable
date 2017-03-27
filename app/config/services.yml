@@ -51,6 +51,10 @@ services:
     app.datatable.salescondition:
         class: AppBundle\Datatables\SalesConditionDatatable
         parent: sg_datatables.datatable.abstract
+    
+    app.datatable.creditnote:
+        class: AppBundle\Datatables\CreditNoteDatatable
+        parent: sg_datatables.datatable.abstract
       
     app.form.registration:
         class: AppBundle\Form\RegistrationType

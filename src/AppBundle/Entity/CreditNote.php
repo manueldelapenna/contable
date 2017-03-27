@@ -108,6 +108,20 @@ class CreditNote
         $this->creditNoteItems = new ArrayCollection();
         
     }
+    
+    public static function createFromOrder(PurchaseOrder $purchaseOrder, SalesCondition $salesCondition){
+        
+        $creditNote = new self();
+        $creditNote->setCustomer($purchaseOrder->getCustomer());
+        $creditNote->setSalesCondition($salesCondition);
+        $creditNote->setSalesPoint($purchaseOrder->getSalesPoint());
+        $creditNote->setDiscountAmount($purchaseOrder->getDiscountAmount());
+        $creditNote->setShippingAmount($purchaseOrder->getShippingAmount());
+        $creditNote->setSubtotal($purchaseOrder->getSubtotal());
+        $creditNote->setTotal($purchaseOrder->getTotal());
+        
+        return $creditNote;
+    }
 	
     public function __toString() {
         return (string)$this->getId();
