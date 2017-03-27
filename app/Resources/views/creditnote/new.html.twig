@@ -1,0 +1,383 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form _self %}
+{% macro prototype(item, i) %}
+        <tr id='appbundle_purchaseorder_orderItems_{{i}}'>
+            <td class="actions"></td>
+            <td class="{{ item.productCode.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productCode) }}{{ form_errors(item.productCode) }}</td>
+            <td class="{{ item.productQuantity.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productQuantity, { 'attr': {'onchange': 'updateTotals(' ~ i ~ ' )', 'onkeyup': 'updateTotals(' ~ i ~ ' )'} }) }}{{ form_errors(item.productQuantity) }}</td>
+            <td class="{{ item.productDescription.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productDescription) }}{{ form_errors(item.productDescription) }}</td>
+            <td class="{{ item.unitPrice.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.unitPrice, { 'attr': {'onchange': 'updateTotals(' ~ i ~ ' )', 'onkeyup': 'updateTotals(' ~ i ~ ' )'} }) }}{{ form_errors(item.unitPrice) }}</td>
+            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' readonly></div></td>
+        </tr>
+{% endmacro %}
+
+
+{% block body %}
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default" id="items-and-amounts">
+                    <div class="panel-heading">{% if isNew %} Nuevo {% else %} Editar {% endif %} Pedido</div>
+                    <div class="panel-body">
+                        <div class="col-sm-6">
+                            <div class="form-group {{ form.customer.vars.errors|length > 0 ? 'has-error' : '' }}">
+                               <label class="col-sm-12" >Cliente</label>
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.customer) }}
+                                    {{ form_errors(form.customer) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group {{ form.date.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                <label class="col-sm-12" >Fecha</label>
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.date) }}
+                                    {{ form_errors(form.date) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group {{ form.salesPoint.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                <label class="col-sm-12" >Punto de venta</label>
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.salesPoint) }}
+                                    {{ form_errors(form.salesPoint) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group {{ form.orderState.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                <label class="col-sm-12" >Estado de pedido</label>
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.orderState) }}
+                                    {{ form_errors(form.orderState) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Detalle Pedido</div>
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                  <select id="product-search" class="form-control"></select>
+                                </div>
+                                <div class="form-group text-right">
+                                    <button type="button" class="btn btn-success" onclick='addProduct()'><span class="glyphicon glyphicon-plus"></span> Agregar</button>
+                                    <button type="button" class="btn btn-default" onclick='removeSearch()'><span class="glyphicon glyphicon-erase"></span> Borrar busqueda</button>
+                                </div>
+                            </div>    
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td style="width: 80px;"><a href="#" class="btn btn-success" id="add-another-item"><span class="glyphicon glyphicon-plus"></span> Ítem</a></td>
+                                            <td style="width: 150px; text-align: center; vertical-align: middle;"><strong>Código</strong></td>
+                                            <td style="width: 90px; text-align: center; vertical-align: middle;" class="text-right"><strong>Cantidad</strong></td>
+                                            <td style="text-align: center; vertical-align: middle;"><strong>Descripcion</strong></td>
+                                            <td style="width: 150px; text-align: center; vertical-align: middle;" class="text-right"><strong>Precio unitario</strong></td>
+                                            <td style="width: 200px; text-align: center; vertical-align: middle;" class="text-right"><strong>Total ítem</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appbundle_purchaseorder_orderItems" data-prototype="
+                                                        {% filter escape %}
+                                                            {{ include('item_layout.html.twig') }}
+                                                        {% endfilter %}">
+
+                                            {% set i = 0 %}
+                                            {% for item in form.orderItems %}
+                                                    {{_self.prototype(item, i)}}
+                                                    {% set i = i + 1 %}
+
+                                            {% endfor %}
+                                        
+                                    </tbody>
+                                    <tfoot>   
+                                        <tr>
+                                            <td class="highrow"></td>
+                                            <td class="highrow"></td>
+                                            <td class="highrow"></td>
+                                            <td class="highrow"></td>
+                                            <td class="highrow text-right"><strong>Subtotal</strong></td>
+                                            <td class="highrow text-right {{ form.subtotal.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                                {{ form_widget(form.subtotal) }}
+                                                {{ form_errors(form.subtotal) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow text-right"><strong>Descuento</strong></td>
+                                            <td class="highrow text-right {{ form.discountAmount.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                                {{ form_widget(form.discountAmount) }}
+                                                {{ form_errors(form.discountAmount) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow text-right"><strong>Envío</strong></td>
+                                            <td class="highrow text-right {{ form.shippingAmount.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                                {{ form_widget(form.shippingAmount) }}
+                                                {{ form_errors(form.shippingAmount) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
+                                            <td class="emptyrow text-right"><strong>Total</strong></td>
+                                            <td class="highrow text-right {{ form.total.vars.errors|length > 0 ? 'has-error' : '' }}">
+                                                {{ form_widget(form.total) }}
+                                                {{ form_errors(form.total) }}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                {{ form_widget(form.orderItems) }}
+                            </div>
+                        </div>      
+                        
+                        <div class="col-sm-12">
+                            <div class="pull-right">
+{#                                <input class="btn btn-success" type="submit" value="Guardar" />#}
+                                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#discardOrder"><span class="glyphicon glyphicon-trash"></span> Descartar</button>
+                            </div>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div id="discardOrder" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Descartar pedido</h4>
+            </div>
+            <div class="modal-body">
+              <p>¿Está seguro que desea descartar el pedido?</p>
+            </div>
+            <div class="modal-footer">
+              
+              {% if delete_form is defined %}
+                {{ form_start(delete_form) }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span> Descartar pedido</button>
+                {{ form_end(delete_form) }}
+            {% else %}
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-danger" href="{{ path('purchaseorder_index') }}"><span class="glyphicon glyphicon-trash"></span> Descartar pedido</a>
+            {% endif %}
+            </div>
+          </div>
+
+        </div>
+    </div>
+            
+    <div id="itemError" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+              <p>El pedido debe tener al menos 1 item.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+            </div>
+          </div>
+
+        </div>
+    </div>
+            
+    <div id="productError" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+              <p>Seleccione un producto.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+            </div>
+          </div>
+
+        </div>
+    </div>
+    
+    
+
+    <script type="text/javascript">
+        // realiza un seguimiento de cuántos campos de correo electrónico se han pintado
+        var itemsIndex = '{{ (form.orderItems) | length }}';
+        var itemsCount = '{{ (form.orderItems) | length }}';
+
+        var collectionHolder = $('#appbundle_purchaseorder_orderItems');
+
+        jQuery(document).ready(function() {
+
+            jQuery('#add-another-item').click(function() {
+                var itemList = jQuery('#appbundle_purchaseorder_orderItems');
+                var newWidget = itemList.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, itemsIndex);
+                newWidget = newWidget.replace('label__', '');
+
+                $('#appbundle_purchaseorder_orderItems').append(newWidget);
+                addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + itemsIndex + ' .actions'));
+                itemsIndex++;
+                itemsCount++;
+                 return false;
+            });
+
+            for(var i=0;i<itemsIndex;i++){
+                addTagFormDeleteLink($('#appbundle_purchaseorder_orderItems_' + i + ' .actions'));
+                updateTotals(i);
+            }
+
+            if({{isNew}} && itemsCount == 0){
+                $('#add-another-item').click();
+            }
+
+        });
+
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Ítem</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // evita crear el enlace con una "#" en la URL
+                e.preventDefault();
+
+                if(itemsCount > 1){
+                    // quita el li de la etiqueta del formulario
+                    $tagFormLi.parent().remove();
+                    itemsCount--;
+                }else{
+                    $('#itemError').modal();
+                }
+                updateTotals();
+            });
+        }
+        
+        function updateTotals(index){
+            if(typeof index !== 'undefined'){
+                var quantity = $('#appbundle_purchaseorder_orderItems_' + index + '_productQuantity').val();
+                var unitPrice = $('#appbundle_purchaseorder_orderItems_' + index + '_unitPrice').val();
+                $('#total-item-' + index).val((parseFloat(quantity) * parseFloat(unitPrice)).toFixed(2));
+            }
+            
+            var subtotal = 0;
+            
+            for(var i=0;i<itemsIndex;i++){
+                if($('#total-item-' + i).length){
+                    subtotal = subtotal + parseFloat($('#total-item-' + i).val());
+                }
+            }
+                        
+            $('#appbundle_purchaseorder_subtotal').val(subtotal.toFixed(2));
+            
+            var discountAmount = $('#appbundle_purchaseorder_discountAmount').val();
+            var shippingAmount = $('#appbundle_purchaseorder_shippingAmount').val();
+            
+            $('#appbundle_purchaseorder_total').val((subtotal - parseFloat(discountAmount) + parseFloat(shippingAmount)).toFixed(2));
+            
+            
+            //actualiza subtotal, y total
+        }
+    
+        function updateFromCode(element){
+            var itemProductCodeId = ($(element).attr('id'));
+            var index =  element.id.match(/\d+/);
+            
+            $.ajax({
+                url: "{{path('product_find_by_code')}}", 
+                type: 'GET',
+                data: {'q': $('#' + itemProductCodeId).val()},
+                success: function(result){
+                            if(result.length > 0){
+                                $('#appbundle_purchaseorder_orderItems_' + index + '_productDescription').val(result[0].name);
+                                $('#appbundle_purchaseorder_orderItems_' + index + '_unitPrice').val(result[0].price);
+                                updateTotals(index);;
+                            }
+                            
+                            
+                        }
+            });
+
+        }
+        
+        $("#product-search").select2({
+            placeholder: 'Ingrese nombre de producto a buscar',
+            minimumInputLength: 3,
+            language: 'es',
+            ajax: {
+                url: "{{path('product_find_by_name')}}",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                  return {
+                    results: data
+                  };
+                },
+                cache: true
+            }
+        });
+        
+        function addProduct(){
+            var searchText = $('#product-search').val();
+            if(searchText !== null){
+                var code = $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productCode').val();
+                var quantity = $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productQuantity').val();
+                var description = $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productDescription').val();
+                var unitPrice = $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_unitPrice').val();
+                if(code !== '' || quantity !== '' || description !== '' || unitPrice !== ''){
+                    $('#add-another-item').click();
+                }
+                $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productCode').val(searchText);
+                $('#appbundle_purchaseorder_orderItems_' + (itemsIndex - 1) + '_productCode').change();
+                $('#product-search').text('');
+            }else{
+                $('#productError').modal();
+            }
+        }
+        
+        function removeSearch(){
+            $('#product-search').text('');
+        }
+            
+        
+    </script>
+
+{% endblock %}
