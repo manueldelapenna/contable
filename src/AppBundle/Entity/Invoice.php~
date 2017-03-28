@@ -79,6 +79,18 @@ class Invoice
     private $total;
     
     /**
+     * @var float
+     *
+     * @ORM\Column(name="total_payed", type="decimal", precision=12, scale=4)
+     * 
+     * @Assert\Range(
+     *      min = 0.01,
+     *      minMessage = "El valor debe ser mayor a 0",
+     * )
+     */
+    private $totalPayed;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="invoices")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      */

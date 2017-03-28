@@ -265,7 +265,7 @@ class PurchaseOrderController extends Controller
 
             //crea la factura para la dicha orden
             $invoice = Invoice::createFromOrder($purchaseOrder, $salesCondition);
-            $em->persist($invoice);
+            
             
             //busca el estado cerrado y lo asigna
             $orderState = $this->getDoctrine()->getRepository('AppBundle:OrderState')->find(2);
@@ -280,7 +280,8 @@ class PurchaseOrderController extends Controller
 
             // Si la condicion de venta es CTA CTE, genera el movimiento en la cuenta del cliente
             if($salesCondition->getId() == 2){
-
+                $invoice->setTotalPayed(0);
+                
                 $detail = 'Factura';
                 $amount = $invoice->getTotal();
                 $account = $invoice->getCustomer()->getAccount();
@@ -292,8 +293,12 @@ class PurchaseOrderController extends Controller
                 
                 $em->persist($account);
                 $em->persist($movement);
+            }else{
+                $invoice->setTotalPayed($invoice->getTotal());
             }
             
+            $em->persist($invoice);
+                                    
             $em->flush();
             $em->getConnection()->commit();
 

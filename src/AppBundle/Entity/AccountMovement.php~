@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"invoiceAccountMovement" = "InvoiceAccountMovement", "debitNoteAccountMovement" = "DebitNoteAccountMovement"})
+ * @ORM\DiscriminatorMap({"invoiceAccountMovement" = "InvoiceAccountMovement", "debitNoteAccountMovement" = "DebitNoteAccountMovement", "creditNoteAccountMovement" = "CreditNoteAccountMovement"})
  */
 abstract class AccountMovement
 {
