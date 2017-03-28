@@ -43,6 +43,14 @@ class DebitNote
     private $total;
     
     /**
+     * @var float
+     *
+     * @ORM\Column(name="total_payed", type="decimal", precision=12, scale=4)
+     * 
+     */
+    private $totalPayed;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="debitNotes")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      */

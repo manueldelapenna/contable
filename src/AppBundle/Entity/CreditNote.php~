@@ -371,4 +371,28 @@ class CreditNote
     {
         return $this->salesCondition;
     }
+
+    /**
+     * Set totalDiscounted
+     *
+     * @param string $totalDiscounted
+     *
+     * @return CreditNote
+     */
+    public function setTotalDiscounted($totalDiscounted)
+    {
+        $this->totalDiscounted = $totalDiscounted;
+
+        return $this;
+    }
+
+    /**
+     * Get totalDiscounted
+     *
+     * @return string
+     */
+    public function getTotalDiscounted()
+    {
+        return $this->totalDiscounted;
+    }
 }

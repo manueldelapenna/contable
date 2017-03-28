@@ -43,6 +43,14 @@ class DebitNote
     private $total;
     
     /**
+     * @var float
+     *
+     * @ORM\Column(name="total_payed", type="decimal", precision=12, scale=4)
+     * 
+     */
+    private $totalPayed;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="debitNotes")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      */
@@ -229,5 +237,29 @@ class DebitNote
     public function getConcept()
     {
         return $this->concept;
+    }
+
+    /**
+     * Set totalPayed
+     *
+     * @param string $totalPayed
+     *
+     * @return DebitNote
+     */
+    public function setTotalPayed($totalPayed)
+    {
+        $this->totalPayed = $totalPayed;
+
+        return $this;
+    }
+
+    /**
+     * Get totalPayed
+     *
+     * @return string
+     */
+    public function getTotalPayed()
+    {
+        return $this->totalPayed;
     }
 }

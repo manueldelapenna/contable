@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-03-2017 a las 01:07:02
+-- Tiempo de generación: 29-03-2017 a las 01:27:20
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -246,15 +246,16 @@ CREATE TABLE `debit_note` (
   `sales_condition_id` int(11) NOT NULL,
   `date` datetime NOT NULL,
   `total` decimal(12,4) NOT NULL,
-  `concept` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `concept` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `total_payed` decimal(12,4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `debit_note`
 --
 
-INSERT INTO `debit_note` (`id`, `customer_id`, `sales_point_id`, `sales_condition_id`, `date`, `total`, `concept`) VALUES
-(1, 1002, 1, 2, '2017-03-21 00:00:00', '100.0000', 'ajuste de precio de mercaderia');
+INSERT INTO `debit_note` (`id`, `customer_id`, `sales_point_id`, `sales_condition_id`, `date`, `total`, `concept`, `total_payed`) VALUES
+(1, 1002, 1, 2, '2017-03-21 00:00:00', '100.0000', 'ajuste de precio de mercaderia', '0.0000');
 
 -- --------------------------------------------------------
 
