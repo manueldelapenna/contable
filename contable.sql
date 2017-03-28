@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-03-2017 a las 00:09:12
+-- Tiempo de generación: 29-03-2017 a las 00:55:07
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -38,8 +38,8 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`id`, `balance`, `customer_id`) VALUES
 (1, '0.0000', 1004),
-(2, '1443.0600', 1003),
-(3, '0.0000', 1002);
+(2, '2712.1100', 1003),
+(3, '-14400.0000', 1002);
 
 -- --------------------------------------------------------
 
@@ -64,7 +64,11 @@ CREATE TABLE `account_movement` (
 --
 
 INSERT INTO `account_movement` (`id`, `account_id`, `invoice_id`, `debit_note_id`, `date`, `detail`, `amount`, `discr`, `credit_note_id`) VALUES
-(4, 2, 33, NULL, '2017-03-21 23:32:57', 'Factura', '1443.0600', 'invoiceAccountMovement', NULL);
+(4, 2, 33, NULL, '2017-03-21 23:32:57', 'Factura', '1443.0600', 'invoiceAccountMovement', NULL),
+(5, 3, NULL, NULL, '2017-03-28 00:11:00', 'Nota de Crédito', '14400.0000', 'creditNoteAccountMovement', 3),
+(6, 2, NULL, NULL, '2017-03-28 00:45:12', 'Nota de Crédito ', '240.0000', 'creditNoteAccountMovement', 4),
+(7, 2, 34, NULL, '2017-03-29 00:53:20', 'Factura', '284.0000', 'invoiceAccountMovement', NULL),
+(8, 2, 35, NULL, '2017-03-29 00:53:54', 'Factura', '1225.0500', 'invoiceAccountMovement', NULL);
 
 -- --------------------------------------------------------
 
@@ -155,6 +159,16 @@ CREATE TABLE `credit_note` (
   `total` decimal(12,4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `credit_note`
+--
+
+INSERT INTO `credit_note` (`id`, `customer_id`, `sales_point_id`, `sales_condition_id`, `date`, `subtotal`, `discount_amount`, `shipping_amount`, `total`) VALUES
+(1, 1005, 2, 1, '2017-03-27 23:22:53', '12000.0000', '1220.0000', '0.0000', '10780.0000'),
+(2, 1005, 2, 1, '2017-03-27 23:24:06', '12000.0000', '1220.0000', '0.0000', '10780.0000'),
+(3, 1002, 2, 2, '2017-03-28 00:10:37', '14400.0000', '0.0000', '0.0000', '14400.0000'),
+(4, 1003, 2, 2, '2017-03-28 00:45:12', '240.0000', '0.0000', '0.0000', '240.0000');
+
 -- --------------------------------------------------------
 
 --
@@ -169,6 +183,17 @@ CREATE TABLE `credit_note_item` (
   `unit_price` decimal(12,4) NOT NULL,
   `creditNote_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `credit_note_item`
+--
+
+INSERT INTO `credit_note_item` (`id`, `product_code`, `product_quantity`, `product_description`, `unit_price`, `creditNote_id`) VALUES
+(1, '1234', 1, 'notebook dell', '12000.0000', 1),
+(2, '1234', 1, 'notebook dell', '12000.0000', 2),
+(3, '1122', 20, 'teclado genius', '120.0000', 3),
+(4, '1234', 1, 'notebook dell', '12000.0000', 3),
+(5, '1122', 2, 'teclado genius', '120.0000', 4);
 
 -- --------------------------------------------------------
 
@@ -271,15 +296,19 @@ CREATE TABLE `invoice` (
   `subtotal` decimal(12,4) NOT NULL,
   `discount_amount` decimal(12,4) NOT NULL,
   `shipping_amount` decimal(12,4) NOT NULL,
-  `total` decimal(12,4) NOT NULL
+  `total` decimal(12,4) NOT NULL,
+  `total_payed` decimal(12,4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `invoice`
 --
 
-INSERT INTO `invoice` (`id`, `customer_id`, `sales_point_id`, `sales_condition_id`, `order_id`, `date`, `subtotal`, `discount_amount`, `shipping_amount`, `total`) VALUES
-(33, 1003, 2, 2, 43, '2017-03-21 23:32:57', '1338.0600', '5.0000', '110.0000', '1443.0600');
+INSERT INTO `invoice` (`id`, `customer_id`, `sales_point_id`, `sales_condition_id`, `order_id`, `date`, `subtotal`, `discount_amount`, `shipping_amount`, `total`, `total_payed`) VALUES
+(33, 1003, 2, 2, 43, '2017-03-21 23:32:57', '1338.0600', '5.0000', '110.0000', '1443.0600', '0.0000'),
+(34, 1003, 2, 2, 45, '2017-03-29 00:53:20', '265.0000', '1.0000', '20.0000', '284.0000', '0.0000'),
+(35, 1003, 2, 2, 46, '2017-03-29 00:53:54', '1225.0500', '0.0000', '0.0000', '1225.0500', '0.0000'),
+(36, 1002, 2, 1, 47, '2017-03-29 00:54:24', '12070.0000', '0.0000', '0.0000', '12070.0000', '12070.0000');
 
 -- --------------------------------------------------------
 
@@ -302,7 +331,13 @@ CREATE TABLE `invoice_item` (
 
 INSERT INTO `invoice_item` (`id`, `invoice_id`, `product_code`, `product_quantity`, `product_description`, `unit_price`) VALUES
 (31, 33, '1234', 6, 'sdfsdf', '23.0101'),
-(32, 33, '222', 50, 'dsfsdf', '24.0000');
+(32, 33, '222', 50, 'dsfsdf', '24.0000'),
+(33, 34, '123', 2, 'sdfsf', '100.0000'),
+(34, 34, '23', 5, 'sfsdf', '13.0000'),
+(35, 35, '123', 15, 'svsdf', '1.6700'),
+(36, 35, 'lij', 300, 'ijoij', '4.0000'),
+(37, 36, '1130', 1, 'mouse genius', '70.0000'),
+(38, 36, '1234', 1, 'notebook dell', '12000.0000');
 
 -- --------------------------------------------------------
 
@@ -374,7 +409,9 @@ INSERT INTO `order_item` (`id`, `order_id`, `product_code`, `product_quantity`, 
 (90, 49, '1131', 3, 'mouse genius wireless', '170.0000'),
 (91, 49, '1122', 1, 'teclado genius', '120.0000'),
 (96, 52, '1234', 1, 'notebook dell', '12000.0000'),
-(97, 52, '1122', 1, 'teclado genius', '120.0000');
+(97, 52, '1122', 1, 'teclado genius', '120.0000'),
+(98, 53, '1234', 2, 'notebook dell', '12000.0000'),
+(99, 53, '1131', 5, 'mouse genius wireless', '170.0000');
 
 -- --------------------------------------------------------
 
@@ -422,10 +459,10 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `category_id`, `provider_id`, `tax_id`, `code`, `provider_code`, `name`, `description`, `price`, `stock`, `min_stock`, `max_stock`) VALUES
-(1, 1, 1, 1, '1234', '12345', 'notebook dell', 'notebook dell i7', '12000.0000', 21, 5, 50),
-(2, 1, 1, 1, '1122', '15432', 'teclado genius', 'teclado genius ergonomico', '120.0000', 23, 5, 50),
+(1, 1, 1, 1, '1234', '12345', 'notebook dell', 'notebook dell i7', '12000.0000', 22, 5, 50),
+(2, 1, 1, 1, '1122', '15432', 'teclado genius', 'teclado genius ergonomico', '120.0000', 45, 5, 50),
 (3, 1, 1, 1, '1130', '15444', 'mouse genius', 'mouse genius ergonomico', '70.0000', 14, 5, 50),
-(5, 1, 1, 1, '1131', '15445', 'mouse genius wireless', 'mouse genius compatible con todos los estandares', '170.0000', 14, 5, 40);
+(5, 1, 1, 1, '1131', '15445', 'mouse genius wireless', 'mouse genius compatible con todos los estandares', '170.0000', 9, 5, 40);
 
 -- --------------------------------------------------------
 
@@ -477,12 +514,13 @@ CREATE TABLE `purchase_order` (
 
 INSERT INTO `purchase_order` (`id`, `customer_id`, `order_state_id`, `sales_point_id`, `date`, `subtotal`, `discount_amount`, `shipping_amount`, `total`) VALUES
 (43, 1003, 2, 2, '2017-01-17 09:03:25', '1338.0600', '5.0000', '110.0000', '1443.0600'),
-(45, 1003, 1, 2, '2017-01-17 09:07:58', '265.0000', '1.0000', '20.0000', '284.0000'),
-(46, 1003, 1, 2, '2017-01-17 09:42:24', '1225.0500', '0.0000', '0.0000', '1225.0500'),
-(47, 1002, 1, 2, '2017-02-04 09:00:47', '12070.0000', '0.0000', '0.0000', '12070.0000'),
+(45, 1003, 2, 2, '2017-01-17 09:07:58', '265.0000', '1.0000', '20.0000', '284.0000'),
+(46, 1003, 2, 2, '2017-01-17 09:42:24', '1225.0500', '0.0000', '0.0000', '1225.0500'),
+(47, 1002, 2, 2, '2017-02-04 09:00:47', '12070.0000', '0.0000', '0.0000', '12070.0000'),
 (48, 1002, 1, 2, '2017-02-04 09:03:29', '12120.0000', '0.0000', '0.0000', '12120.0000'),
 (49, 1002, 1, 2, '2017-02-04 09:15:15', '24630.0000', '0.0000', '0.0000', '24630.0000'),
-(52, 1002, 1, 2, '2017-02-04 09:22:05', '12120.0000', '0.0000', '0.0000', '12120.0000');
+(52, 1002, 1, 2, '2017-02-04 09:22:05', '12120.0000', '0.0000', '0.0000', '12120.0000'),
+(53, 1002, 1, 2, '2017-03-27 07:37:28', '24850.0000', '2458.0000', '0.0000', '22392.0000');
 
 -- --------------------------------------------------------
 
@@ -741,7 +779,7 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT de la tabla `account_movement`
 --
 ALTER TABLE `account_movement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `budget`
 --
@@ -766,12 +804,12 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT de la tabla `credit_note`
 --
 ALTER TABLE `credit_note`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `credit_note_item`
 --
 ALTER TABLE `credit_note_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `customer`
 --
@@ -791,12 +829,12 @@ ALTER TABLE `fos_user`
 -- AUTO_INCREMENT de la tabla `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT de la tabla `invoice_item`
 --
 ALTER TABLE `invoice_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT de la tabla `iva_condition`
 --
@@ -811,7 +849,7 @@ ALTER TABLE `order_comment`
 -- AUTO_INCREMENT de la tabla `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 --
 -- AUTO_INCREMENT de la tabla `order_state`
 --
@@ -831,7 +869,7 @@ ALTER TABLE `provider`
 -- AUTO_INCREMENT de la tabla `purchase_order`
 --
 ALTER TABLE `purchase_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT de la tabla `sales_condition`
 --
