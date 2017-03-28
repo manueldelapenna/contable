@@ -83,10 +83,6 @@ class Invoice
      *
      * @ORM\Column(name="total_payed", type="decimal", precision=12, scale=4)
      * 
-     * @Assert\Range(
-     *      min = 0.01,
-     *      minMessage = "El valor debe ser mayor a 0",
-     * )
      */
     private $totalPayed;
     
