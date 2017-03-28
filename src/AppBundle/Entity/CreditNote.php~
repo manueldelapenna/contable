@@ -79,6 +79,14 @@ class CreditNote
     private $total;
     
     /**
+     * @var float
+     *
+     * @ORM\Column(name="total_discounted", type="decimal", precision=12, scale=4)
+     * 
+     */
+    private $totalDiscounted;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="creditNotes")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      */

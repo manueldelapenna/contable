@@ -79,6 +79,14 @@ class CreditNote
     private $total;
     
     /**
+     * @var float
+     *
+     * @ORM\Column(name="total_discounted", type="decimal", precision=12, scale=4)
+     * 
+     */
+    private $totalDiscounted;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="creditNotes")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      */
@@ -362,5 +370,29 @@ class CreditNote
     public function getSalesCondition()
     {
         return $this->salesCondition;
+    }
+
+    /**
+     * Set totalDiscounted
+     *
+     * @param string $totalDiscounted
+     *
+     * @return CreditNote
+     */
+    public function setTotalDiscounted($totalDiscounted)
+    {
+        $this->totalDiscounted = $totalDiscounted;
+
+        return $this;
+    }
+
+    /**
+     * Get totalDiscounted
+     *
+     * @return string
+     */
+    public function getTotalDiscounted()
+    {
+        return $this->totalDiscounted;
     }
 }

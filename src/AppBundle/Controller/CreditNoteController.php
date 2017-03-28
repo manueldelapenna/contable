@@ -81,8 +81,6 @@ class CreditNoteController extends Controller
                 }
                 $creditNote = CreditNote::createFromOrder($purchaseOrder, $salesCondition);
                 
-                $em->persist($creditNote);
-                
                 foreach($purchaseOrder->getOrderItems() as $item){
 
                     //devuelve stock
@@ -111,7 +109,12 @@ class CreditNoteController extends Controller
 
                     $em->persist($account);
                     $em->persist($movement);
+                    $creditNote->setTotalDiscounted(0);
+                }else{
+                    $creditNote->setTotalDiscounted($creditNote->getTotal());
                 }
+                
+                $em->persist($creditNote);
 
                 $em->flush();
                 $em->getConnection()->commit();
