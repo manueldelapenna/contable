@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\DebitNoteAccountMovement;
+use AppBundle\Entity\AccountMovement;
 
 /**
  * Debitnote controller.
@@ -57,7 +58,7 @@ class DebitNoteController extends Controller {
                 if($debitNote->getSalesCondition()->getId() == 2) {
                     $debitNote->setTotalPayed(0);
 
-                    $detail = 'Nota de Débito';
+                    $detail = AccountMovement::DEBITNOTE_MOVEMENT;
                     $amount = $debitNote->getTotal();
                     $account = $debitNote->getCustomer()->getAccount();
 

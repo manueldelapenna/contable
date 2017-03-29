@@ -11,6 +11,7 @@ use AppBundle\Entity\PurchaseOrder;
 use AppBundle\Entity\SalesCondition;
 use AppBundle\Entity\CreditNoteItem;
 use AppBundle\Entity\CreditNoteAccountMovement;
+use AppBundle\Entity\AccountMovement;
 use Symfony\Component\Config\Definition\Exception\Exception;
 /**
  * Creditnote controller.
@@ -98,7 +99,7 @@ class CreditNoteController extends Controller
                 // Si la condicion de venta es CTA CTE, genera el movimiento en la cuenta del cliente
                 if($salesCondition->getId() == 2){
 
-                    $detail = 'Nota de Crédito';
+                    $detail = AccountMovement::CREDITNOTE_MOVEMENT;
                     $amount = $creditNote->getTotal();
                     $account = $creditNote->getCustomer()->getAccount();
 

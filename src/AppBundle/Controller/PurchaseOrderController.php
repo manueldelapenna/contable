@@ -13,6 +13,7 @@ use AppBundle\Entity\Invoice;
 use AppBundle\Entity\InvoiceItem;
 use AppBundle\Entity\SalesCondition;
 use AppBundle\Entity\InvoiceAccountMovement;
+use AppBundle\Entity\AccountMovement;
 
 /**
  * Purchaseorder controller.
@@ -282,7 +283,7 @@ class PurchaseOrderController extends Controller
             if($salesCondition->getId() == 2){
                 $invoice->setTotalPayed(0);
                 
-                $detail = 'Factura';
+                $detail = AccountMovement::INVOICE_MOVEMENT;
                 $amount = $invoice->getTotal();
                 $account = $invoice->getCustomer()->getAccount();
                 
