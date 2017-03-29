@@ -23,20 +23,32 @@ class DebitNoteController extends Controller {
      * @Route("/", name="debitnote_index")
      * @Method("GET")
      */
-    public function indexAction() {
-        $em = $this->getDoctrine()->getManager();
-
-        $debitNotes = $em->getRepository('AppBundle:DebitNote')->findAll();
+    public function indexAction()
+    {
+        $datatable = $this->get('app.datatable.debitnote');
+        $datatable->buildDatatable();
 
         return $this->render('debitnote/index.html.twig', array(
-                    'debitNotes' => $debitNotes,
+                    'datatable' => $datatable,
         ));
+    }
+    
+    /**
+     * @Route("/results", name="debitnote_results")
+     */
+    public function indexResultsAction() {
+        $datatable = $this->get('app.datatable.debitnote');
+        $datatable->buildDatatable();
+
+        $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+
+        return $query->getResponse();
     }
 
     /**
      * Creates a new debitNote entity.
      *
-     * @Route("/new", name="debitnote_new")
+     * @Route("/new", name="debitnote_new", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request) {
@@ -96,7 +108,7 @@ class DebitNoteController extends Controller {
     /**
      * Finds and displays a debitNote entity.
      *
-     * @Route("/{id}", name="debitnote_show")
+     * @Route("/{id}", name="debitnote_show", options={"expose"=true})
      * @Method("GET")
      */
     public function showAction(DebitNote $debitNote) {
@@ -104,30 +116,6 @@ class DebitNoteController extends Controller {
 
         return $this->render('debitnote/show.html.twig', array(
                     'debitNote' => $debitNote,
-                    'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing debitNote entity.
-     *
-     * @Route("/{id}/edit", name="debitnote_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, DebitNote $debitNote) {
-        $deleteForm = $this->createDeleteForm($debitNote);
-        $editForm = $this->createForm('AppBundle\Form\DebitNoteType', $debitNote);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('debitnote_edit', array('id' => $debitNote->getId()));
-        }
-
-        return $this->render('debitnote/edit.html.twig', array(
-                    'debitNote' => $debitNote,
-                    'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
         ));
     }

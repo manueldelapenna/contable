@@ -6,11 +6,11 @@ use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 use Sg\DatatablesBundle\Datatable\View\Style;
 
 /**
- * Class CreditNoteDatatable
+ * Class DebitNoteDatatable
  *
  * @package AppBundle\Datatables
  */
-class CreditNoteDatatable extends AbstractDatatableView
+class DebitNoteDatatable extends AbstractDatatableView
 {
     /**
      * {@inheritdoc}
@@ -22,7 +22,7 @@ class CreditNoteDatatable extends AbstractDatatableView
             'end_html' => '<hr></div></div>',
             'actions' => array(
                 array(
-                    'route' => $this->router->generate('creditnote_new'),
+                    'route' => $this->router->generate('debitnote_new'),
                     'label' => $this->translator->trans('datatables.actions.new'),
                     'icon' => 'glyphicon glyphicon-plus',
                     'attributes' => array(
@@ -53,7 +53,7 @@ class CreditNoteDatatable extends AbstractDatatableView
         ));
 
         $this->ajax->set(array(
-            'url' => $this->router->generate('creditnote_results'),
+            'url' => $this->router->generate('debitnote_results'),
             'type' => 'GET'
         ));
 
@@ -75,7 +75,7 @@ class CreditNoteDatatable extends AbstractDatatableView
             'class' => Style::BOOTSTRAP_3_STYLE,
             'individual_filtering' => false,
             'individual_filtering_position' => 'head',
-            'use_integration_options' => true,
+            'use_integration_options' => false,
             'force_dom' => false
         ));
 
@@ -86,17 +86,14 @@ class CreditNoteDatatable extends AbstractDatatableView
             ->add('date', 'datetime', array(
                 'title' => 'Date',
             ))
-            ->add('subtotal', 'column', array(
-                'title' => 'Subtotal',
-            ))
-            ->add('discountAmount', 'column', array(
-                'title' => 'DiscountAmount',
-            ))
-            ->add('shippingAmount', 'column', array(
-                'title' => 'ShippingAmount',
-            ))
             ->add('total', 'column', array(
                 'title' => 'Total',
+            ))
+            ->add('totalPayed', 'column', array(
+                'title' => 'TotalPayed',
+            ))
+            ->add('concept', 'column', array(
+                'title' => 'Concept',
             ))
             ->add('customer.id', 'column', array(
                 'title' => 'Customer Id',
@@ -147,7 +144,7 @@ class CreditNoteDatatable extends AbstractDatatableView
                 'title' => $this->translator->trans('datatables.actions.title'),
                 'actions' => array(
                     array(
-                        'route' => 'creditnote_show',
+                        'route' => 'debitnote_show',
                         'route_parameters' => array(
                             'id' => 'id'
                         ),
@@ -170,7 +167,7 @@ class CreditNoteDatatable extends AbstractDatatableView
      */
     public function getEntity()
     {
-        return 'AppBundle\Entity\CreditNote';
+        return 'AppBundle\Entity\DebitNote';
     }
 
     /**
@@ -178,6 +175,6 @@ class CreditNoteDatatable extends AbstractDatatableView
      */
     public function getName()
     {
-        return 'creditnote_datatable';
+        return 'debitnote_datatable';
     }
 }

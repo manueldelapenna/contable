@@ -169,23 +169,6 @@ class CreditNoteController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing creditNote entity.
-     *
-     * @Route("/{id}/edit", name="creditnote_edit", options={"expose"=true})
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, CreditNote $creditNote)
-    {
-                
-        $this->get('session')->getFlashBag()->add(
-                'danger', 'No es posible editar una nota de crédito.'
-        );
-        
-        return $this->redirectToRoute('creditnote_show', array('id' => $creditNote->getId()));
-        
-    }
-
-    /**
      * Deletes a creditNote entity.
      *
      * @Route("/{id}", name="creditnote_delete")
