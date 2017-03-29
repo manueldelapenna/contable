@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Debitnotes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Totalpayed</th>
+                <th>Concept</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for debitNote in debitNotes %}
+            <tr>
+                <td><a href="{{ path('debitnote_show', { 'id': debitNote.id }) }}">{{ debitNote.id }}</a></td>
+                <td>{% if debitNote.date %}{{ debitNote.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ debitNote.total }}</td>
+                <td>{{ debitNote.totalPayed }}</td>
+                <td>{{ debitNote.concept }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('debitnote_show', { 'id': debitNote.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('debitnote_edit', { 'id': debitNote.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('debitnote_new') }}">Create a new debitNote</a>
+        </li>
+    </ul>
+{% endblock %}

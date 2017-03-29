@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Debitnote</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ debitNote.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if debitNote.date %}{{ debitNote.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ debitNote.total }}</td>
+            </tr>
+            <tr>
+                <th>Totalpayed</th>
+                <td>{{ debitNote.totalPayed }}</td>
+            </tr>
+            <tr>
+                <th>Concept</th>
+                <td>{{ debitNote.concept }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('debitnote_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('debitnote_edit', { 'id': debitNote.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
