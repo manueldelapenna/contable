@@ -49,7 +49,7 @@
 
             <div class="col-sm-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Detalle de Nota de Crédito</div>
+                    <div class="panel-heading">Detalle de Nota de Débito</div>
                     <div class="panel-body">
                         <div class="col-sm-12">
                             <div class="table-responsive">
@@ -101,62 +101,19 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Descartar Nota de Crédito</h4>
+              <h4 class="modal-title">Descartar Nota de Débito</h4>
             </div>
             <div class="modal-body">
-              <p>¿Está seguro que desea descartar la Nota de Crédito?</p>
+              <p>¿Está seguro que desea descartar la Nota de Débito?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-danger" href="{{ path('creditnote_index') }}"><span class="glyphicon glyphicon-trash"></span> Descartar Nota de Crédito</a>
+                <a class="btn btn-danger" href="{{ path('debitnote_index') }}"><span class="glyphicon glyphicon-trash"></span> Descartar Nota de Débito</a>
             </div>
           </div>
 
         </div>
     </div>
             
-    <div id="itemError" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Error</h4>
-            </div>
-            <div class="modal-body">
-              <p>El pedido debe tener al menos 1 item.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-            </div>
-          </div>
-
-        </div>
-    </div>
-            
-    <div id="productError" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Error</h4>
-            </div>
-            <div class="modal-body">
-              <p>Seleccione un producto.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-            </div>
-          </div>
-
-        </div>
-    </div>
     
-    
-
-    
-
 {% endblock %}
