@@ -1,0 +1,11 @@
+<!ELEMENT config (defaultMimeType, mimeTypes)>
+
+<!ELEMENT defaultMimeType EMPTY>
+<!ATTLIST defaultMimeType id CDATA #REQUIRED>
+
+<!ELEMENT mimeTypes (mimeType+)>
+
+<!ELEMENT mimeType EMPTY>
+<!ATTLIST mimeType extensions CDATA #REQUIRED>
+<!ATTLIST mimeType type CDATA #REQUIRED>
+<!ATTLIST mimeType id ID #REQUIRED>

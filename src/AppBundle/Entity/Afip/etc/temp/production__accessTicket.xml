@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<loginTicketResponse version="1">
+    <header>
+        <source>CN=wsaa, O=AFIP, C=AR, SERIALNUMBER=CUIT 33693450239</source>
+        <destination>C=ar, O=plandos sa, SERIALNUMBER=CUIT 33709315329, CN=red users</destination>
+        <uniqueId>1749435329</uniqueId>
+        <generationTime>2014-11-18T17:15:06.587-03:00</generationTime>
+        <expirationTime>2014-11-19T05:15:06.587-03:00</expirationTime>
+    </header>
+    <credentials>
+        <token>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8c3NvIHZlcnNpb249IjIuMCI+CiAgICA8aWQgdW5pcXVlX2lkPSIyMTY4MTA4MjEiIHNyYz0iQ049d3NhYSwgTz1BRklQLCBDPUFSLCBTRVJJQUxOVU1CRVI9Q1VJVCAzMzY5MzQ1MDIzOSIgZ2VuX3RpbWU9IjE0MTYzNDE2NDYiIGV4cF90aW1lPSIxNDE2Mzg0OTA2IiBkc3Q9IkNOPXdzZmUsIE89QUZJUCwgQz1BUiIvPgogICAgPG9wZXJhdGlvbiB2YWx1ZT0iZ3JhbnRlZCIgdHlwZT0ibG9naW4iPgogICAgICAgIDxsb2dpbiB1aWQ9IkM9YXIsIE89cGxhbmRvcyBzYSwgU0VSSUFMTlVNQkVSPUNVSVQgMzM3MDkzMTUzMjksIENOPXJlZCB1c2VycyIgc2VydmljZT0id3NmZSIgcmVnbWV0aG9kPSIyMiIgZW50aXR5PSIzMzY5MzQ1MDIzOSIgYXV0aG1ldGhvZD0iY21zIj4KICAgICAgICAgICAgPHJlbGF0aW9ucz4KICAgICAgICAgICAgICAgIDxyZWxhdGlvbiByZWx0eXBlPSI0IiBrZXk9IjMzNzA5MzE1MzI5Ii8+CiAgICAgICAgICAgIDwvcmVsYXRpb25zPgogICAgICAgIDwvbG9naW4+CiAgICA8L29wZXJhdGlvbj4KPC9zc28+Cgo=</token>
+        <sign>ijF5OSqpRf3RE5mKUMX8/dY0pckAfcA6n5xd3g+kmCooLWJnT48bmrfWJcG+IdfrUT3kpPJzPQok2vrItYVfV0ic07ZpgTUUA50ERGU0rSb9qizHulTQm6b+2k8aKLuHd+R4qBWrh7NizoxY6bU6oupGxfAwjktemTbZBweMTVs=</sign>
+    </credentials>
+</loginTicketResponse>
+

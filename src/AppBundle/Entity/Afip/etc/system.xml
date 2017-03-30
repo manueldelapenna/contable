@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<config>
+	<tabs>
+		<afiptab translate="label" module="afip">
+			<label>Afip</label>
+			<sort_order>350</sort_order>
+		</afiptab>
+	</tabs>
+	<sections>
+		<afip translate="label">
+			<label>Configuración</label>
+			<tab>afiptab</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>350</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<config translate="label">
+					<label>Configuración</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>0</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<enable translate="label">
+							<label>Facturación AFIP habilitada:</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Activa la facturación electrónica.</comment>
+						</enable>
+						<enable_queue translate="label">
+							<label>Encolar Facturas AFIP habilitado:</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>2</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Guarda en Base de Datos las facturas a autorizar en AFIP 
+									(No funciona si la facturación está deshabilitada).</comment>
+						</enable_queue>
+						<enable_prod translate="label">
+							<label>Modo producción habilitado:</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>3</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Activa el modo producción. Usar "No" para realizar
+								pruebas.</comment>
+						</enable_prod>
+						<staging_sales_point translate="label">
+							<label>Punto de Venta para testing:</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>4</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Determina el punto de venta a utilizar en modo testing
+								(modo producción habilitado debe ser "NO").</comment>
+						</staging_sales_point>
+						<support_email translate="label">
+							<label>Email de reporte de bloqueos:</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>5</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Enviar mails para solucionar bloqueos en el proceso de Autorización o Generación de pdf.</comment>
+						</support_email>
+						<afip_invoice_rejected_email translate="label">
+							<label>Email de reporte facturas rechazadas:</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>6</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Enviar mails para reportar facturas rechazadas desde AFIP. Si no hay mail ingresado no se envían emails.</comment>
+						</afip_invoice_rejected_email>
+						<afip_invoice_pending_email translate="label">
+							<label>Email de reporte facturas pendientes:</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>7</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>Enviar mails para reportar facturas pendientes de autorizar en AFIP. Si no hay mail ingresado no se envían emails.</comment>
+						</afip_invoice_pending_email>
+					</fields>
+				</config>
+			</groups>
+		</afip>
+	</sections>
+</config>

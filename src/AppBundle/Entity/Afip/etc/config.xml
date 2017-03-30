@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<modules>
+		<Quanbit_Afip>
+			<version>0.1.9</version>
+		</Quanbit_Afip>
+	</modules>
+
+	<global>
+		<models>
+			<afip>
+				<class>Quanbit_Afip_Model</class>
+				<resourceModel>afip_mysql4</resourceModel>
+			</afip>
+			<afip_mysql4>
+                <class>Quanbit_Afip_Model_Mysql4</class>
+                <entities>
+                    <invoice>
+                        <table>afip_invoice</table>
+                    </invoice>
+                </entities>
+            </afip_mysql4>
+		</models>
+		<blocks>
+		    <adminhtml>
+		        <rewrite>
+		            <sales_order_invoice_view>Quanbit_Afip_Block_Invoice_View</sales_order_invoice_view>
+		        </rewrite>
+		    </adminhtml>
+		    <adminhtml>
+		        <rewrite>
+		            <sales_invoice_grid>Quanbit_Afip_Block_Sales_Invoice_Grid</sales_invoice_grid>
+		        </rewrite>
+		    </adminhtml>
+		    <afip>
+                <class>Quanbit_Afip_Block</class>
+            </afip>
+        </blocks>
+		<helpers>
+	    	<afip>
+	      		<class>Quanbit_Afip_Helper</class>
+	        </afip>
+	    </helpers>
+
+		<resources>
+			<afip_setup>
+				<setup>
+					<module>Quanbit_Afip</module>
+					<class>Quanbit_Afip_Model_Resource_Eav_Mysql4_Setup</class>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</afip_setup>
+			<afip_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</afip_write>
+			<afip_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</afip_read>
+		</resources>
+		<events>
+			<sales_order_invoice_save_after>
+				<observers>
+					<quanbit_afip_prueba>
+						<type>singleton</type>
+						<class>afip/observer</class>
+						<method>generateInvoice</method>
+					</quanbit_afip_prueba>
+				</observers>
+			</sales_order_invoice_save_after>
+		</events>
+		 <template>
+	        <email>
+	        	<quanbit_semaphore_notification module="afip">
+                    <label>Notificacion de semaforo bloqueado</label>
+                    <file>quanbit_semaphore_notification.html</file>
+                    <type>html</type>
+                </quanbit_semaphore_notification>
+                <quanbit_afip_invoice_rejected module="afip">
+                    <label>Notificacion de factura rechazada</label>
+                    <file>quanbit_afip_invoice_rejected.html</file>
+                    <type>html</type>
+                </quanbit_afip_invoice_rejected>
+                <quanbit_afip_invoices_pending module="afip">
+                    <label>Notificacion de facturas pendientes</label>
+                    <file>quanbit_afip_invoices_pending.html</file>
+                    <type>html</type>
+                </quanbit_afip_invoices_pending>
+	        </email>
+    	</template>
+	</global>
+	<adminhtml> 
+	       <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <sales translate="title" module="sales">
+                            <title>Sales</title>
+                            <children>
+                                <export_invoices_info translate="title">
+                                    <title>Exportar Listados Facturas</title>
+                                    <sort_order>11</sort_order>
+                                </export_invoices_info>
+                            </children>
+                        </sales>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+	</adminhtml>
+	
+    <frontend>
+        <routers>
+            <afip>
+                <use>standard</use>
+                <args>
+                    <module>Quanbit_Afip</module>
+                    <frontName>afip</frontName>
+                </args>
+            </afip>
+        </routers>   
+    </frontend>
+    <admin>
+        <routers>
+            <afip>
+                <use>admin</use>
+                <args>
+                    <module>Quanbit_Afip</module>
+                    <frontName>afip</frontName>
+                </args>
+            </afip>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Quanbit_Afip before="Mage_Adminhtml">Quanbit_Afip_Adminhtml</Quanbit_Afip>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <crontab>
+    	 <jobs>
+        	<authorize_pending_invoices>
+                <schedule>
+                    <cron_expr>*/10 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>afip/schedulingExecutor::execute</model>
+                </run>
+            </authorize_pending_invoices>
+            <generate_pdf_authorized_invoices>
+                <schedule>
+                    <cron_expr>*/10 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>afip/pdf_invoicePrinterExecutor::execute</model>
+                </run>
+            </generate_pdf_authorized_invoices>
+            <afip_pending_invoices>
+                <schedule>
+                    <cron_expr>30 08 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>afip/reporter::reportPendingAfipInvoices</model>
+                </run>
+            </afip_pending_invoices>
+        </jobs>
+    </crontab>
+</config>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<loginTicketResponse version="1">
+    <header>
+        <source>CN=wsaahomo, O=AFIP, C=AR, SERIALNUMBER=CUIT 33693450239</source>
+        <destination>C=ar, O=inversor global, SERIALNUMBER=CUIT 20307777461, CN=quanbit</destination>
+        <uniqueId>1569263238</uniqueId>
+        <generationTime>2015-01-21T10:20:28.496-03:00</generationTime>
+        <expirationTime>2015-01-21T22:20:28.496-03:00</expirationTime>
+    </header>
+    <credentials>
+        <token>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8c3NvIHZlcnNpb249IjIuMCI+CiAgICA8aWQgdW5pcXVlX2lkPSIyMDE5MjcxMTg1IiBzcmM9IkNOPXdzYWFob21vLCBPPUFGSVAsIEM9QVIsIFNFUklBTE5VTUJFUj1DVUlUIDMzNjkzNDUwMjM5IiBnZW5fdGltZT0iMTQyMTg0NjM2OCIgZXhwX3RpbWU9IjE0MjE4ODk2MjgiIGRzdD0iQ049d3NmZSwgTz1BRklQLCBDPUFSIi8+CiAgICA8b3BlcmF0aW9uIHZhbHVlPSJncmFudGVkIiB0eXBlPSJsb2dpbiI+CiAgICAgICAgPGxvZ2luIHVpZD0iQz1hciwgTz1pbnZlcnNvciBnbG9iYWwsIFNFUklBTE5VTUJFUj1DVUlUIDIwMzA3Nzc3NDYxLCBDTj1xdWFuYml0IiBzZXJ2aWNlPSJ3c2ZlIiByZWdtZXRob2Q9IjIyIiBlbnRpdHk9IjMzNjkzNDUwMjM5IiBhdXRobWV0aG9kPSJjbXMiPgogICAgICAgICAgICA8cmVsYXRpb25zPgogICAgICAgICAgICAgICAgPHJlbGF0aW9uIHJlbHR5cGU9IjQiIGtleT0iMjAzMDc3Nzc0NjEiLz4KICAgICAgICAgICAgPC9yZWxhdGlvbnM+CiAgICAgICAgPC9sb2dpbj4KICAgIDwvb3BlcmF0aW9uPgo8L3Nzbz4KCg==</token>
+        <sign>iDBIf3rPyLb+IISI94Pvhzc+xjKpLCihT0Nn8YxNatO4Lwz9sTJy0rzRz001kB15N0FgYeUknV0zM0i0IRWBFSUmEH/BjGQRecil5kEUXQWRehwZDR/w0ovrn3ciZTlpz0vVLmDNRDAXQ86B/JRzZEf/61ViLuau1Hznvb+TMYc=</sign>
+    </credentials>
+</loginTicketResponse>
+
