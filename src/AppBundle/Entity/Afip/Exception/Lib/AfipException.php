@@ -1,12 +1,11 @@
 <?php
-
 /**
 	 * Base exception class.
 	 * 
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-class Afip_Exception_Lib_Exception extends Mage_Core_Exception {
+class AfipException extends \Exception{
 	/**
 	 * Construnctor
 	 *

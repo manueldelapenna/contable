@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Exception_Lib_SoapFaultException extends Afip_Exception_Lib_Exception
+	class SoapFaultException extends AfipException
 	{
 		protected $soapFault;
 		

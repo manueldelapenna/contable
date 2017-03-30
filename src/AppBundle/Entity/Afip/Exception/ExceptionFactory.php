@@ -6,18 +6,18 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class Afip_Exception_ExceptionFactory
+	abstract class ExceptionFactory
 	{
 		/**
 		 * Throws a class mismatch exception.
 		 * 
 		 * @param string $className The expected class.
 		 * @param Exception $previous [Default: NULL]
-		 * @throws Afip_Exception_Lib_ClassMismatchException
+		 * @throws ClassMismatchException
 		 */
 		public static function throwClassMismatch($className, Exception $previous = NULL)
 		{
-			throw new Afip_Exception_Lib_ClassMismatchException($className, $previous);
+			throw new ClassMismatchException($className, $previous);
 		}
 		
 		/**
@@ -31,7 +31,7 @@
 		 */
 		public static function throwFor($message = "", $code = 99000, Exception $previous = NULL)
 		{
-			throw new Afip_Exception_Lib_Exception($message, $code, $previous);
+			throw new Exception($message, $code, $previous);
 		}
 		
 		/**
@@ -39,11 +39,11 @@
 		 * 
 		 * @param string $className
 		 * @param Exception $previous [Default: NULL]
-		 * @throws Afip_Exception_Lib_UndefinedClassException
+		 * @throws UndefinedClassException
 		 */
 		public static function throwUndefinedClass($className, Exception $previous = NULL)
 		{
-			throw new Afip_Exception_Lib_UndefinedClassException($className, $previous);
+			throw new UndefinedClassException($className, $previous);
 		}
 		
 		/**
@@ -51,11 +51,11 @@
 		 * 
 		 * @param object $soapFault
 		 * @param Exception $previous [Default: NULL]
-		 * @throws Afip_Exception_Lib_SoapFaultException
+		 * @throws SoapFaultException
 		 */
 		public static function throwSoapFaultException($soapFault)
 		{
-			throw new Afip_Exception_Lib_SoapFaultException($soapFault);
+			throw new SoapFaultException($soapFault);
 		}
 		
 		/**
@@ -67,7 +67,7 @@
 		 */
 		public static function throwSubclassResponsibility($methodName, Exception $previous = NULL)
 		{
-			throw new Afip_Exception_Lib_SubclassResponsibilityException($methodName, $previous);
+			throw new SubclassResponsibilityException($methodName, $previous);
 		}
 		
 	}

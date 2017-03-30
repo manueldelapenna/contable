@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Exception_Lib_UndefinedClassException extends Afip_Exception_Lib_Exception
+	class UndefinedClassException extends AfipException
 	{
 		protected $className;
 		

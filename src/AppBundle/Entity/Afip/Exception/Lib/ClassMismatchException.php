@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Exception_Lib_ClassMismatchException extends Afip_Exception_Lib_Exception
+	class ClassMismatchException extends AfipException
 	{
 		protected $className;
 		

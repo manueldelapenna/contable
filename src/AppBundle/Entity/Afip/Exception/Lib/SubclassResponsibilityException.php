@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Exception_Lib_SubclassResponsibilityException extends Afip_Exception_Lib_Exception
+	class SubclassResponsibilityException extends AfipException
 	{
 		protected $methodName;
 		

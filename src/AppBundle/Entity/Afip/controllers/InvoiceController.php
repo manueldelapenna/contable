@@ -54,9 +54,9 @@ class Afip_InvoiceController extends Mage_Adminhtml_Controller_Action
 				$invoice->save();
 				$this->_getSession()->addSuccess("El estado de la Factura AFIP ha cambiado a Pendiente");
 			}else{
-				throw new Afip_Exception_Lib_AfipInvoiceInvalidOperationException();
+				throw new AfipInvoiceInvalidOperationException();
 			}
-		}catch(Afip_Exception_Lib_AfipInvoiceInvalidOperationException $e){
+		}catch(AfipInvoiceInvalidOperationException $e){
 			$this->_getSession()->addError('No puede volver a autorizarse una Factura con estado distinto a "Rechazada"');
 		}catch(Exception $e){
 			$this->_getSession()->addError($e->getMessage());
