@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class Afip_Helper_DataType_String extends Mage_Core_Helper_Abstract
+	abstract class StringDataTypeHelper
 	
 	{
 		const CONVMODE__NONE = 0;
@@ -18,7 +18,7 @@
 		 * Transforms the hexadecimal encoding in the given HTML.
 		 *
 		 * @param string $html
-		 * @param int $convertionMode [Default: Afip_Helper_DataType_String::CONVMODE__NONE]
+		 * @param int $convertionMode [Default: StringDataTypeHelper::CONVMODE__NONE]
 		 * @return string | NULL
 		 */
 		public static function htmlHexEncodingTransform($html, $convertionMode = self::CONVMODE__NONE)

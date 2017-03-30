@@ -170,7 +170,7 @@
 				}
 			}
 			
-			$amount = Afip_Helper_DataType_Number::truncate($amount, 2);
+			$amount = NumberDataTypeHelper::truncate($amount, 2);
 			
 			return $amount;
 		}

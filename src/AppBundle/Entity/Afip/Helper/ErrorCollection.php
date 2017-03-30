@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Helper_ErrorCollection extends Mage_Core_Helper_Abstract
+	class Afip_Helper_ErrorCollection
 	{
 		protected $errors;
 		

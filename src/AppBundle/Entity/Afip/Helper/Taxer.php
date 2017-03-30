@@ -5,7 +5,7 @@
  * @author Quanbit Sofware SA
  * @author manueldelapenna
  */
-class Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
+class Afip_Helper_Taxer{
 	
 	/**
 	 * Returns neto amount unitary price for product item
@@ -41,7 +41,7 @@ class Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	{
 		$itemUnitary = self::getNetoUnitaryAmountForProductItem($item, $orderCurrencyCode, $afipInvoice);
 		
-		$itemNeto = Afip_Helper_DataType_Number::truncate($itemUnitary * $item->getQty(), 2);
+		$itemNeto = NumberDataTypeHelper::truncate($itemUnitary * $item->getQty(), 2);
 				
 		return $itemNeto;
 		
@@ -63,7 +63,7 @@ class Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 		$shippingAmount = $invoice->getShippingAmount() - $invoice->getOrder()->getShippingDiscountAmount();
 		$alicuota = self::normalizeAlicuota(Afip_Model_Alicuota_Shipping::getAlicuotaForShipping());
 		
-		$itemNeto = Afip_Helper_DataType_Number::truncate($itemTotal / ($alicuota/100 + 1), 2);
+		$itemNeto = NumberDataTypeHelper::truncate($itemTotal / ($alicuota/100 + 1), 2);
 				
 		return $itemNeto;
 	}
@@ -78,7 +78,7 @@ class Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	 */
 	public static function getFinalUnitaryAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
 	{
-		$price =  Afip_Helper_DataType_Number::truncate(self::getFinalAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR) / $item->getQty(),4);
+		$price =  NumberDataTypeHelper::truncate(self::getFinalAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR) / $item->getQty(),4);
 						
 		return $price;
 	}

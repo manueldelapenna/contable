@@ -152,18 +152,18 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 		$totalAmount2700 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_2700] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_2700];
 		
 		/* Calcula netos */
-		$totalNeto0250 = Afip_Helper_DataType_Number::truncate($totalAmount0250 / 1.025 ,2);
-		$totalNeto0500 = Afip_Helper_DataType_Number::truncate($totalAmount0500 / 1.05 ,2);
-		$totalNeto1050 = Afip_Helper_DataType_Number::truncate($totalAmount1050 / 1.105 ,2);
-		$totalNeto2100 = Afip_Helper_DataType_Number::truncate($totalAmount2100 / 1.21 ,2);
-		$totalNeto2700 = Afip_Helper_DataType_Number::truncate($totalAmount2700 / 1.27 ,2);
+		$totalNeto0250 = NumberDataTypeHelper::truncate($totalAmount0250 / 1.025 ,2);
+		$totalNeto0500 = NumberDataTypeHelper::truncate($totalAmount0500 / 1.05 ,2);
+		$totalNeto1050 = NumberDataTypeHelper::truncate($totalAmount1050 / 1.105 ,2);
+		$totalNeto2100 = NumberDataTypeHelper::truncate($totalAmount2100 / 1.21 ,2);
+		$totalNeto2700 = NumberDataTypeHelper::truncate($totalAmount2700 / 1.27 ,2);
 		
 		/*total bruto*/
-		$totalAmount = Afip_Helper_DataType_Number::truncate($totalAmount0250,2) +
-					   Afip_Helper_DataType_Number::truncate($totalAmount0500,2) + 
-					   Afip_Helper_DataType_Number::truncate($totalAmount1050,2) + 
-					   Afip_Helper_DataType_Number::truncate($totalAmount2100,2) + 
-					   Afip_Helper_DataType_Number::truncate($totalAmount2700,2);
+		$totalAmount = NumberDataTypeHelper::truncate($totalAmount0250,2) +
+					   NumberDataTypeHelper::truncate($totalAmount0500,2) + 
+					   NumberDataTypeHelper::truncate($totalAmount1050,2) + 
+					   NumberDataTypeHelper::truncate($totalAmount2100,2) + 
+					   NumberDataTypeHelper::truncate($totalAmount2700,2);
 		
 		//monto gravado
 		$taxableNetAmount = $totalNeto0250 + $totalNeto0500 + $totalNeto1050 + $totalNeto2100 + $totalNeto2700;

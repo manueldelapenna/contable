@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Helper_DataType_Date extends Mage_Core_Helper_Abstract
+	class DateDataTypeHelper
 	{
 		/* Constants and Variables */
 		
@@ -115,7 +115,7 @@
 		
 		/**
 		 * A singleton instance.
-		 * @var Afip_Helper_DataType_Date
+		 * @var DateDataTypeHelper
 		 */
 		protected static $singleton;
 		
@@ -132,7 +132,7 @@
 		/**
 		 * Returns a singleton instance.
 		 *
-		 * @return Afip_Helper_DataType_Date
+		 * @return DateDataTypeHelper
 		 */
 		public static function getInstance()
 		{

@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class Afip_Helper_DataType_File extends Mage_Core_Helper_Abstract
+	abstract class FileDataTypeHelper
 	{
 		/**
 		 * @var string

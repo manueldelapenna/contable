@@ -415,7 +415,7 @@
 		 */
 		public function getTotalAmount()
 		{
-			$amount = Afip_Helper_DataType_Number::truncate($this->getTaxableNetAmount() + $this->getUntaxedNetAmount() + $this->getTaxExemptAmount() + $this->getTaxAmount(), 2);
+			$amount = NumberDataTypeHelper::truncate($this->getTaxableNetAmount() + $this->getUntaxedNetAmount() + $this->getTaxExemptAmount() + $this->getTaxAmount(), 2);
 			return $amount;
 		}
 		
@@ -594,7 +594,7 @@
 		 */
 		public function setTaxableNetAmount($amount)
 		{
-			$this->taxableNetAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->taxableNetAmount = NumberDataTypeHelper::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -605,7 +605,7 @@
 		 */
 		public function setTaxAmount($amount)
 		{
-			$this->taxAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->taxAmount = NumberDataTypeHelper::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -616,7 +616,7 @@
 		 */
 		public function setTaxExemptAmount($amount)
 		{
-			return $this->taxExemptAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			return $this->taxExemptAmount = NumberDataTypeHelper::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -627,7 +627,7 @@
 		 */
 		public function setUntaxedNetAmount($amount)
 		{
-			$this->untaxedNetAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->untaxedNetAmount = NumberDataTypeHelper::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -729,7 +729,7 @@
 				if ($this->alicuotas->count() > 0)
 				{
 					$absoluteError = ($this->alicuotas->getTaxAmount() - $this->getTaxAmount());
-					$absoluteError = Afip_Helper_DataType_Number::truncate($absoluteError, 2);
+					$absoluteError = NumberDataTypeHelper::truncate($absoluteError, 2);
 					
 					if (abs($absoluteError) > 0.01)
 						$this->errors->add("El monto de las alicuotas no coincide con el monto de IVA de la Factura. Error Absoluto: $absoluteError");

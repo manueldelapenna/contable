@@ -108,7 +108,7 @@
 		 */
 		public function setBaseAmount($amount)
 		{
-			$this->baseAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->baseAmount = NumberDataTypeHelper::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -119,7 +119,7 @@
 		 */
 		public function setTaxAmount($amount)
 		{
-			$this->taxAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->taxAmount = NumberDataTypeHelper::truncate(floatval($amount), 2);
 		}
 		
 		
@@ -157,7 +157,7 @@
 // 			{
 // 				$relativeError = (($this->getTaxAmount() / $this->getBaseAmount() * 100) - $this->getTaxPercent());
 // 				$relativeError = $relativeError / $this->getTaxPercent();
-// 				$relativeError = Afip_Helper_DataType_Number::truncate($relativeError, 2);
+// 				$relativeError = NumberDataTypeHelper::truncate($relativeError, 2);
 				
 // 				if (abs($relativeError) > 0.01)
 // 					$this->errors->add("The base and tax amount do not match with the alicuota ({$this->getName()}). Diference: $relativeError");
