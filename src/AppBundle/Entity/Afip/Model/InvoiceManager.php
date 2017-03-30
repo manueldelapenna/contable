@@ -7,7 +7,7 @@
 	 * @author Eduardo Casey
 	 */
 
-	final class Afip_Model_InvoiceManager extends Mage_Core_Model_Abstract
+	final class AfipInvoiceManager
 	{
 		/* Constants and Variables */
 		
@@ -62,7 +62,7 @@
 		 *
 		 * @param Afip_Model_Environment_Environment $environment
 		 * @param FileLoggerHelper $logger
-		 * @return Afip_Model_InvoiceManager instance
+		 * @return AfipInvoiceManager instance
 		 */
 		public static function getInstance($environment, $logger)
 		{
@@ -120,14 +120,14 @@
 		/**
 		 * Authorizes the given billing data on Webservice (WSFE).
 		 *
-		 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector
+		 * @param AfipInvoiceData_InvoiceDataCollector $collector
 		 * @return void
-		 * @throws Afip_Exception_Lib_Exception Throws an exception when Webservice (WSFE) is not running or given collector is not an instance of Afip_Model_InvoiceData_InvoiceDataCollector.
+		 * @throws Afip_Exception_Lib_Exception Throws an exception when Webservice (WSFE) is not running or given collector is not an instance of AfipInvoiceData_InvoiceDataCollector.
 		 */
 		public function authorize($collector)
 		{
 			$this->exceptionIfNoWebservice();
-			$this->exceptionIfClassMismatch($collector, "Afip_Model_InvoiceData_InvoiceDataCollector");
+			$this->exceptionIfClassMismatch($collector, "AfipInvoiceData_InvoiceDataCollector");
 			
 			$this->log("BEGIN", __FUNCTION__);
 			
@@ -725,7 +725,7 @@
 		/**
 		 * Processes the billing data in given collector and returns a collection of valid billing data with their invoice numbers for Webservice (WSFE).
 		 *
-		 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector
+		 * @param AfipInvoiceData_InvoiceDataCollector $collector
 		 * @return array
 		 */
 		protected function prepareBillingData($collector)
@@ -816,7 +816,7 @@
 		/**
 		 * Updates billing data with the given result from Webservice (WSFE).
 		 *
-		 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector
+		 * @param AfipInvoiceData_InvoiceDataCollector $collector
 		 * @param array $resultCollection
 		 * @return void
 		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given collection of results is not an array or it is empty.

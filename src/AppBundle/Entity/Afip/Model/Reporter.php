@@ -4,7 +4,7 @@
  *
  * @author manueldelapenna
  */
-class Afip_Model_Reporter extends Mage_Core_Model_Abstract {
+class Afip_Model_Reporter {
 	
 	
 	/**
@@ -20,7 +20,7 @@ class Afip_Model_Reporter extends Mage_Core_Model_Abstract {
 			
 			//facturas afip del dia anterior sin realizarce
 			$pending_invoices = Mage::getModel('afip/invoice')->getCollection()
-			->addFieldToFilter('status',array('eq' => Afip_Model_Invoice::PENDING));
+			->addFieldToFilter('status',array('eq' => AfipInvoice::PENDING));
 			
 			$pending_invoices->getSelect()->joinInner(
 					array('sfi' => 'sales_flat_invoice'), 'main_table.order_invoice_id = sfi.entity_id and created_at < "'.$date_to_compare.'"', array('created_at')

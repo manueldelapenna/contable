@@ -4,7 +4,7 @@
  *
  * @author manueldelapenna
  */
-class Afip_Model_Observer extends Mage_Core_Model_Abstract {
+class Afip_Model_Observer {
 	public function generateInvoice(Varien_Event_Observer $observer) {
 		
 		if(Mage::getStoreConfig('afip/config/enable') && Mage::getStoreConfig('afip/config/enable_queue')){ 
@@ -14,7 +14,7 @@ class Afip_Model_Observer extends Mage_Core_Model_Abstract {
 			
 			$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($invoice->getId());
 			
-			//if not exists Afip_Model_Invoice for Mage_Sales_Model_Order_Invoice
+			//if not exists AfipInvoice for Mage_Sales_Model_Order_Invoice
 			if (count($afipInvoice->getData()) == 0){
 				$paymentMethod = $invoice->getOrder()->getPayment()->getOrigData();
 				$storeId = $invoice->getStoreId();
@@ -37,7 +37,7 @@ class Afip_Model_Observer extends Mage_Core_Model_Abstract {
 						try {
 							$afipInvoice = Mage::getModel('afip/invoice');
 							$afipInvoice->setOrderInvoiceId($invoice->getId());
-							$afipInvoice->setStatus(Afip_Model_Invoice::PENDING);
+							$afipInvoice->setStatus(AfipInvoice::PENDING);
 							
 							$orderCurrencyCode = $invoice->getOrder()->getOrderCurrencyCode();
 							

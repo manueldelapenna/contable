@@ -4,7 +4,7 @@
  * @author manueldelapenna
  *
  */
-class Afip_Model_Invoice extends Mage_Core_Model_Abstract
+class AfipInvoice
 {
 	const PENDING = 0;
 	const REJECTED = 1;
@@ -16,14 +16,14 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     }
     
     /**
-     * Return max (last) Afip_Model_Invoice number for a specific billingType
+     * Return max (last) AfipInvoice number for a specific billingType
      * 
      * @param Afip_Model_Enums_TypeEnum $billingType
      * @return int number
      */
     public static function getLastNumber($billingType){
     	$read = Mage::getSingleton('core/resource')->getConnection('core_read');
-    	$status = Afip_Model_Invoice::AUTHORIZED;
+    	$status = AfipInvoice::AUTHORIZED;
     	$result = $read->fetchAll("SELECT MAX(number) as max 
     							   FROM afip_invoice 
     			                   where status = $status and
@@ -37,12 +37,12 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     }
     
     /**
-     * Retrieve 100 pending Afip_Model_Invoice for printing
+     * Retrieve 100 pending AfipInvoice for printing
      *
      * @return int number
      */
     public static function getPendingForPrinting(){
-    	$status = Afip_Model_Invoice::AUTHORIZED;
+    	$status = AfipInvoice::AUTHORIZED;
     	return Mage::getModel('afip/invoice')->getCollection()
     	->addFieldToFilter('status',array('eq' => $status))
     	->addFieldToFilter('is_pdf_created', array('eq' => 0))
@@ -51,14 +51,14 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     }
     
     /**
-     * Retrieve 250 pending Afip_Model_Invoice for a specific billingType
+     * Retrieve 250 pending AfipInvoice for a specific billingType
      *
      * @param Afip_Model_Enums_TypeEnum $billingType
      * @return Afip_Model_Mysql4_Invoice_Collection
      */
     public static function getPendingForAuthorize($billingType){
     	return Mage::getModel('afip/invoice')->getCollection()
-    		->addFieldToFilter('status',array('eq' => Afip_Model_Invoice::PENDING))
+    		->addFieldToFilter('status',array('eq' => AfipInvoice::PENDING))
     		->addFieldToFilter('type', array('eq' => $billingType))
     		->setPageSize(250);
     }
@@ -82,20 +82,20 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     }
     
     /**
-     * Retrieve Afip_Model_Invoice by Mage_Sales_Model_Order_Invoice id
+     * Retrieve AfipInvoice by Mage_Sales_Model_Order_Invoice id
      * 
-     * @param Afip_Model_Invoice attribute value
-     * @return Afip_Model_Invoice
+     * @param AfipInvoice attribute value
+     * @return AfipInvoice
      */
     public function loadInvoiceByOrderInvoiceId($value){
     	return Mage::getModel('afip/invoice')->getCollection()->addFieldToFilter('order_invoice_id',array('eq' => $value))->getFirstItem();
     }
     
     /**
-     * Retrieve Afip_Model_Invoice by Mage_Sales_Model_Order_Invoice id for download
+     * Retrieve AfipInvoice by Mage_Sales_Model_Order_Invoice id for download
      *
-     * @param Afip_Model_Invoice attribute value
-     * @return Afip_Model_Invoice
+     * @param AfipInvoice attribute value
+     * @return AfipInvoice
      */
     public function afipInvoiceForDownloadFromOrderInvoiceId($value){
     	return Mage::getModel('afip/invoice')->getCollection()
@@ -105,10 +105,10 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     }
     
     /**
-     * Retrieve Afip_Model_Invoice with Rejected status by Mage_Sales_Model_Order_Invoice id
+     * Retrieve AfipInvoice with Rejected status by Mage_Sales_Model_Order_Invoice id
      *
-     * @param Afip_Model_Invoice attribute value
-     * @return Afip_Model_Invoice
+     * @param AfipInvoice attribute value
+     * @return AfipInvoice
      */
     public function afipInvoiceForChangeStateFromOrderInvoiceId($value){
     	return Mage::getModel('afip/invoice')->getCollection()
@@ -119,11 +119,11 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     
     
     /**
-     * Retrieve Afip_Model_Invoice by number and billingType
+     * Retrieve AfipInvoice by number and billingType
      * 
-     * @param Afip_Model_Invoice attribute value
+     * @param AfipInvoice attribute value
      * @param Afip_Model_Enums_TypeEnum $billingType
-     * @return Afip_Model_Invoice
+     * @return AfipInvoice
      */
     public function loadInvoiceByNumber($value, $billingType){
     	return Mage::getModel('afip/invoice')->getCollection()
@@ -133,7 +133,7 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     }
     
     /**
-     * Update and save Afip_Model_Invoice
+     * Update and save AfipInvoice
      *
      * @param int $number
      * @param int $type
@@ -152,7 +152,7 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     	$this->setAuthorizationDate($authorizationDate);
     	$this->setObservations($observations);
     	$this->setStatus($status);
-    	if($status == Afip_Model_Invoice::REJECTED){
+    	if($status == AfipInvoice::REJECTED){
     		$this->resetAmounts();
     	}
     	$this->save();
@@ -178,7 +178,7 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     }
    
     /**
-     * Returns an array of Afip_Model_Invoice states by id
+     * Returns an array of AfipInvoice states by id
      *
      * @return $array
      */
@@ -193,7 +193,7 @@ class Afip_Model_Invoice extends Mage_Core_Model_Abstract
     
     
     /**
-     * Returns an array of Afip_Model_Invoice types by id
+     * Returns an array of AfipInvoice types by id
      *
      * @return $array
      */

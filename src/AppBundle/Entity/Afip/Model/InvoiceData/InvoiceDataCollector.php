@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Model_InvoiceData_InvoiceDataCollector implements Iterator, Countable
+	class AfipInvoiceData_InvoiceDataCollector implements Iterator, Countable
 	{
 		/* Constants and Variables */
 		
@@ -54,7 +54,7 @@
 		 * Returns a new instance.
 		 *
 		 * @param int $type The type of stored invoice data (e.g. Afip_Model_Enums_TypeEnum::A).
-		 * @return Afip_Model_InvoiceData_InvoiceDataCollector instance
+		 * @return AfipInvoiceData_InvoiceDataCollector instance
 		 */
 		public static function getInstance($type)
 		{
@@ -85,14 +85,14 @@
 		/**
 		 * Adds the given invoice data to collector.
 		 *
-		 * @param Afip_Model_InvoiceData_InvoiceData $data
+		 * @param AfipInvoiceData_InvoiceData $data
 		 * @return void
-		 * @throws Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given invoice data is not an instance of Afip_Model_InvoiceData_InvoiceData.
+		 * @throws Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given invoice data is not an instance of AfipInvoiceData_InvoiceData.
 		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given invoice data type mismatch with collector type.
 		 */
-		public function add(Afip_Model_InvoiceData_InvoiceData $data)
+		public function add(AfipInvoiceData_InvoiceData $data)
 		{
-			if (is_object($data) && ($data instanceof Afip_Model_InvoiceData_InvoiceData))
+			if (is_object($data) && ($data instanceof AfipInvoiceData_InvoiceData))
 			{
 				if ($data->getInvoiceType() == $this->invoiceType)
 				{
@@ -103,7 +103,7 @@
 					Afip_Exception_ExceptionFactory::throwFor("The type of given invoice data does not match with the type of collector. Expected <{$this->invoiceTypeName}>.");
 			}
 			else
-				Afip_Exception_ExceptionFactory::throwClassMismatch("Afip_Model_InvoiceData_InvoiceData");
+				Afip_Exception_ExceptionFactory::throwClassMismatch("AfipInvoiceData_InvoiceData");
 		}
 		
 		/**
@@ -119,7 +119,7 @@
 		/**
 		 * Returns the current invoice data.
 		 *
-		 * @return Afip_Model_InvoiceData_InvoiceData instance
+		 * @return AfipInvoiceData_InvoiceData instance
 		 */
 		public function current()
 		{

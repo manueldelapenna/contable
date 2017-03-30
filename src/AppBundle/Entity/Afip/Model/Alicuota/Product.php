@@ -4,7 +4,7 @@
  * @author manueldelapenna
  *
  */
-class Afip_Model_Alicuota_Product extends Mage_Core_Model_Abstract
+class Afip_Model_Alicuota_Product
 {
 	const IVA_0250 = "2.5";
 	const IVA_0500 = "5";

@@ -4,7 +4,7 @@
  *
  * @author manueldelapenna
  */
-class Afip_Model_Pdf_InvoicePrinterExecutor extends Mage_Core_Model_Abstract {
+class Afip_Model_Pdf_InvoicePrinterExecutor {
 	
 	/**
 	 * Process ID.
@@ -35,7 +35,7 @@ class Afip_Model_Pdf_InvoicePrinterExecutor extends Mage_Core_Model_Abstract {
 	}
 	
 	public static function executePrinter(){
-		$pendingForPrintingAfipInvoices = Afip_Model_Invoice::getPendingForPrinting();
+		$pendingForPrintingAfipInvoices = AfipInvoice::getPendingForPrinting();
 		
 		foreach ($pendingForPrintingAfipInvoices as $afipInvoice){
 			$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
@@ -67,7 +67,7 @@ class Afip_Model_Pdf_InvoicePrinterExecutor extends Mage_Core_Model_Abstract {
 		return $environment->getPointOfSale();
 	}
 	
-	public static function getDirForAfipDocument(Afip_Model_Invoice $afipInvoice) {
+	public static function getDirForAfipDocument(AfipInvoice $afipInvoice) {
 		
 		$date = new DateTime($afipInvoice->getAuthorizationDate());
 		$year = date_format($date, 'Y');
@@ -81,7 +81,7 @@ class Afip_Model_Pdf_InvoicePrinterExecutor extends Mage_Core_Model_Abstract {
 		
 	}
 	
-	public static function getFilenameForAfipDocument(Afip_Model_Invoice $afipInvoice) {
+	public static function getFilenameForAfipDocument(AfipInvoice $afipInvoice) {
 		
 		$invoiceLetter = Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType());
 			

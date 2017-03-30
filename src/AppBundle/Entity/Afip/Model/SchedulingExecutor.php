@@ -4,7 +4,7 @@
  *
  * @author manueldelapenna
  */
-class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
+class Afip_Model_SchedulingExecutor {
 	
 	/**
 	 * Process ID.
@@ -50,11 +50,11 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 		
 		$invoiceManager = Afip_Model_SchedulingExecutor::createInvoiceManager();
 		$lastAfipInvoiceNumber = $invoiceManager->getLastAcceptedNumberFor($billingType);
-		$lastRUInvoiceNumber = Afip_Model_Invoice::getLastNumber($billingType);
+		$lastRUInvoiceNumber = AfipInvoice::getLastNumber($billingType);
 		
 		if($lastRUInvoiceNumber == $lastAfipInvoiceNumber) {
-			$pendingAfipInvoices = Afip_Model_Invoice::getPendingForAuthorize($billingType);
-			Afip_Model_Invoice::setNullNumberToPedingInvoices($billingType);
+			$pendingAfipInvoices = AfipInvoice::getPendingForAuthorize($billingType);
+			AfipInvoice::setNullNumberToPedingInvoices($billingType);
 			$collector = Afip_Model_SchedulingExecutor::generateAfipInvoiceDataCollectorFromOrderInvoice($pendingAfipInvoices, $billingType);
 			$collector->assignInvoiceNumbersFrom($lastAfipInvoiceNumber);
 			$collector = Afip_Model_SchedulingExecutor::iterateCollectorAndAssignInvoiceNumbers($collector);
@@ -75,7 +75,7 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 	/**
 	 * Creates a new InvoiceManager for configurated environment
 	 *
-	 * @return Afip_Model_InvoiceManager
+	 * @return AfipInvoiceManager
 	 */
 	public static function createInvoiceManager() {
 		if(Mage::getStoreConfig('afip/config/enable_prod')) {
@@ -85,19 +85,19 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 		}
 		
 		$logger = FileLoggerHelper::getInstance(NULL, Mage::getBaseDir('var') . '/log/afip');
-		$invoiceManager = Afip_Model_InvoiceManager::getInstance($environment, $logger);
+		$invoiceManager = AfipInvoiceManager::getInstance($environment, $logger);
 		return $invoiceManager;
 	}
 	
 	/**
-	 * Creates a Afip_Model_InvoiceData_InvoiceDataCollector instance for a Afip_Model_Mysql4_Invoice_Collection with a specific Afip_Model_Enums_TypeEnum
+	 * Creates a AfipInvoiceData_InvoiceDataCollector instance for a Afip_Model_Mysql4_Invoice_Collection with a specific Afip_Model_Enums_TypeEnum
 	 *
 	 * @param Afip_Model_Mysql4_Invoice_Collection $pendingAfipInvoices        	
 	 * @param Afip_Model_Enums_TypeEnum $billingType        	
-	 * @return Afip_Model_InvoiceData_InvoiceDataCollector
+	 * @return AfipInvoiceData_InvoiceDataCollector
 	 */
 	public static function generateAfipInvoiceDataCollectorFromOrderInvoice($pendingAfipInvoices, $billingType) {
-		$collector = Afip_Model_InvoiceData_InvoiceDataCollector::getInstance($billingType);
+		$collector = AfipInvoiceData_InvoiceDataCollector::getInstance($billingType);
 		foreach($pendingAfipInvoices as $afipInvoice) {
 			$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
 			$data = Afip_Model_SchedulingExecutor::generateAfipInvoiceDataFromOrderInvoice($invoice, $billingType, $afipInvoice);
@@ -107,15 +107,15 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 	}
 	
 	/**
-	 * Creates a Afip_Model_InvoiceData_InvoiceData from a Mage_Sales_Order_Invoice
+	 * Creates a AfipInvoiceData_InvoiceData from a Mage_Sales_Order_Invoice
 	 *
 	 * @param Mage_Sales_Model_Order_Invoice $invoice        	
 	 * @param Afip_Model_Enums_TypeEnum $billingType        	
-	 * @param Afip_Model_Invoice $afipInvoice
-	 * @return Afip_Model_InvoiceData_InvoiceData
+	 * @param AfipInvoice $afipInvoice
+	 * @return AfipInvoiceData_InvoiceData
 	 */
 	public static function generateAfipInvoiceDataFromOrderInvoice($invoice, $billingType, $afipInvoice) {
-		$invoiceData = new Afip_Model_InvoiceData_InvoiceData();
+		$invoiceData = new AfipInvoiceData_InvoiceData();
 		$invoiceData->setConcept(Afip_Model_Enums_ConceptEnum::PRODUCT);
 		
 		$customer = Mage::getModel('customer/customer')->load($invoice->getOrder()->getCustomerId());
@@ -248,8 +248,8 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 	/**
 	 * Iterates the Invoice Data Collector and retrieve Invoices for assign number
 	 *
-	 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector        	
-	 * @return Afip_Model_InvoiceData_InvoiceDataCollector $collector
+	 * @param AfipInvoiceData_InvoiceDataCollector $collector        	
+	 * @return AfipInvoiceData_InvoiceDataCollector $collector
 	 */
 	public static function iterateCollectorAndAssignInvoiceNumbers($collector) {
 		$collector->rewind();
@@ -261,7 +261,7 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 			while($collector->valid()) {
 				$billingData = $collector->current();
 				$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($billingData->getId());
-				$afipInvoice->updateAndSave($billingData->getInvoiceNumber(), $afipInvoice->getType(), NULL, NULL, NULL, NULL, Afip_Model_Invoice::PENDING);
+				$afipInvoice->updateAndSave($billingData->getInvoiceNumber(), $afipInvoice->getType(), NULL, NULL, NULL, NULL, AfipInvoice::PENDING);
 				$collector->next();
 			}
 			
@@ -276,8 +276,8 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 	/**
 	 * Iterates the Invoice Data Collector and retrieve Invoices for update with AFIP respones information
 	 *
-	 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector        	
-	 * @return Afip_Model_InvoiceData_InvoiceDataCollector $collector
+	 * @param AfipInvoiceData_InvoiceDataCollector $collector        	
+	 * @return AfipInvoiceData_InvoiceDataCollector $collector
 	 */
 	public static function iterateCollectorAndUpdateInvoiceWithAfipResponse($collector) {
 		$collector->rewind();
@@ -286,18 +286,18 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 			$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($afipBillingData->getId());
 			
 			if($afipBillingData->getStatus() == Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED) {
-				$afipInvoice->updateAndSave($afipInvoice->getNumber(), $afipInvoice->getType(), $afipBillingData->getCae(), $afipBillingData->getCaeDueDate(), $afipBillingData->getAuthDate(), NULL, Afip_Model_Invoice::AUTHORIZED);
+				$afipInvoice->updateAndSave($afipInvoice->getNumber(), $afipInvoice->getType(), $afipBillingData->getCae(), $afipBillingData->getCaeDueDate(), $afipBillingData->getAuthDate(), NULL, AfipInvoice::AUTHORIZED);
 				$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
 				$invoice->addComment("La Factura ha sido autorizada por la AFIP con el número " . $afipInvoice->getNumber(),false,false);
 				$invoice->save();
 			} else if(($afipBillingData->getStatus() == Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID) ||($afipBillingData->getStatus() == Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED)) {
-				$afipInvoice->updateAndSave(NULL, $afipInvoice->getType(), NULL, NULL, NULL, $afipBillingData->getErrors()->getListAsString(), Afip_Model_Invoice::REJECTED);
+				$afipInvoice->updateAndSave(NULL, $afipInvoice->getType(), NULL, NULL, NULL, $afipBillingData->getErrors()->getListAsString(), AfipInvoice::REJECTED);
 				$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
 				$invoice->addComment("La Factura ha sido rechazada por la AFIP. Detalles: " . $afipBillingData->getErrors()->getListAsString(),false,false);
 				$invoice->save();
 				self::sendAfipInvoiceRejectedEmail($invoice, $afipInvoice);
 			} else {
-				$afipInvoice->updateAndSave(NULL, $afipInvoice->getType(), NULL, NULL, NULL, NULL, Afip_Model_Invoice::PENDING);
+				$afipInvoice->updateAndSave(NULL, $afipInvoice->getType(), NULL, NULL, NULL, NULL, AfipInvoice::PENDING);
 			}
 			$collector->next();
 		}
@@ -308,7 +308,7 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 	/**
 	 * Resend an interval of Invoices with lost Response to AFIP
 	 *
-	 * @param Afip_Model_InvoiceManager $invoiceManager        	
+	 * @param AfipInvoiceManager $invoiceManager        	
 	 * @param int $lastRUInvoiceNumber        	
 	 * @param int $lastAfipInvoiceNumber        	
 	 * @param Afip_Model_Enums_TypeEnum $billingType        	
@@ -318,7 +318,7 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 		for($i = $lastRUInvoiceNumber; $i < $lastAfipInvoiceNumber; $i ++) {
 			$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByNumber($i + 1, $billingType);
 			$afipData = $invoiceManager->retrieveDataFor($billingType, $i + 1);
-			$afipInvoice->updateAndSave($i + 1, $afipInvoice->getType(), $afipData->CodAutorizacion, $afipData->FchVto, $afipData->FchProceso, NULL, Afip_Model_Invoice::AUTHORIZED);
+			$afipInvoice->updateAndSave($i + 1, $afipInvoice->getType(), $afipData->CodAutorizacion, $afipData->FchVto, $afipData->FchProceso, NULL, AfipInvoice::AUTHORIZED);
 			$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
 			$invoice->addComment("La Factura ha sido autorizada por la AFIP con el número " . $afipInvoice->getNumber(),false,false);
 			$invoice->save();
