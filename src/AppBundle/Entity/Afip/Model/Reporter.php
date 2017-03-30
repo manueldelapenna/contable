@@ -4,7 +4,7 @@
  *
  * @author manueldelapenna
  */
-class Afip_Model_Reporter {
+class Reporter {
 	
 	
 	/**

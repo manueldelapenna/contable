@@ -7,7 +7,7 @@
 	 * @author Eduardo Casey
 	 */
 
-	final class AfipInvoiceManager
+	final class InvoiceManager
 	{
 		/* Constants and Variables */
 		
@@ -62,7 +62,7 @@
 		 *
 		 * @param Afip_Model_Environment_Environment $environment
 		 * @param FileLoggerHelper $logger
-		 * @return AfipInvoiceManager instance
+		 * @return InvoiceManager instance
 		 */
 		public static function getInstance($environment, $logger)
 		{

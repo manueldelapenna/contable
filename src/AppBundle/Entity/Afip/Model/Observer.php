@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Afip_Model_Observer
+ * Description of Observer
  *
  * @author manueldelapenna
  */
-class Afip_Model_Observer {
+class Observer {
 	public function generateInvoice(Varien_Event_Observer $observer) {
 		
 		if(Mage::getStoreConfig('afip/config/enable') && Mage::getStoreConfig('afip/config/enable_queue')){ 

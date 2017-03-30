@@ -18,7 +18,7 @@ class Afip_Model_Pdf_InvoicePrinterExecutor {
 	 */
 	public static function execute() {
 
-		$sem = new Afip_Model_FileSemaphore(self::PROCESS_ID, NULL, 0, 1800);
+		$sem = new FileSemaphore(self::PROCESS_ID, NULL, 0, 1800);
 						
 		if ($sem->isLock()){
 				$sem->executeWarningTimeAction();

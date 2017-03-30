@@ -1,5 +1,5 @@
 <?php 
-class Afip_Model_Aliquot extends Mage_Eav_Model_Entity_Attribute_Source_Abstract {
+class Aliquot extends Mage_Eav_Model_Entity_Attribute_Source_Abstract {
 
 	
 	

@@ -1,11 +1,11 @@
 <?php
 /**
- * Description of Afip_Model_FileSemaphore
+ * Description of FileSemaphore
  *
  * @author Eduardo Casey
  */
 
-class Afip_Model_FileSemaphore
+class FileSemaphore
 {  
 
 	/* Variables and Constants */

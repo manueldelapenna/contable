@@ -20,7 +20,7 @@ class Afip_Model_SchedulingExecutor {
 		
 		if(Mage::getStoreConfig('afip/config/enable')) {
 			
-			$sem = new Afip_Model_FileSemaphore(self::PROCESS_ID, NULL, 0, 1800);
+			$sem = new FileSemaphore(self::PROCESS_ID, NULL, 0, 1800);
 						
 			if ($sem->isLock()){
 				$sem->executeWarningTimeAction();
@@ -75,7 +75,7 @@ class Afip_Model_SchedulingExecutor {
 	/**
 	 * Creates a new InvoiceManager for configurated environment
 	 *
-	 * @return AfipInvoiceManager
+	 * @return InvoiceManager
 	 */
 	public static function createInvoiceManager() {
 		if(Mage::getStoreConfig('afip/config/enable_prod')) {
@@ -85,7 +85,7 @@ class Afip_Model_SchedulingExecutor {
 		}
 		
 		$logger = FileLoggerHelper::getInstance(NULL, Mage::getBaseDir('var') . '/log/afip');
-		$invoiceManager = AfipInvoiceManager::getInstance($environment, $logger);
+		$invoiceManager = InvoiceManager::getInstance($environment, $logger);
 		return $invoiceManager;
 	}
 	
@@ -308,7 +308,7 @@ class Afip_Model_SchedulingExecutor {
 	/**
 	 * Resend an interval of Invoices with lost Response to AFIP
 	 *
-	 * @param AfipInvoiceManager $invoiceManager        	
+	 * @param InvoiceManager $invoiceManager        	
 	 * @param int $lastRUInvoiceNumber        	
 	 * @param int $lastAfipInvoiceNumber        	
 	 * @param Afip_Model_Enums_TypeEnum $billingType        	
