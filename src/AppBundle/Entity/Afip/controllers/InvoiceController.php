@@ -9,8 +9,8 @@ class Afip_InvoiceController extends Mage_Adminhtml_Controller_Action
 
 		$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($invoiceId);
 				
-		$dir = Afip_Model_Pdf_InvoicePrinterExecutor::getDirForAfipDocument($afipInvoice);
-		$filename = Afip_Model_Pdf_InvoicePrinterExecutor::getFilenameForAfipDocument($afipInvoice);
+		$dir = PdfInvoicePrinterExecutor::getDirForAfipDocument($afipInvoice);
+		$filename = PdfInvoicePrinterExecutor::getFilenameForAfipDocument($afipInvoice);
 		$path = "$dir/$filename";
 		
 		$pdf = file_get_contents($path);

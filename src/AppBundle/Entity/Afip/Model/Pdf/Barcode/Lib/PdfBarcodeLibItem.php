@@ -10,7 +10,7 @@
  * @package Barcode
  */
 
-class Afip_Model_Pdf_Barcode_Lib_Item {
+class PdfBarcodeLibItem {
 	
 	/**
 	 * Item Value

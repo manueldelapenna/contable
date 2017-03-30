@@ -4,7 +4,7 @@
  *
  * @author     manueldelapenna
  */
-class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
+class PdfInvoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 	
 	private $barcode = NULL;
 	private $copies = 3;
@@ -17,10 +17,10 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 			
 		$customer = Mage::getModel('customer/customer')->load($invoice->getOrder()->getCustomerId());
 		$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($invoice->getId());
-		$this->barcode = new Afip_Model_Pdf_Barcode_Barcode();
+		$this->barcode = new PdfBarcode();
 		$this->barcode->addCUIT(33709315329);
 		$this->barcode->addInvoiceType(TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType()));
-		$this->barcode->addPOS(Afip_Model_Pdf_InvoicePrinterExecutor::getPointOfSaleOfConfiguratedEnvironment());
+		$this->barcode->addPOS(PdfInvoicePrinterExecutor::getPointOfSaleOfConfiguratedEnvironment());
 		
 		if ($afipInvoice->getType() == TypeEnum::A){
 			$pdf = Zend_Pdf::load(Mage::getModuleDir('etc', 'Afip') . "/pdfTemplates/invoiceATemplate.pdf");
@@ -42,7 +42,7 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 		
 		$billingAddress = $invoice->getBillingAddress();
 		$this->setAddress($billingAddress->getStreet1() . " " . $billingAddress->getStreet2() . " (" . $billingAddress->getPostcode() . ") " . $billingAddress->getCity() . ", " . $billingAddress->getRegion() . ", " . $billingAddress->getCountryModel()->getName());
-		$this->setBillingNumber(Afip_Model_Pdf_InvoicePrinterExecutor::getPointOfSaleOfConfiguratedEnvironment() ."-". Afip_Model_Pdf_InvoicePrinterExecutor::getNormalizedInvoiceNumber($afipInvoice));
+		$this->setBillingNumber(PdfInvoicePrinterExecutor::getPointOfSaleOfConfiguratedEnvironment() ."-". PdfInvoicePrinterExecutor::getNormalizedInvoiceNumber($afipInvoice));
 	
 		$this->setDueDate($afipInvoice->getCaeDueDate());
 		$this->setCae($afipInvoice->getCaeNumber());

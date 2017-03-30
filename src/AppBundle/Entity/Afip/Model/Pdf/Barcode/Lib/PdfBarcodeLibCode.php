@@ -8,7 +8,7 @@
  * @since 17/09/2007 
  * @package Barcode
  */
-class Afip_Model_Pdf_Barcode_Lib_Code {
+class PdfBarcodeLibCode {
 	
 	/**
 	 * Items
@@ -23,7 +23,7 @@ class Afip_Model_Pdf_Barcode_Lib_Code {
 	 * @param Barcode_Item $item item to be added
 	 * @param int $pos the desired slot in the code to place it
 	 */
-	public function addItem(Afip_Model_Pdf_Barcode_Lib_Item $item, $pos = 0) {
+	public function addItem(PdfBarcodeLibItem $item, $pos = 0) {
 		$pos = ($pos!=0) ? $pos : count($this->items);
 		$this->items[$pos] = $item;
 	}
@@ -48,7 +48,7 @@ class Afip_Model_Pdf_Barcode_Lib_Code {
 	 * @return string
 	 */
 	private function getEncodedImage($enc="I2O5") {
-		$bar = new Afip_Model_Pdf_Barcode_Lib_Encoder($enc);
+		$bar = new PdfBarcodeLibEncoder($enc);
 		$bar->setSymblogy($enc);
 	    $bar->setHeight(60);
 	    $bar->setFont("arial");

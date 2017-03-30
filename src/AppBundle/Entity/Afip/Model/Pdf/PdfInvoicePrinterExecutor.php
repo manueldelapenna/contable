@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Afip_Model_Pdf_InvoicePrinterExecutor
+ * Description of PdfInvoicePrinterExecutor
  *
  * @author manueldelapenna
  */
-class Afip_Model_Pdf_InvoicePrinterExecutor {
+class PdfInvoicePrinterExecutor {
 	
 	/**
 	 * Process ID.

@@ -21,7 +21,7 @@
 	* Reference : http://www.barcodeisland.com/symbolgy.phtml
 	*/
 	
-	class Afip_Model_Pdf_Barcode_Lib_Encoder
+	class PdfBarcodeLibEncoder
 	{
 		var $_encode;
 		var $_error;
