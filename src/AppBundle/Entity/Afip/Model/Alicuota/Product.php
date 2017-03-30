@@ -33,7 +33,7 @@ class Afip_Model_Alicuota_Product extends Mage_Core_Model_Abstract
 			
 			if ($isItemParent){
 				$alicuota = self::getAlicuotaForProduct($product);
-				$alicuotaAmounts[$alicuota] = $alicuotaAmounts[$alicuota] + Afip_Helper_Taxer::getFinalAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+				$alicuotaAmounts[$alicuota] = $alicuotaAmounts[$alicuota] + TaxerHelper::getFinalAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 			}
 
  		}

@@ -84,7 +84,7 @@ class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 			$environment = Afip_Model_Environment_StagingEnvironment::getInstance();
 		}
 		
-		$logger = Afip_Helper_FileLogger::getInstance(NULL, Mage::getBaseDir('var') . '/log/afip');
+		$logger = FileLoggerHelper::getInstance(NULL, Mage::getBaseDir('var') . '/log/afip');
 		$invoiceManager = Afip_Model_InvoiceManager::getInstance($environment, $logger);
 		return $invoiceManager;
 	}

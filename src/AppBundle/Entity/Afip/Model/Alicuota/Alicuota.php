@@ -18,7 +18,7 @@
 		
 		/**
 		 * The errors.
-		 * @var Afip_Helper_ErrorCollection instance
+		 * @var ErrorCollectionHelper instance
 		 */
 		protected $errors;
 		
@@ -56,7 +56,7 @@
 		/**
 		 * Returns the errors.
 		 *
-		 * @return Afip_Helper_ErrorCollection instance
+		 * @return ErrorCollectionHelper instance
 		 */
 		public function getErrors()
 		{
@@ -141,7 +141,7 @@
 			$this->setBaseAmount(0);
 			$this->setTaxAmount(0);
 			
-			$this->errors = Afip_Helper_ErrorCollection::getInstance();
+			$this->errors = ErrorCollectionHelper::getInstance();
 		}
 		
 		/**

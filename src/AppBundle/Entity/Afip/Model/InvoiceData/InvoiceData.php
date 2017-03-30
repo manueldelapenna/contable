@@ -60,7 +60,7 @@
 		
 		/**
 		 * The errors.
-		 * @var Afip_Helper_ErrorCollection instance
+		 * @var ErrorCollectionHelper instance
 		 */
 		protected $errors;
 		
@@ -317,11 +317,11 @@
 		/**
 		 * Returns the errors.
 		 *
-		 * @return Afip_Helper_ErrorCollection instance
+		 * @return ErrorCollectionHelper instance
 		 */
 		public function getErrors()
 		{
-			$errors = Afip_Helper_ErrorCollection::getInstance();
+			$errors = ErrorCollectionHelper::getInstance();
 			$errors->addFrom($this->errors);
 			$errors->addFrom($this->alicuotas->getErrors());
 			
@@ -659,7 +659,7 @@
 			$this->billingTarget = NULL;
 			$this->documentNumber = 0;
 			$this->documentType = NULL;
-			$this->errors = Afip_Helper_ErrorCollection::getInstance();
+			$this->errors = ErrorCollectionHelper::getInstance();
 			$this->id = NULL;
 			$this->invoiceDate = NULL;
 			$this->invoiceNumber = NULL;

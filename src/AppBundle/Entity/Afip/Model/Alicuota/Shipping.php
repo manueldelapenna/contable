@@ -25,7 +25,7 @@ class Afip_Model_Alicuota_Shipping extends Mage_Core_Model_Abstract
 		$alicuotaAmounts[self::EXENTO] = 0;
 		
 		$alicuota = self::getAlicuotaForShipping();
-		$alicuotaAmounts[$alicuota] = $alicuotaAmounts[$alicuota] + Afip_Helper_Taxer::getFinalAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+		$alicuotaAmounts[$alicuota] = $alicuotaAmounts[$alicuota] + TaxerHelper::getFinalAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 				
 		return $alicuotaAmounts;
 	

@@ -18,7 +18,7 @@
 		
 		/**
 		 * The errors.
-		 * @var Afip_Helper_ErrorCollection instance
+		 * @var ErrorCollectionHelper instance
 		 */
 		protected $errors;
 		
@@ -58,7 +58,7 @@
 		public function __construct()
 		{
 			$this->count = 0;
-			$this->errors = Afip_Helper_ErrorCollection::getInstance();
+			$this->errors = ErrorCollectionHelper::getInstance();
 			
 			$this->flags = array();
 			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_0000] = NULL;
@@ -145,7 +145,7 @@
 		/**
 		 * Returns the errors.
 		 *
-		 * @return Afip_Helper_ErrorCollection instance
+		 * @return ErrorCollectionHelper instance
 		 */
 		public function getErrors()
 		{

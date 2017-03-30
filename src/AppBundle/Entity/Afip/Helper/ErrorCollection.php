@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Helper_ErrorCollection
+	class ErrorCollectionHelper
 	{
 		protected $errors;
 		
@@ -15,7 +15,7 @@
 		/**
 		 * Returns a new instance.
 		 * 
-		 * @return Afip_Helper_ErrorCollection object
+		 * @return ErrorCollectionHelper object
 		 */
 		public static function getInstance()
 		{
@@ -25,7 +25,7 @@
 		/**
 		 * Constructor.
 		 * 
-		 * @return Afip_Helper_ErrorCollection object
+		 * @return ErrorCollectionHelper object
 		 */
 		public function __construct()
 		{
@@ -125,12 +125,12 @@
 		}
 		
 		/**
-		 * Adds errors form given Afip_Helper_ErrorCollection class.
+		 * Adds errors form given ErrorCollectionHelper class.
 		 * 
-		 * @param Afip_Helper_ErrorCollection $errorCollection
+		 * @param ErrorCollectionHelper $errorCollection
 		 * @return void
 		 */
-		public function addFrom(Afip_Helper_ErrorCollection $errorCollection)
+		public function addFrom(ErrorCollectionHelper $errorCollection)
 		{
 			if (!$errorCollection->isEmpty())
 			{

@@ -5,7 +5,7 @@
  * @author Quanbit Sofware SA
  * @author manueldelapenna
  */
-class Afip_Helper_Taxer{
+class TaxerHelper{
 	
 	/**
 	 * Returns neto amount unitary price for product item
@@ -166,13 +166,13 @@ class Afip_Helper_Taxer{
 			$isItemParent = Afip_Model_Alicuota_Product::isParentItem($item);
 			if ($isItemParent){
 				$taxPercent = Afip_Model_Alicuota_Product::getAlicuotaForProduct($product);
-				$itemPrice = Afip_Helper_Taxer::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+				$itemPrice = TaxerHelper::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 				$netTotals[$taxPercent] += $itemPrice;
 			}
 		}
 		
 		$taxPercent = Afip_Model_Alicuota_Shipping::getAlicuotaForShipping();
-		$shippingPrice = Afip_Helper_Taxer::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+		$shippingPrice = TaxerHelper::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 		$netTotals[$taxPercent] += $shippingPrice;
 	
 		$adjustCents[Afip_Model_Alicuota_Product::IVA_0250] = $afipInvoice->getNeto_0250() - $netTotals[Afip_Model_Alicuota_Product::IVA_0250];

@@ -43,7 +43,7 @@
 		
 		/**
 		 * The logger.
-		 * @var Afip_Helper_FileLogger instance | NULL
+		 * @var FileLoggerHelper instance | NULL
 		 */
 		protected $logger;
 		
@@ -61,7 +61,7 @@
 		 * Returns a new instance.
 		 *
 		 * @param Afip_Model_Environment_Environment $environment
-		 * @param Afip_Helper_FileLogger $logger
+		 * @param FileLoggerHelper $logger
 		 * @return Afip_Model_InvoiceManager instance
 		 */
 		public static function getInstance($environment, $logger)
@@ -297,7 +297,7 @@
 		/**
 		 * Returns the associated logger.
 		 *
-		 * @return Afip_Helper_FileLogger
+		 * @return FileLoggerHelper
 		 */
 		public function getLogger()
 		{
@@ -454,7 +454,7 @@
 		/**
 		 * Sets the logger.
 		 *
-		 * @param Afip_Helper_FileLogger $logger
+		 * @param FileLoggerHelper $logger
 		 * @return void
 		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given logger is invalid.
 		 */
@@ -462,7 +462,7 @@
 		{
 			if ($this->logger === NULL)
 			{
-				$this->exceptionIfClassMismatch($logger, "Afip_Helper_FileLogger");
+				$this->exceptionIfClassMismatch($logger, "FileLoggerHelper");
 				
 				$this->logger = $logger;
 				$this->logger->open();

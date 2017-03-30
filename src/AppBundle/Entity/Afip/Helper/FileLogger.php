@@ -6,7 +6,7 @@
 	 * @author Quanbit Sofware SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Helper_FileLogger
+	class FileLoggerHelper
 	{
 		/* Constants and Variables */
 		
@@ -45,7 +45,7 @@
 		 * @param string $fileName [Default: NULL]
 		 * @param string $fileDirectory [Defualt: current directory]
 		 * @param string $columnSeparator [Default: " "]
-		 * @return Afip_Helper_FileLogger
+		 * @return FileLoggerHelper
 		 */
 		public static function getInstance($fileName = NULL, $fileDirectory = ".", $columnSeparator = " ", $namespace = "system")
 		{
@@ -59,7 +59,7 @@
 		 * @param string $fileName [Default: NULL]
 		 * @param string $fileDirectory [Defualt: current directory]
 		 * @param string $columnSeparator [Default: " "]
-		 * @return Afip_Helper_FileLogger
+		 * @return FileLoggerHelper
 		 */
 		public function __construct($fileName = NULL, $fileDirectory = ".", $columnSeparator = " ", $namespace = "system")
 		{

@@ -64,7 +64,7 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 		$items = $invoice->getAllItems();
 		$billingType = $afipInvoice->getType();
 				
-		$adjustCents = Afip_Helper_Taxer::calculateAdjustTaxAmounts($invoice, $afipInvoice);
+		$adjustCents = TaxerHelper::calculateAdjustTaxAmounts($invoice, $afipInvoice);
 		
 		foreach($items as $item)
 		{
@@ -77,18 +77,18 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 				$taxPercent = Afip_Model_Alicuota_Product::getAlicuotaForProduct($product);
 				
 				if($billingType == Afip_Model_Enums_TypeEnum::A){
-					$itemTotal = Afip_Helper_Taxer::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
-					$itemTotal = Afip_Helper_Taxer::adjustAmount($itemTotal, $adjustCents, $taxPercent);
+					$itemTotal = TaxerHelper::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+					$itemTotal = TaxerHelper::adjustAmount($itemTotal, $adjustCents, $taxPercent);
 					
-					$itemUnitaryPrice = Afip_Helper_Taxer::getNetoUnitaryAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+					$itemUnitaryPrice = TaxerHelper::getNetoUnitaryAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 					if($taxPercent != Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Afip_Model_Alicuota_Product::EXENTO){
 						$this->addItem($item->getQty(), $product->getName(), $itemUnitaryPrice, $itemTotal, $taxPercent);
 					}else{
 						$this->addItem($item->getQty(), $product->getName(),$itemUnitaryPrice, $itemTotal, 0);
 					}
 				}else{
-					$itemTotal = Afip_Helper_Taxer::getFinalAmountForProductItem($item,$invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
-					$itemUnitaryPrice = Afip_Helper_Taxer::getFinalUnitaryAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
+					$itemTotal = TaxerHelper::getFinalAmountForProductItem($item,$invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
+					$itemUnitaryPrice = TaxerHelper::getFinalUnitaryAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
 					if($taxPercent != Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Afip_Model_Alicuota_Product::EXENTO){
 						$this->addItem($item->getQty(), $product->getName(), $itemUnitaryPrice, $itemTotal, $taxPercent);
 					}else{
@@ -107,14 +107,14 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 			$taxPercent = Afip_Model_Alicuota_Shipping::getAlicuotaForShipping();
 			$shippingDescription = "Envío " . $invoice->getOrder()->getShippingDescription();
 			if($billingType == Afip_Model_Enums_TypeEnum::A){
-				$shippingTotal = Afip_Helper_Taxer::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+				$shippingTotal = TaxerHelper::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 				if ($taxPercent != Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Afip_Model_Alicuota_Product::EXENTO){
 					$this->addItem(1, $shippingDescription, $shippingTotal, $shippingTotal, $taxPercent);
 				}else{
 					$this->addItem(1, $shippingDescription, $shippingTotal, $shippingTotal, 0);
 				}
 			}else{
-				$shippingTotal = Afip_Helper_Taxer::getFinalAmountForShippingItem($invoice,$invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
+				$shippingTotal = TaxerHelper::getFinalAmountForShippingItem($invoice,$invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
 				if ($taxPercent != Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Afip_Model_Alicuota_Product::EXENTO){
 					$this->addItem(1, $shippingDescription, $shippingTotal, $shippingTotal, $taxPercent);
 				}else{

@@ -17,7 +17,7 @@ class Afip_GeneralController extends Mage_Core_Controller_Front_Action
 			
 		}
 
-		$logger = Afip_Helper_FileLogger::getInstance(NULL, Mage::getBaseDir('var') . '/log/afip');
+		$logger = FileLoggerHelper::getInstance(NULL, Mage::getBaseDir('var') . '/log/afip');
 		$invoiceManager = Afip_Model_InvoiceManager::getInstance($environment, $logger);
 				
 		$reporte = $invoiceManager->getStatusReport();
