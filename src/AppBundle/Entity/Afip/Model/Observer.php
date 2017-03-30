@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Observer
+ * Description of Afip_Model_Observer
  *
  * @author manueldelapenna
  */
-class Observer{
+class Afip_Model_Observer extends Mage_Core_Model_Abstract {
 	public function generateInvoice(Varien_Event_Observer $observer) {
 		
 		if(Mage::getStoreConfig('afip/config/enable') && Mage::getStoreConfig('afip/config/enable_queue')){ 
@@ -14,7 +14,7 @@ class Observer{
 			
 			$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($invoice->getId());
 			
-			//if not exists Invoice for Mage_Sales_Model_Order_Invoice
+			//if not exists Afip_Model_Invoice for Mage_Sales_Model_Order_Invoice
 			if (count($afipInvoice->getData()) == 0){
 				$paymentMethod = $invoice->getOrder()->getPayment()->getOrigData();
 				$storeId = $invoice->getStoreId();
@@ -37,7 +37,7 @@ class Observer{
 						try {
 							$afipInvoice = Mage::getModel('afip/invoice');
 							$afipInvoice->setOrderInvoiceId($invoice->getId());
-							$afipInvoice->setStatus(Invoice::PENDING);
+							$afipInvoice->setStatus(Afip_Model_Invoice::PENDING);
 							
 							$orderCurrencyCode = $invoice->getOrder()->getOrderCurrencyCode();
 							
@@ -52,9 +52,9 @@ class Observer{
 							$customer = Mage::getModel('customer/customer')->load($invoice->getCustomerId());
 							//resp. inscripto
 							if ($customer->getIvaCondition() == 2){
-								$afipInvoice->setType(Enums_TypeEnum::A);
+								$afipInvoice->setType(Afip_Model_Enums_TypeEnum::A);
 							}else{
-								$afipInvoice->setType(Enums_TypeEnum::B);
+								$afipInvoice->setType(Afip_Model_Enums_TypeEnum::B);
 							}
 							
 							$afipInvoice->save();

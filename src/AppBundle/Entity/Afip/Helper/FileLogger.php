@@ -6,7 +6,7 @@
 	 * @author Quanbit Sofware SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Helper_FileLogger extends Mage_Core_Helper_Abstract
+	class Afip_Helper_FileLogger extends Mage_Core_Helper_Abstract
 	{
 		/* Constants and Variables */
 		
@@ -45,7 +45,7 @@
 		 * @param string $fileName [Default: NULL]
 		 * @param string $fileDirectory [Defualt: current directory]
 		 * @param string $columnSeparator [Default: " "]
-		 * @return Quanbit_Afip_Helper_FileLogger
+		 * @return Afip_Helper_FileLogger
 		 */
 		public static function getInstance($fileName = NULL, $fileDirectory = ".", $columnSeparator = " ", $namespace = "system")
 		{
@@ -59,7 +59,7 @@
 		 * @param string $fileName [Default: NULL]
 		 * @param string $fileDirectory [Defualt: current directory]
 		 * @param string $columnSeparator [Default: " "]
-		 * @return Quanbit_Afip_Helper_FileLogger
+		 * @return Afip_Helper_FileLogger
 		 */
 		public function __construct($fileName = NULL, $fileDirectory = ".", $columnSeparator = " ", $namespace = "system")
 		{

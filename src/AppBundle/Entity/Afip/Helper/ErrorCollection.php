@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Helper_ErrorCollection extends Mage_Core_Helper_Abstract
+	class Afip_Helper_ErrorCollection extends Mage_Core_Helper_Abstract
 	{
 		protected $errors;
 		
@@ -15,7 +15,7 @@
 		/**
 		 * Returns a new instance.
 		 * 
-		 * @return Quanbit_Afip_Helper_ErrorCollection object
+		 * @return Afip_Helper_ErrorCollection object
 		 */
 		public static function getInstance()
 		{
@@ -25,7 +25,7 @@
 		/**
 		 * Constructor.
 		 * 
-		 * @return Quanbit_Afip_Helper_ErrorCollection object
+		 * @return Afip_Helper_ErrorCollection object
 		 */
 		public function __construct()
 		{
@@ -125,12 +125,12 @@
 		}
 		
 		/**
-		 * Adds errors form given Quanbit_Afip_Helper_ErrorCollection class.
+		 * Adds errors form given Afip_Helper_ErrorCollection class.
 		 * 
-		 * @param Quanbit_Afip_Helper_ErrorCollection $errorCollection
+		 * @param Afip_Helper_ErrorCollection $errorCollection
 		 * @return void
 		 */
-		public function addFrom(Quanbit_Afip_Helper_ErrorCollection $errorCollection)
+		public function addFrom(Afip_Helper_ErrorCollection $errorCollection)
 		{
 			if (!$errorCollection->isEmpty())
 			{

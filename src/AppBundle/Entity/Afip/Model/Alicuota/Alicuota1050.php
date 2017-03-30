@@ -6,14 +6,14 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Alicuota1050 extends Alicuota
+	class Afip_Model_Alicuota_Alicuota1050 extends Afip_Model_Alicuota_Alicuota
 	{
 		/* Public methods */
 		
 		/**
 		 * Returns a new instance.
 		 *
-		 * @return Alicuota1050 instance
+		 * @return Afip_Model_Alicuota_Alicuota1050 instance
 		 */
 		public static function getInstance()
 		{
@@ -34,7 +34,7 @@
 		
 		public function getTaxType()
 		{
-			return Quanbit_Afip_Model_Enums_TaxTypeEnum::IVA_1050;
+			return Afip_Model_Enums_TaxTypeEnum::IVA_1050;
 		}
 		
 		

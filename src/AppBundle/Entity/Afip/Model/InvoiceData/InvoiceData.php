@@ -6,13 +6,13 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class InvoiceData
+	class Afip_Model_InvoiceData_InvoiceData
 	{
 		/* Constants and Variables */
 		
 		/**
 		 * The alicuotas.
-		 * @var Quanbit_Afip_Model_Alicuota_AlicuotaCollector instance
+		 * @var Afip_Model_Alicuota_AlicuotaCollector instance
 		 */
 		protected $alicuotas;
 		
@@ -60,7 +60,7 @@
 		
 		/**
 		 * The errors.
-		 * @var Quanbit_Afip_Helper_ErrorCollection instance
+		 * @var Afip_Helper_ErrorCollection instance
 		 */
 		protected $errors;
 		
@@ -132,7 +132,7 @@
 		/**
 		 * Returns a new instance.
 		 *
-		 * @return InvoiceData intance
+		 * @return Afip_Model_InvoiceData_InvoiceData intance
 		 */
 		public static function getInstance()
 		{
@@ -152,31 +152,31 @@
 		 * @param string $caeDueDate
 		 * @param string $authDate
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_Exception Throws an exception whether given CAE is empty or is invalid.
+		 * @throws Afip_Exception_Lib_Exception Throws an exception whether given CAE is empty or is invalid.
 		 */
 		public function accepted($cae, $caeDueDate, $authDate)
 		{
-			if ($this->status == Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::VALID)
+			if ($this->status == Afip_Model_Enums_DataAuthorizationStatusEnum::VALID)
 			{
 				$this->setCae($cae);
 				if (isset($this->cae) && ($this->cae != ""))
 				{
-					$this->status = Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED;
+					$this->status = Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED;
 					$this->caeDueDate = $this->getDateFrom($caeDueDate);
 					$this->authDate = $this->getDateFrom($authDate);
 				}
 				else
-					Quanbit_Afip_Exception_ExceptionFactory::throwFor("No valid CAE given.");
+					Afip_Exception_ExceptionFactory::throwFor("No valid CAE given.");
 			}
 		}
 		
 		/**
 		 * Adds an alicuota.
 		 *
-		 * @param Quanbit_Afip_Model_Alicuota_Alicuota $alicuota
+		 * @param Afip_Model_Alicuota_Alicuota $alicuota
 		 * @return void
 		 */
-		public function addAlicuota(Quanbit_Afip_Model_Alicuota_Alicuota $alicuota)
+		public function addAlicuota(Afip_Model_Alicuota_Alicuota $alicuota)
 		{
 			$this->alicuotas->add($alicuota);
 		}
@@ -217,7 +217,7 @@
 		/**
 		 * Returns the alicuota collection.
 		 *
-		 * @return Quanbit_Afip_Model_Alicuota_AlicuotaCollector instance
+		 * @return Afip_Model_Alicuota_AlicuotaCollector instance
 		 */
 		public function getAlicuotas()
 		{
@@ -271,7 +271,7 @@
 		 */
 		public function getCurrencyName()
 		{
-			return Quanbit_Afip_Model_Enums_CurrencyEnum::PESOS;
+			return Afip_Model_Enums_CurrencyEnum::PESOS;
 		}
 		
 		/**
@@ -317,11 +317,11 @@
 		/**
 		 * Returns the errors.
 		 *
-		 * @return Quanbit_Afip_Helper_ErrorCollection instance
+		 * @return Afip_Helper_ErrorCollection instance
 		 */
 		public function getErrors()
 		{
-			$errors = Quanbit_Afip_Helper_ErrorCollection::getInstance();
+			$errors = Afip_Helper_ErrorCollection::getInstance();
 			$errors->addFrom($this->errors);
 			$errors->addFrom($this->alicuotas->getErrors());
 			
@@ -415,7 +415,7 @@
 		 */
 		public function getTotalAmount()
 		{
-			$amount = Quanbit_Afip_Helper_DataType_Number::truncate($this->getTaxableNetAmount() + $this->getUntaxedNetAmount() + $this->getTaxExemptAmount() + $this->getTaxAmount(), 2);
+			$amount = Afip_Helper_DataType_Number::truncate($this->getTaxableNetAmount() + $this->getUntaxedNetAmount() + $this->getTaxExemptAmount() + $this->getTaxAmount(), 2);
 			return $amount;
 		}
 		
@@ -461,12 +461,12 @@
 			
 			if ($this->errors->isEmpty())
 			{
-				$this->status = Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::VALID;
+				$this->status = Afip_Model_Enums_DataAuthorizationStatusEnum::VALID;
 				return true;
 			}
 			else
 			{
-				$this->status = Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID;
+				$this->status = Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID;
 				return false;
 			}
 		}
@@ -479,7 +479,7 @@
 		 */
 		public function rejected($errors = array())
 		{
-			if ($this->status == Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::VALID)
+			if ($this->status == Afip_Model_Enums_DataAuthorizationStatusEnum::VALID)
 			{
 				if (is_array($errors) && (count($errors) > 0))
 				{
@@ -489,7 +489,7 @@
 				else
 					$this->errors->add("UNKNOWN");
 				
-				$this->status = Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED;
+				$this->status = Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED;
 			}
 		}
 		
@@ -594,7 +594,7 @@
 		 */
 		public function setTaxableNetAmount($amount)
 		{
-			$this->taxableNetAmount = Quanbit_Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->taxableNetAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -605,7 +605,7 @@
 		 */
 		public function setTaxAmount($amount)
 		{
-			$this->taxAmount = Quanbit_Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->taxAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -616,7 +616,7 @@
 		 */
 		public function setTaxExemptAmount($amount)
 		{
-			return $this->taxExemptAmount = Quanbit_Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			return $this->taxExemptAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -627,7 +627,7 @@
 		 */
 		public function setUntaxedNetAmount($amount)
 		{
-			$this->untaxedNetAmount = Quanbit_Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->untaxedNetAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -651,15 +651,15 @@
 		 */
 		protected function initialize()
 		{
-			$this->alicuotas = Quanbit_Afip_Model_Alicuota_AlicuotaCollector::getInstance();
+			$this->alicuotas = Afip_Model_Alicuota_AlicuotaCollector::getInstance();
 			$this->authDate = NULL;
-			$this->authStatus = Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::SCHEDULED;
+			$this->authStatus = Afip_Model_Enums_DataAuthorizationStatusEnum::SCHEDULED;
 			$this->cae = NULL;
 			$this->concept = NULL;
 			$this->billingTarget = NULL;
 			$this->documentNumber = 0;
 			$this->documentType = NULL;
-			$this->errors = Quanbit_Afip_Helper_ErrorCollection::getInstance();
+			$this->errors = Afip_Helper_ErrorCollection::getInstance();
 			$this->id = NULL;
 			$this->invoiceDate = NULL;
 			$this->invoiceNumber = NULL;
@@ -708,12 +708,12 @@
 			
 			/* Checking basic fields */
 			
-			$documentHelper = Quanbit_Afip_Model_Enums_DocumentTypeEnum::getInstance();
+			$documentHelper = Afip_Model_Enums_DocumentTypeEnum::getInstance();
 			
-			if (!Quanbit_Afip_Model_Enums_TypeEnum::getInstance()->isValidKey($this->invoiceType))
+			if (!Afip_Model_Enums_TypeEnum::getInstance()->isValidKey($this->invoiceType))
 				$this->errors->add("El tipo de facturación no es una opción válida.");
 			
-			if (!Quanbit_Afip_Model_Enums_ConceptEnum::getInstance()->isValidKey($this->concept))
+			if (!Afip_Model_Enums_ConceptEnum::getInstance()->isValidKey($this->concept))
 				$this->errors->add("El concepto de facturacón no es válido.");
 			
 			if (!$documentHelper->isValidKey($this->documentType))
@@ -729,7 +729,7 @@
 				if ($this->alicuotas->count() > 0)
 				{
 					$absoluteError = ($this->alicuotas->getTaxAmount() - $this->getTaxAmount());
-					$absoluteError = Quanbit_Afip_Helper_DataType_Number::truncate($absoluteError, 2);
+					$absoluteError = Afip_Helper_DataType_Number::truncate($absoluteError, 2);
 					
 					if (abs($absoluteError) > 0.01)
 						$this->errors->add("El monto de las alicuotas no coincide con el monto de IVA de la Factura. Error Absoluto: $absoluteError");
@@ -760,36 +760,36 @@
 			
 			
 			/* Checking fields related with billing type */
-			if (in_array($this->invoiceType, Quanbit_Afip_Model_Enums_TypeEnum::getTypesForBlockA()))
+			if (in_array($this->invoiceType, Afip_Model_Enums_TypeEnum::getTypesForBlockA()))
 			{
 				if ($this->getStoreId() != 1){
 					$this->errors->add("Únicamente tienda ARG puede realizar comprobantes de tipo A.");
 				}
 				
-				if ($this->documentType != Quanbit_Afip_Model_Enums_DocumentTypeEnum::CUIT)
-					$this->errors->add("El tipo de documento debe ser '" . $documentHelper->getValueFor(Quanbit_Afip_Model_Enums_DocumentTypeEnum::CUIT) . "' para una factura, nota de débito o nota de crédito de tipo 'A'.");
+				if ($this->documentType != Afip_Model_Enums_DocumentTypeEnum::CUIT)
+					$this->errors->add("El tipo de documento debe ser '" . $documentHelper->getValueFor(Afip_Model_Enums_DocumentTypeEnum::CUIT) . "' para una factura, nota de débito o nota de crédito de tipo 'A'.");
 				
 				if ($this->documentNumber == 0)
 					$this->errors->add("El número de documento es obligatorio para facturas, notas de crédito y notas de débito de tipo A.");
 			}
-			elseif (in_array($this->invoiceType, Quanbit_Afip_Model_Enums_TypeEnum::getTypesForBlockB()))
+			elseif (in_array($this->invoiceType, Afip_Model_Enums_TypeEnum::getTypesForBlockB()))
 			{
 				if ($this->getTotalAmount() >= 1000)
 				{
-					if ($this->documentType == Quanbit_Afip_Model_Enums_DocumentTypeEnum::UNKNOWN)
-						$this->errors->add("El tipo de documento no puede ser '" . $documentHelper->getValueFor(Quanbit_Afip_Model_Enums_DocumentTypeEnum::UNKNOWN) . "' para facturas, notas de crédito o notas de débito de tipo B con un monto mayor o igual a $1.000.");
+					if ($this->documentType == Afip_Model_Enums_DocumentTypeEnum::UNKNOWN)
+						$this->errors->add("El tipo de documento no puede ser '" . $documentHelper->getValueFor(Afip_Model_Enums_DocumentTypeEnum::UNKNOWN) . "' para facturas, notas de crédito o notas de débito de tipo B con un monto mayor o igual a $1.000.");
 					
 					if ($this->documentNumber == 0)
 						$this->errors->add("El número de documento debe estar definido para facturas, notas de crédito y débito de tipo B con un monto mayor o igual a $1.000");
 				}
 				else
 				{
-					if ($this->documentType == Quanbit_Afip_Model_Enums_DocumentTypeEnum::UNKNOWN)
+					if ($this->documentType == Afip_Model_Enums_DocumentTypeEnum::UNKNOWN)
 					{
 						if ($this->documentNumber != 0)
 							$this->errors->add(
 								"El número de documento debe ser 0 (cero) para facturas, notas de crédito o notas de débito de tipo B con monto inferior a $1.000 y tipo de documento igual a '" .
-								$documentHelper->getValueFor(Quanbit_Afip_Model_Enums_DocumentTypeEnum::UNKNOWN) . "'."
+								$documentHelper->getValueFor(Afip_Model_Enums_DocumentTypeEnum::UNKNOWN) . "'."
 							);
 					}
 					else
@@ -797,19 +797,19 @@
 						if ($this->documentNumber == 0)
 							$this->errors->add(
 								"El número de documento debe ser mayor a 0 (cero) para facturas, notas de crédito o notas de débito de tipo B con monto inferior a $1.000 y tipo de documento distinto de '" .
-								$documentHelper->getValueFor(Quanbit_Afip_Model_Enums_DocumentTypeEnum::UNKNOWN) . "'."
+								$documentHelper->getValueFor(Afip_Model_Enums_DocumentTypeEnum::UNKNOWN) . "'."
 							);
 					}
 				}
 			}
 			
-			if (Quanbit_Afip_Model_Enums_TypeEnum::canHasBillingTarget($this->invoiceType))
+			if (Afip_Model_Enums_TypeEnum::canHasBillingTarget($this->invoiceType))
 			{
 				if ($this->hasBillingTarget())
 				{
 					if ($this->getBillingTarget()->isValid())
 					{
-						if (!Quanbit_Afip_Model_Enums_TypeEnum::areCompatible($this->getInvoiceType(), $this->getBillingTarget()->getType()))
+						if (!Afip_Model_Enums_TypeEnum::areCompatible($this->getInvoiceType(), $this->getBillingTarget()->getType()))
 							$this->errors->add("El tipo del comprobante a autorizar y el comprobante asociado no son compatibles.");
 					}
 					else

@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class Alicuota
+	abstract class Afip_Model_Alicuota_Alicuota
 	{
 		/* Constants and Variables */
 		
@@ -18,7 +18,7 @@
 		
 		/**
 		 * The errors.
-		 * @var Quanbit_Afip_Helper_ErrorCollection instance
+		 * @var Afip_Helper_ErrorCollection instance
 		 */
 		protected $errors;
 		
@@ -56,7 +56,7 @@
 		/**
 		 * Returns the errors.
 		 *
-		 * @return Quanbit_Afip_Helper_ErrorCollection instance
+		 * @return Afip_Helper_ErrorCollection instance
 		 */
 		public function getErrors()
 		{
@@ -81,7 +81,7 @@
 		abstract public function getTaxPercent();
 		
 		/**
-		 * Returns the tax type (Quanbit_Afip_Model_Enums_TaxTypeEnum)
+		 * Returns the tax type (Afip_Model_Enums_TaxTypeEnum)
 		 *
 		 * @return int
 		 */
@@ -108,7 +108,7 @@
 		 */
 		public function setBaseAmount($amount)
 		{
-			$this->baseAmount = Quanbit_Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->baseAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
 		}
 		
 		/**
@@ -119,7 +119,7 @@
 		 */
 		public function setTaxAmount($amount)
 		{
-			$this->taxAmount = Quanbit_Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
+			$this->taxAmount = Afip_Helper_DataType_Number::truncate(floatval($amount), 2);
 		}
 		
 		
@@ -133,7 +133,7 @@
 		 */
 		protected function getName()
 		{
-			return Quanbit_Afip_Model_Enums_TaxTypeEnum::getInstance()->getValueFor($this->getTaxType());
+			return Afip_Model_Enums_TaxTypeEnum::getInstance()->getValueFor($this->getTaxType());
 		}
 		
 		protected function initialize()
@@ -141,7 +141,7 @@
 			$this->setBaseAmount(0);
 			$this->setTaxAmount(0);
 			
-			$this->errors = Quanbit_Afip_Helper_ErrorCollection::getInstance();
+			$this->errors = Afip_Helper_ErrorCollection::getInstance();
 		}
 		
 		/**
@@ -157,7 +157,7 @@
 // 			{
 // 				$relativeError = (($this->getTaxAmount() / $this->getBaseAmount() * 100) - $this->getTaxPercent());
 // 				$relativeError = $relativeError / $this->getTaxPercent();
-// 				$relativeError = Quanbit_Afip_Helper_DataType_Number::truncate($relativeError, 2);
+// 				$relativeError = Afip_Helper_DataType_Number::truncate($relativeError, 2);
 				
 // 				if (abs($relativeError) > 0.01)
 // 					$this->errors->add("The base and tax amount do not match with the alicuota ({$this->getName()}). Diference: $relativeError");

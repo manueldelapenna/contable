@@ -6,12 +6,12 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	final class StagingEnvironment extends Environment
+	final class Afip_Model_Environment_StagingEnvironment extends Afip_Model_Environment_Environment
 	{
 		/**
 		 * Returns a new instance.
 		 *
-		 * @return StagingEnvironment instance
+		 * @return Afip_Model_Environment_StagingEnvironment instance
 		 */
 		public static function getInstance()
 		{

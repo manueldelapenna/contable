@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of InvoicePrinterExecutor
+ * Description of Afip_Model_Pdf_InvoicePrinterExecutor
  *
  * @author manueldelapenna
  */
-class InvoicePrinterExecutor{
+class Afip_Model_Pdf_InvoicePrinterExecutor extends Mage_Core_Model_Abstract {
 	
 	/**
 	 * Process ID.
@@ -18,7 +18,7 @@ class InvoicePrinterExecutor{
 	 */
 	public static function execute() {
 
-		$sem = new Quanbit_Afip_Model_FileSemaphore(self::PROCESS_ID, NULL, 0, 1800);
+		$sem = new Afip_Model_FileSemaphore(self::PROCESS_ID, NULL, 0, 1800);
 						
 		if ($sem->isLock()){
 				$sem->executeWarningTimeAction();
@@ -35,7 +35,7 @@ class InvoicePrinterExecutor{
 	}
 	
 	public static function executePrinter(){
-		$pendingForPrintingAfipInvoices = Quanbit_Afip_Model_Invoice::getPendingForPrinting();
+		$pendingForPrintingAfipInvoices = Afip_Model_Invoice::getPendingForPrinting();
 		
 		foreach ($pendingForPrintingAfipInvoices as $afipInvoice){
 			$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
@@ -60,30 +60,30 @@ class InvoicePrinterExecutor{
 	
 	public static function getPointOfSaleOfConfiguratedEnvironment() {
 		if (Mage::getStoreConfig ( 'afip/config/enable_prod' )) {
-			$environment = Quanbit_Afip_Model_Environment_ProductionEnvironment::getInstance ();
+			$environment = Afip_Model_Environment_ProductionEnvironment::getInstance ();
 		} else {
-			$environment = Quanbit_Afip_Model_Environment_StagingEnvironment::getInstance ();
+			$environment = Afip_Model_Environment_StagingEnvironment::getInstance ();
 		}
 		return $environment->getPointOfSale();
 	}
 	
-	public static function getDirForAfipDocument(Quanbit_Afip_Model_Invoice $afipInvoice) {
+	public static function getDirForAfipDocument(Afip_Model_Invoice $afipInvoice) {
 		
 		$date = new DateTime($afipInvoice->getAuthorizationDate());
 		$year = date_format($date, 'Y');
 		$month = date_format($date,'m');
 		$day = date_format($date, 'd');
 		
-		$afipType = Quanbit_Afip_Model_Enums_TypeEnum::getInstance()->getValueFor($afipInvoice->getType());
+		$afipType = Afip_Model_Enums_TypeEnum::getInstance()->getValueFor($afipInvoice->getType());
 		$dir = Mage::getBaseDir()."/afip/$afipType/$year/$month/$day";
 		
 		return $dir;
 		
 	}
 	
-	public static function getFilenameForAfipDocument(Quanbit_Afip_Model_Invoice $afipInvoice) {
+	public static function getFilenameForAfipDocument(Afip_Model_Invoice $afipInvoice) {
 		
-		$invoiceLetter = Quanbit_Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType());
+		$invoiceLetter = Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType());
 			
 		$pointOfSale = self::getPointOfSaleOfConfiguratedEnvironment();
 		$normalizedPointOfSale = str_pad($pointOfSale, 4, 0, STR_PAD_LEFT);

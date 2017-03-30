@@ -8,7 +8,7 @@
  * @package    Mage_Adminhtml
  * @author     manueldelapenna
  */
-class Quanbit_Afip_Block_Invoice_View extends Mage_Adminhtml_Block_Sales_Order_Invoice_View
+class Afip_Block_Invoice_View extends Mage_Adminhtml_Block_Sales_Order_Invoice_View
 {
     /**
      * Admin session

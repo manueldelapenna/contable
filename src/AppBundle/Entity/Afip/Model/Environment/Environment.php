@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class Environment
+	abstract class Afip_Model_Environment_Environment
 	{
 		/* Constants and Variables */
 		
@@ -105,7 +105,7 @@
 		{
 			$filename = trim(basename((string) $filename));
 			if (($filename == ""))
-				Quanbit_Afip_Exception_ExceptionFactory::throwFor(__CLASS__ . ":: Invalid given filename for method: <" . __FUNCTION__ . ">.");
+				Afip_Exception_ExceptionFactory::throwFor(__CLASS__ . ":: Invalid given filename for method: <" . __FUNCTION__ . ">.");
 			
 			return "{$this->getTempDirectoryPath()}/{$this->getEnvironmentKey()}__$filename";
 		}

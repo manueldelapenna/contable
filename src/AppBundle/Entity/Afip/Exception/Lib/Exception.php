@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-class Quanbit_Afip_Exception_Lib_Exception extends Mage_Core_Exception {
+class Afip_Exception_Lib_Exception extends Mage_Core_Exception {
 	/**
 	 * Construnctor
 	 *

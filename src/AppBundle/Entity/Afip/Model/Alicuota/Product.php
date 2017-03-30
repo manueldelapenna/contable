@@ -4,7 +4,7 @@
  * @author manueldelapenna
  *
  */
-class Product extends Mage_Core_Model_Abstract
+class Afip_Model_Alicuota_Product extends Mage_Core_Model_Abstract
 {
 	const IVA_0250 = "2.5";
 	const IVA_0500 = "5";
@@ -33,7 +33,7 @@ class Product extends Mage_Core_Model_Abstract
 			
 			if ($isItemParent){
 				$alicuota = self::getAlicuotaForProduct($product);
-				$alicuotaAmounts[$alicuota] = $alicuotaAmounts[$alicuota] + Quanbit_Afip_Helper_Taxer::getFinalAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+				$alicuotaAmounts[$alicuota] = $alicuotaAmounts[$alicuota] + Afip_Helper_Taxer::getFinalAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 			}
 
  		}

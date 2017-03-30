@@ -4,7 +4,7 @@
  * @author manueldelapenna
  *
  */
-class Invoice
+class Afip_Model_Invoice extends Mage_Core_Model_Abstract
 {
 	const PENDING = 0;
 	const REJECTED = 1;
@@ -16,14 +16,14 @@ class Invoice
     }
     
     /**
-     * Return max (last) Invoice number for a specific billingType
+     * Return max (last) Afip_Model_Invoice number for a specific billingType
      * 
-     * @param Enums_TypeEnum $billingType
+     * @param Afip_Model_Enums_TypeEnum $billingType
      * @return int number
      */
     public static function getLastNumber($billingType){
     	$read = Mage::getSingleton('core/resource')->getConnection('core_read');
-    	$status = Invoice::AUTHORIZED;
+    	$status = Afip_Model_Invoice::AUTHORIZED;
     	$result = $read->fetchAll("SELECT MAX(number) as max 
     							   FROM afip_invoice 
     			                   where status = $status and
@@ -37,12 +37,12 @@ class Invoice
     }
     
     /**
-     * Retrieve 100 pending Invoice for printing
+     * Retrieve 100 pending Afip_Model_Invoice for printing
      *
      * @return int number
      */
     public static function getPendingForPrinting(){
-    	$status = Invoice::AUTHORIZED;
+    	$status = Afip_Model_Invoice::AUTHORIZED;
     	return Mage::getModel('afip/invoice')->getCollection()
     	->addFieldToFilter('status',array('eq' => $status))
     	->addFieldToFilter('is_pdf_created', array('eq' => 0))
@@ -51,14 +51,14 @@ class Invoice
     }
     
     /**
-     * Retrieve 250 pending Invoice for a specific billingType
+     * Retrieve 250 pending Afip_Model_Invoice for a specific billingType
      *
-     * @param Enums_TypeEnum $billingType
-     * @return Mysql4_Invoice_Collection
+     * @param Afip_Model_Enums_TypeEnum $billingType
+     * @return Afip_Model_Mysql4_Invoice_Collection
      */
     public static function getPendingForAuthorize($billingType){
     	return Mage::getModel('afip/invoice')->getCollection()
-    		->addFieldToFilter('status',array('eq' => Invoice::PENDING))
+    		->addFieldToFilter('status',array('eq' => Afip_Model_Invoice::PENDING))
     		->addFieldToFilter('type', array('eq' => $billingType))
     		->setPageSize(250);
     }
@@ -82,20 +82,20 @@ class Invoice
     }
     
     /**
-     * Retrieve Invoice by Mage_Sales_Model_Order_Invoice id
+     * Retrieve Afip_Model_Invoice by Mage_Sales_Model_Order_Invoice id
      * 
-     * @param Invoice attribute value
-     * @return Invoice
+     * @param Afip_Model_Invoice attribute value
+     * @return Afip_Model_Invoice
      */
     public function loadInvoiceByOrderInvoiceId($value){
     	return Mage::getModel('afip/invoice')->getCollection()->addFieldToFilter('order_invoice_id',array('eq' => $value))->getFirstItem();
     }
     
     /**
-     * Retrieve Invoice by Mage_Sales_Model_Order_Invoice id for download
+     * Retrieve Afip_Model_Invoice by Mage_Sales_Model_Order_Invoice id for download
      *
-     * @param Invoice attribute value
-     * @return Invoice
+     * @param Afip_Model_Invoice attribute value
+     * @return Afip_Model_Invoice
      */
     public function afipInvoiceForDownloadFromOrderInvoiceId($value){
     	return Mage::getModel('afip/invoice')->getCollection()
@@ -105,10 +105,10 @@ class Invoice
     }
     
     /**
-     * Retrieve Invoice with Rejected status by Mage_Sales_Model_Order_Invoice id
+     * Retrieve Afip_Model_Invoice with Rejected status by Mage_Sales_Model_Order_Invoice id
      *
-     * @param Invoice attribute value
-     * @return Invoice
+     * @param Afip_Model_Invoice attribute value
+     * @return Afip_Model_Invoice
      */
     public function afipInvoiceForChangeStateFromOrderInvoiceId($value){
     	return Mage::getModel('afip/invoice')->getCollection()
@@ -119,11 +119,11 @@ class Invoice
     
     
     /**
-     * Retrieve Invoice by number and billingType
+     * Retrieve Afip_Model_Invoice by number and billingType
      * 
-     * @param Invoice attribute value
-     * @param Enums_TypeEnum $billingType
-     * @return Invoice
+     * @param Afip_Model_Invoice attribute value
+     * @param Afip_Model_Enums_TypeEnum $billingType
+     * @return Afip_Model_Invoice
      */
     public function loadInvoiceByNumber($value, $billingType){
     	return Mage::getModel('afip/invoice')->getCollection()
@@ -133,7 +133,7 @@ class Invoice
     }
     
     /**
-     * Update and save Invoice
+     * Update and save Afip_Model_Invoice
      *
      * @param int $number
      * @param int $type
@@ -152,7 +152,7 @@ class Invoice
     	$this->setAuthorizationDate($authorizationDate);
     	$this->setObservations($observations);
     	$this->setStatus($status);
-    	if($status == Invoice::REJECTED){
+    	if($status == Afip_Model_Invoice::REJECTED){
     		$this->resetAmounts();
     	}
     	$this->save();
@@ -178,7 +178,7 @@ class Invoice
     }
    
     /**
-     * Returns an array of Invoice states by id
+     * Returns an array of Afip_Model_Invoice states by id
      *
      * @return $array
      */
@@ -193,14 +193,14 @@ class Invoice
     
     
     /**
-     * Returns an array of Invoice types by id
+     * Returns an array of Afip_Model_Invoice types by id
      *
      * @return $array
      */
     public function getTypes(){
     
-    	$options[Enums_TypeEnum::A] = "A";
-    	$options[Enums_TypeEnum::B] = "B";
+    	$options[Afip_Model_Enums_TypeEnum::A] = "A";
+    	$options[Afip_Model_Enums_TypeEnum::B] = "B";
     	    
     	return $options;
     	 

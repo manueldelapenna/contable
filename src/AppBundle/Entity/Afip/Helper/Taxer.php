@@ -5,14 +5,14 @@
  * @author Quanbit Sofware SA
  * @author manueldelapenna
  */
-class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
+class Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	
 	/**
 	 * Returns neto amount unitary price for product item
 	 * @param Mage_Sales_Model_Order_Invoice_Item $item
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Quanbit_Afip_Model_Invoice $afipInvoice
+	 * @param Afip_Model_Invoice $afipInvoice
 	 * @return float
 	 */
 	public static function getNetoUnitaryAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
@@ -20,7 +20,7 @@ class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 		$itemTotal = self::getFinalAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR);
 		
 		$product = Mage::getModel('catalog/product')->load($item->getProductId());
-		$alicuota = self::normalizeAlicuota(Quanbit_Afip_Model_Alicuota_Product::getAlicuotaForProduct($product));
+		$alicuota = self::normalizeAlicuota(Afip_Model_Alicuota_Product::getAlicuotaForProduct($product));
 		
 		$itemNeto = $itemTotal / ($alicuota/100 + 1);
 				
@@ -34,14 +34,14 @@ class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	 * @param Mage_Sales_Model_Order_Invoice_Item $item
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Quanbit_Afip_Model_Invoice $afipInvoice
+	 * @param Afip_Model_Invoice $afipInvoice
 	 * @return float
 	 */
 	public static function getNetoAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
 	{
 		$itemUnitary = self::getNetoUnitaryAmountForProductItem($item, $orderCurrencyCode, $afipInvoice);
 		
-		$itemNeto = Quanbit_Afip_Helper_DataType_Number::truncate($itemUnitary * $item->getQty(), 2);
+		$itemNeto = Afip_Helper_DataType_Number::truncate($itemUnitary * $item->getQty(), 2);
 				
 		return $itemNeto;
 		
@@ -52,7 +52,7 @@ class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	 * @param Mage_Sales_Model_Order_Invoice $invoice
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Quanbit_Afip_Model_Invoice $afipInvoice
+	 * @param Afip_Model_Invoice $afipInvoice
 	 * @return float
 	 */
 	public static function getNetoAmountForShippingItem($invoice, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
@@ -61,9 +61,9 @@ class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 		$itemTotal = self::getFinalAmountForShippingItem($invoice, $orderCurrencyCode, $afipInvoice, $currencyAR);
 		
 		$shippingAmount = $invoice->getShippingAmount() - $invoice->getOrder()->getShippingDiscountAmount();
-		$alicuota = self::normalizeAlicuota(Quanbit_Afip_Model_Alicuota_Shipping::getAlicuotaForShipping());
+		$alicuota = self::normalizeAlicuota(Afip_Model_Alicuota_Shipping::getAlicuotaForShipping());
 		
-		$itemNeto = Quanbit_Afip_Helper_DataType_Number::truncate($itemTotal / ($alicuota/100 + 1), 2);
+		$itemNeto = Afip_Helper_DataType_Number::truncate($itemTotal / ($alicuota/100 + 1), 2);
 				
 		return $itemNeto;
 	}
@@ -73,12 +73,12 @@ class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	 * @param Mage_Sales_Model_Order_Invoice_Item $item
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Quanbit_Afip_Model_Invoice $afipInvoice
+	 * @param Afip_Model_Invoice $afipInvoice
 	 * @return float
 	 */
 	public static function getFinalUnitaryAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
 	{
-		$price =  Quanbit_Afip_Helper_DataType_Number::truncate(self::getFinalAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR) / $item->getQty(),4);
+		$price =  Afip_Helper_DataType_Number::truncate(self::getFinalAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR) / $item->getQty(),4);
 						
 		return $price;
 	}
@@ -88,7 +88,7 @@ class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	 * @param Mage_Sales_Model_Order_Invoice_Item $item
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Quanbit_Afip_Model_Invoice $afipInvoice
+	 * @param Afip_Model_Invoice $afipInvoice
 	 * @return float
 	 */
 	public static function getFinalAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
@@ -119,7 +119,7 @@ class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	 * @param Mage_Sales_Model_Order_Invoice $invoice
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Quanbit_Afip_Model_Invoice $afipInvoice
+	 * @param Afip_Model_Invoice $afipInvoice
 	 * @return float
 	 */
 	public static function getFinalAmountForShippingItem($invoice, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
@@ -134,7 +134,7 @@ class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	}
 	
 	protected static function normalizeAlicuota($alicuota){
-		if($alicuota == Quanbit_Afip_Model_Alicuota_Product::EXENTO || $alicuota == Quanbit_Afip_Model_Alicuota_Shipping::NO_GRAVADO){
+		if($alicuota == Afip_Model_Alicuota_Product::EXENTO || $alicuota == Afip_Model_Alicuota_Shipping::NO_GRAVADO){
 			$alicuota = 0;
 		}
 		return $alicuota;
@@ -152,35 +152,35 @@ class Quanbit_Afip_Helper_Taxer extends Mage_Core_Helper_Abstract{
 	
 	public static function calculateAdjustTaxAmounts($invoice, $afipInvoice){
 	
-		$netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_0250] = 0;
-		$netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_0500] = 0;
-		$netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_1050] = 0;
-		$netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_2100] = 0;
-		$netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_2700] = 0;
-		$netTotals[Quanbit_Afip_Model_Alicuota_Product::EXENTO] = 0;
+		$netTotals[Afip_Model_Alicuota_Product::IVA_0250] = 0;
+		$netTotals[Afip_Model_Alicuota_Product::IVA_0500] = 0;
+		$netTotals[Afip_Model_Alicuota_Product::IVA_1050] = 0;
+		$netTotals[Afip_Model_Alicuota_Product::IVA_2100] = 0;
+		$netTotals[Afip_Model_Alicuota_Product::IVA_2700] = 0;
+		$netTotals[Afip_Model_Alicuota_Product::EXENTO] = 0;
 	
 		$items = $invoice->getAllItems();
 		
 		foreach($items as $item){
 			$product = Mage::getModel('catalog/product')->load($item->getProductId());
-			$isItemParent = Quanbit_Afip_Model_Alicuota_Product::isParentItem($item);
+			$isItemParent = Afip_Model_Alicuota_Product::isParentItem($item);
 			if ($isItemParent){
-				$taxPercent = Quanbit_Afip_Model_Alicuota_Product::getAlicuotaForProduct($product);
-				$itemPrice = Quanbit_Afip_Helper_Taxer::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+				$taxPercent = Afip_Model_Alicuota_Product::getAlicuotaForProduct($product);
+				$itemPrice = Afip_Helper_Taxer::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 				$netTotals[$taxPercent] += $itemPrice;
 			}
 		}
 		
-		$taxPercent = Quanbit_Afip_Model_Alicuota_Shipping::getAlicuotaForShipping();
-		$shippingPrice = Quanbit_Afip_Helper_Taxer::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+		$taxPercent = Afip_Model_Alicuota_Shipping::getAlicuotaForShipping();
+		$shippingPrice = Afip_Helper_Taxer::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 		$netTotals[$taxPercent] += $shippingPrice;
 	
-		$adjustCents[Quanbit_Afip_Model_Alicuota_Product::IVA_0250] = $afipInvoice->getNeto_0250() - $netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_0250];
-		$adjustCents[Quanbit_Afip_Model_Alicuota_Product::IVA_0500] = $afipInvoice->getNeto_0500() - $netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_0500];
-		$adjustCents[Quanbit_Afip_Model_Alicuota_Product::IVA_1050] = $afipInvoice->getNeto_1050() - $netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_1050];
-		$adjustCents[Quanbit_Afip_Model_Alicuota_Product::IVA_2100] = $afipInvoice->getNeto_2100() - $netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_2100];
-		$adjustCents[Quanbit_Afip_Model_Alicuota_Product::IVA_2700] = $afipInvoice->getNeto_2700() - $netTotals[Quanbit_Afip_Model_Alicuota_Product::IVA_2700];
-		$adjustCents[Quanbit_Afip_Model_Alicuota_Product::EXENTO] = $afipInvoice->getNetoExento() - $netTotals[Quanbit_Afip_Model_Alicuota_Product::EXENTO];
+		$adjustCents[Afip_Model_Alicuota_Product::IVA_0250] = $afipInvoice->getNeto_0250() - $netTotals[Afip_Model_Alicuota_Product::IVA_0250];
+		$adjustCents[Afip_Model_Alicuota_Product::IVA_0500] = $afipInvoice->getNeto_0500() - $netTotals[Afip_Model_Alicuota_Product::IVA_0500];
+		$adjustCents[Afip_Model_Alicuota_Product::IVA_1050] = $afipInvoice->getNeto_1050() - $netTotals[Afip_Model_Alicuota_Product::IVA_1050];
+		$adjustCents[Afip_Model_Alicuota_Product::IVA_2100] = $afipInvoice->getNeto_2100() - $netTotals[Afip_Model_Alicuota_Product::IVA_2100];
+		$adjustCents[Afip_Model_Alicuota_Product::IVA_2700] = $afipInvoice->getNeto_2700() - $netTotals[Afip_Model_Alicuota_Product::IVA_2700];
+		$adjustCents[Afip_Model_Alicuota_Product::EXENTO] = $afipInvoice->getNetoExento() - $netTotals[Afip_Model_Alicuota_Product::EXENTO];
 	
 		foreach($adjustCents as $key => $value){
 			$adjustCents[$key] = 100 * round($value, 2);

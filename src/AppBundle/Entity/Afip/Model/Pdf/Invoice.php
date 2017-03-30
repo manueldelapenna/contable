@@ -4,7 +4,7 @@
  *
  * @author     manueldelapenna
  */
-class Invoice{
+class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 	
 	private $barcode = NULL;
 	private $copies = 3;
@@ -17,18 +17,18 @@ class Invoice{
 			
 		$customer = Mage::getModel('customer/customer')->load($invoice->getOrder()->getCustomerId());
 		$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($invoice->getId());
-		$this->barcode = new Barcode_Barcode();
+		$this->barcode = new Afip_Model_Pdf_Barcode_Barcode();
 		$this->barcode->addCUIT(33709315329);
-		$this->barcode->addInvoiceType(Quanbit_Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType()));
-		$this->barcode->addPOS(InvoicePrinterExecutor::getPointOfSaleOfConfiguratedEnvironment());
+		$this->barcode->addInvoiceType(Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType()));
+		$this->barcode->addPOS(Afip_Model_Pdf_InvoicePrinterExecutor::getPointOfSaleOfConfiguratedEnvironment());
 		
-		if ($afipInvoice->getType() == Quanbit_Afip_Model_Enums_TypeEnum::A){
-			$pdf = Zend_Pdf::load(Mage::getModuleDir('etc', 'Quanbit_Afip') . "/pdfTemplates/invoiceATemplate.pdf");
+		if ($afipInvoice->getType() == Afip_Model_Enums_TypeEnum::A){
+			$pdf = Zend_Pdf::load(Mage::getModuleDir('etc', 'Afip') . "/pdfTemplates/invoiceATemplate.pdf");
 		}else{
 			if($invoice->getOrder()->getOrderCurrencyCode() == 'ARS'){
-				$pdf = Zend_Pdf::load(Mage::getModuleDir('etc', 'Quanbit_Afip') . "/pdfTemplates/invoiceBTemplate.pdf");
+				$pdf = Zend_Pdf::load(Mage::getModuleDir('etc', 'Afip') . "/pdfTemplates/invoiceBTemplate.pdf");
 			}else{
-				$pdf = Zend_Pdf::load(Mage::getModuleDir('etc', 'Quanbit_Afip') . "/pdfTemplates/invoiceBDollarTemplate.pdf");
+				$pdf = Zend_Pdf::load(Mage::getModuleDir('etc', 'Afip') . "/pdfTemplates/invoiceBDollarTemplate.pdf");
 			}
 		}
 		$this->_setPdf($pdf);
@@ -38,11 +38,11 @@ class Invoice{
 		$this->setCuitOrDni($afipInvoice,$customer);
 				
 		$this->setGenerationTime($afipInvoice->getAuthorizationDate());
-		$this->setTaxCondition(Quanbit_QBCustomer_Model_Iva::getIvaConditionNameFromIvaConditionNumber($customer->getIvaCondition()));
+		$this->setTaxCondition(QBCustomer_Model_Iva::getIvaConditionNameFromIvaConditionNumber($customer->getIvaCondition()));
 		
 		$billingAddress = $invoice->getBillingAddress();
 		$this->setAddress($billingAddress->getStreet1() . " " . $billingAddress->getStreet2() . " (" . $billingAddress->getPostcode() . ") " . $billingAddress->getCity() . ", " . $billingAddress->getRegion() . ", " . $billingAddress->getCountryModel()->getName());
-		$this->setBillingNumber(InvoicePrinterExecutor::getPointOfSaleOfConfiguratedEnvironment() ."-". InvoicePrinterExecutor::getNormalizedInvoiceNumber($afipInvoice));
+		$this->setBillingNumber(Afip_Model_Pdf_InvoicePrinterExecutor::getPointOfSaleOfConfiguratedEnvironment() ."-". Afip_Model_Pdf_InvoicePrinterExecutor::getNormalizedInvoiceNumber($afipInvoice));
 	
 		$this->setDueDate($afipInvoice->getCaeDueDate());
 		$this->setCae($afipInvoice->getCaeNumber());
@@ -64,32 +64,32 @@ class Invoice{
 		$items = $invoice->getAllItems();
 		$billingType = $afipInvoice->getType();
 				
-		$adjustCents = Quanbit_Afip_Helper_Taxer::calculateAdjustTaxAmounts($invoice, $afipInvoice);
+		$adjustCents = Afip_Helper_Taxer::calculateAdjustTaxAmounts($invoice, $afipInvoice);
 		
 		foreach($items as $item)
 		{
 			
 			$product = Mage::getModel('catalog/product')->load($item->getProductId());
 			
-			$isItemParent = Quanbit_Afip_Model_Alicuota_Product::isParentItem($item);
+			$isItemParent = Afip_Model_Alicuota_Product::isParentItem($item);
 				
 			if ($isItemParent){
-				$taxPercent = Quanbit_Afip_Model_Alicuota_Product::getAlicuotaForProduct($product);
+				$taxPercent = Afip_Model_Alicuota_Product::getAlicuotaForProduct($product);
 				
-				if($billingType == Quanbit_Afip_Model_Enums_TypeEnum::A){
-					$itemTotal = Quanbit_Afip_Helper_Taxer::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
-					$itemTotal = Quanbit_Afip_Helper_Taxer::adjustAmount($itemTotal, $adjustCents, $taxPercent);
+				if($billingType == Afip_Model_Enums_TypeEnum::A){
+					$itemTotal = Afip_Helper_Taxer::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+					$itemTotal = Afip_Helper_Taxer::adjustAmount($itemTotal, $adjustCents, $taxPercent);
 					
-					$itemUnitaryPrice = Quanbit_Afip_Helper_Taxer::getNetoUnitaryAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
-					if($taxPercent != Quanbit_Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Quanbit_Afip_Model_Alicuota_Product::EXENTO){
+					$itemUnitaryPrice = Afip_Helper_Taxer::getNetoUnitaryAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+					if($taxPercent != Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Afip_Model_Alicuota_Product::EXENTO){
 						$this->addItem($item->getQty(), $product->getName(), $itemUnitaryPrice, $itemTotal, $taxPercent);
 					}else{
 						$this->addItem($item->getQty(), $product->getName(),$itemUnitaryPrice, $itemTotal, 0);
 					}
 				}else{
-					$itemTotal = Quanbit_Afip_Helper_Taxer::getFinalAmountForProductItem($item,$invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
-					$itemUnitaryPrice = Quanbit_Afip_Helper_Taxer::getFinalUnitaryAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
-					if($taxPercent != Quanbit_Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Quanbit_Afip_Model_Alicuota_Product::EXENTO){
+					$itemTotal = Afip_Helper_Taxer::getFinalAmountForProductItem($item,$invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
+					$itemUnitaryPrice = Afip_Helper_Taxer::getFinalUnitaryAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
+					if($taxPercent != Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Afip_Model_Alicuota_Product::EXENTO){
 						$this->addItem($item->getQty(), $product->getName(), $itemUnitaryPrice, $itemTotal, $taxPercent);
 					}else{
 						$this->addItem($item->getQty(), $product->getName(),$itemUnitaryPrice, $itemTotal, 0);
@@ -104,18 +104,18 @@ class Invoice{
 		$billingType = $afipInvoice->getType();
 		
 		if($invoice->getShippingAmount() > 0){
-			$taxPercent = Quanbit_Afip_Model_Alicuota_Shipping::getAlicuotaForShipping();
+			$taxPercent = Afip_Model_Alicuota_Shipping::getAlicuotaForShipping();
 			$shippingDescription = "Envío " . $invoice->getOrder()->getShippingDescription();
-			if($billingType == Quanbit_Afip_Model_Enums_TypeEnum::A){
-				$shippingTotal = Quanbit_Afip_Helper_Taxer::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
-				if ($taxPercent != Quanbit_Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Quanbit_Afip_Model_Alicuota_Product::EXENTO){
+			if($billingType == Afip_Model_Enums_TypeEnum::A){
+				$shippingTotal = Afip_Helper_Taxer::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+				if ($taxPercent != Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Afip_Model_Alicuota_Product::EXENTO){
 					$this->addItem(1, $shippingDescription, $shippingTotal, $shippingTotal, $taxPercent);
 				}else{
 					$this->addItem(1, $shippingDescription, $shippingTotal, $shippingTotal, 0);
 				}
 			}else{
-				$shippingTotal = Quanbit_Afip_Helper_Taxer::getFinalAmountForShippingItem($invoice,$invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
-				if ($taxPercent != Quanbit_Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Quanbit_Afip_Model_Alicuota_Product::EXENTO){
+				$shippingTotal = Afip_Helper_Taxer::getFinalAmountForShippingItem($invoice,$invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice, FALSE);
+				if ($taxPercent != Afip_Model_Alicuota_Product::NO_GRAVADO && $taxPercent != Afip_Model_Alicuota_Product::EXENTO){
 					$this->addItem(1, $shippingDescription, $shippingTotal, $shippingTotal, $taxPercent);
 				}else{
 					$this->addItem(1, $shippingDescription, $shippingTotal, $shippingTotal, 0);
@@ -129,7 +129,7 @@ class Invoice{
 		$ivaAmount = $afipInvoice->getIva_0250() + $afipInvoice->getIva_0500() + $afipInvoice->getIva_1050() + $afipInvoice->getIva_2100() + $afipInvoice->getIva_2700();
 		$netoAmount = $afipInvoice->getNeto_0250() + $afipInvoice->getNeto_0500() + $afipInvoice->getNeto_1050() + $afipInvoice->getNeto_2100() + $afipInvoice->getNeto_2700() + $afipInvoice->getNetoExento();
 		
-		if ($afipInvoice->getType() == Quanbit_Afip_Model_Enums_TypeEnum::A){
+		if ($afipInvoice->getType() == Afip_Model_Enums_TypeEnum::A){
 			
 			$this->setTaxAmount0250($afipInvoice->getNeto_0250(), $afipInvoice->getIva_0250());
 			$this->setTaxAmount0500($afipInvoice->getNeto_0500(), $afipInvoice->getIva_0500());
@@ -245,7 +245,7 @@ class Invoice{
 		$ivaAmount = $afipInvoice->getIva_0250() + $afipInvoice->getIva_0500() + $afipInvoice->getIva_1050() + $afipInvoice->getIva_2100() + $afipInvoice->getIva_2700();
 		$netoAmount = $afipInvoice->getNeto_0250() + $afipInvoice->getNeto_0500() + $afipInvoice->getNeto_1050() + $afipInvoice->getNeto_2100() + $afipInvoice->getNeto_2700() + $afipInvoice->getNetoExento();
 		//Factura B
-		if($afipInvoice->getType() == Quanbit_Afip_Model_Enums_TypeEnum::B){
+		if($afipInvoice->getType() == Afip_Model_Enums_TypeEnum::B){
 			//>= $1000
 			if(($customer->getIvaCondition() == 1 || $customer->getIvaCondition() == 4) && ($ivaAmount + $netoAmount) >= 1000){
 				if(strlen($customer->getTaxvat()) == 11){
@@ -346,7 +346,7 @@ class Invoice{
 	protected function setSubtotalAmount($value, $type)
 	{
 		$this->setNumbersFont(10);
-		if ($type ==  Quanbit_Afip_Model_Enums_TypeEnum::A){
+		if ($type ==  Afip_Model_Enums_TypeEnum::A){
 			for($i=0;$i<$this->copies;$i++){
 				$this->_getPdf()->pages[$i]->drawText($this->asMonospacedNumber($value,11), 498, 126, 'UTF-8');
 			}
@@ -367,7 +367,7 @@ class Invoice{
 	protected function setTotalAmount($value, $type)
 	{
 		$this->setNumbersFont(10);
-		if ($type ==  Quanbit_Afip_Model_Enums_TypeEnum::A){
+		if ($type ==  Afip_Model_Enums_TypeEnum::A){
 			for($i=0;$i<$this->copies;$i++){
 				$this->_getPdf()->pages[$i]->drawText($this->asMonospacedNumber($value,11), 498, 86, 'UTF-8');
 			}

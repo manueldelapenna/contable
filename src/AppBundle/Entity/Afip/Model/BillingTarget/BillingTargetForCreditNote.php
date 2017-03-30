@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class BillingTargetForCreditNote extends BillingTarget
+	class Afip_Model_BillingTarget_BillingTargetForCreditNote extends Afip_Model_BillingTarget_BillingTarget
 	{
 		/* Public methods */
 		
@@ -32,7 +32,7 @@
 		
 		protected function getValidTargetTypes()
 		{
-			$types = Quanbit_Afip_Model_Enums_TypeEnum::getTypesForCreditNote();
+			$types = Afip_Model_Enums_TypeEnum::getTypesForCreditNote();
 			return $types;
 		}
 	}

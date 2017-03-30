@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class AlicuotaCollector implements Iterator, Countable
+	class Afip_Model_Alicuota_AlicuotaCollector implements Iterator, Countable
 	{
 		/* Constants and Variables */
 		
@@ -18,7 +18,7 @@
 		
 		/**
 		 * The errors.
-		 * @var Quanbit_Afip_Helper_ErrorCollection instance
+		 * @var Afip_Helper_ErrorCollection instance
 		 */
 		protected $errors;
 		
@@ -47,7 +47,7 @@
 		/**
 		 * Returns a new instance.
 		 *
-		 * @return AlicuotaCollector instance
+		 * @return Afip_Model_Alicuota_AlicuotaCollector instance
 		 */
 		public static function getInstance()
 		{
@@ -58,15 +58,15 @@
 		public function __construct()
 		{
 			$this->count = 0;
-			$this->errors = Quanbit_Afip_Helper_ErrorCollection::getInstance();
+			$this->errors = Afip_Helper_ErrorCollection::getInstance();
 			
 			$this->flags = array();
-			$this->flags[Quanbit_Afip_Model_Enums_TaxTypeEnum::IVA_0000] = NULL;
-			$this->flags[Quanbit_Afip_Model_Enums_TaxTypeEnum::IVA_0250] = NULL;
-			$this->flags[Quanbit_Afip_Model_Enums_TaxTypeEnum::IVA_0500] = NULL;
-			$this->flags[Quanbit_Afip_Model_Enums_TaxTypeEnum::IVA_1050] = NULL;
-			$this->flags[Quanbit_Afip_Model_Enums_TaxTypeEnum::IVA_2100] = NULL;
-			$this->flags[Quanbit_Afip_Model_Enums_TaxTypeEnum::IVA_2700] = NULL;
+			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_0000] = NULL;
+			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_0250] = NULL;
+			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_0500] = NULL;
+			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_1050] = NULL;
+			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_2100] = NULL;
+			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_2700] = NULL;
 			
 			$this->repository = array();
 			
@@ -82,13 +82,13 @@
 		/**
 		 * Adds the given alicuota to collector.
 		 *
-		 * @param Alicuota $alicuota
+		 * @param Afip_Model_Alicuota_Alicuota $alicuota
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given alicuota is not an instance of Alicuota.
+		 * @throws Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given alicuota is not an instance of Afip_Model_Alicuota_Alicuota.
 		 */
 		public function add($alicuota)
 		{
-			if (is_object($alicuota) && ($alicuota instanceof Alicuota))
+			if (is_object($alicuota) && ($alicuota instanceof Afip_Model_Alicuota_Alicuota))
 			{
 				if ($alicuota->isValid())
 				{
@@ -98,7 +98,7 @@
 				}
 			}
 			else
-				Quanbit_Afip_Exception_ExceptionFactory::throwClassMismatch("Alicuota");
+				Afip_Exception_ExceptionFactory::throwClassMismatch("Afip_Model_Alicuota_Alicuota");
 		}
 		
 		/**
@@ -135,7 +135,7 @@
 		 * Returns the current alicuota.
 		 *
 		 * @see Iterator::current()
-		 * @return Alicuota instance
+		 * @return Afip_Model_Alicuota_Alicuota instance
 		 */
 		public function current()
 		{
@@ -145,7 +145,7 @@
 		/**
 		 * Returns the errors.
 		 *
-		 * @return Quanbit_Afip_Helper_ErrorCollection instance
+		 * @return Afip_Helper_ErrorCollection instance
 		 */
 		public function getErrors()
 		{
@@ -170,7 +170,7 @@
 				}
 			}
 			
-			$amount = Quanbit_Afip_Helper_DataType_Number::truncate($amount, 2);
+			$amount = Afip_Helper_DataType_Number::truncate($amount, 2);
 			
 			return $amount;
 		}
@@ -226,8 +226,8 @@
 		/**
 		 * Returns the stored alicuota for given alicuota.
 		 *
-		 * @param Alicuota $alicuota
-		 * @return Alicuota instance
+		 * @param Afip_Model_Alicuota_Alicuota $alicuota
+		 * @return Afip_Model_Alicuota_Alicuota instance
 		 */
 		protected function getStoredAlicuotaFor($alicuota)
 		{

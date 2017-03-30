@@ -35,7 +35,7 @@
  * @author Agustin Quiroga
  * @since 13/09/2007
  */
-class Barcode {
+class Afip_Model_Pdf_Barcode_Barcode {
 
 	/**
 	 * Barcode
@@ -55,7 +55,7 @@ class Barcode {
 	 * Create Barcode Object to work
 	 */
 	public function __construct() {
-		$this->code = new Code();
+		$this->code = new Afip_Model_Pdf_Barcode_Lib_Code();
 	}
 
 
@@ -65,7 +65,7 @@ class Barcode {
 	 * @param int $int
 	 */
 	public function addCUIT($cuit) {
-		$item = new Item();
+		$item = new Afip_Model_Pdf_Barcode_Lib_Item();
 		$item->setValue($cuit);
 		$item->setPositions(11);
 		$this->code->addItem($item,0);
@@ -77,14 +77,14 @@ class Barcode {
 	 * @param int $int
 	 */
 	public function addInvoiceType($type) {
-		$item = new Item();
+		$item = new Afip_Model_Pdf_Barcode_Lib_Item();
 		$item->setValue($type);
 		$item->setPositions(2);
 		$this->code->addItem($item,1);
 	}
 
 	public function addPOS($pos) {
-		$item = new Item();
+		$item = new Afip_Model_Pdf_Barcode_Lib_Item();
 		$item->setValue($pos);
 		$item->setPositions(4);
 		$this->code->addItem($item,2);
@@ -96,7 +96,7 @@ class Barcode {
 	 * @param float $float
 	 */
 	public function addCAE($cae) {
-		$item = new Item();
+		$item = new Afip_Model_Pdf_Barcode_Lib_Item();
 		$item->setValue($cae);
 		$item->setPositions(14);
 		$this->code->addItem($item,3);
@@ -108,7 +108,7 @@ class Barcode {
 	 * @param timestamp $date
 	 */
 	public function addGenerationTime($date) {
-		$item = new Item();
+		$item = new Afip_Model_Pdf_Barcode_Lib_Item();
 		$dueDate = (string) date("Ymd",strtotime($date));
 		$item->setValue($dueDate);
 		$item->setPositions(8);
@@ -130,7 +130,7 @@ class Barcode {
 	 * @param unknown_type $value
 	 */
 	public function getBarcodeImage() {
-		$bar = new Encoder('I25');
+		$bar = new Afip_Model_Pdf_Barcode_Lib_Encoder('I25');
 		$bar->setHeight(34);
 		$bar->setScale(0.9);
 		$bar->genBarCode($this->getBarcodeValue(),'png',$this->getBarcodeValue());

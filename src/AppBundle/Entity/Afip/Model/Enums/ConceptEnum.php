@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class ConceptEnum extends AbstractEnum
+	class Afip_Model_Enums_ConceptEnum extends Afip_Model_Enums_AbstractEnum
 	{
 		/* Contants and Variables */
 		
@@ -30,7 +30,7 @@
 		
 		/**
 		 * A singleton instance.
-		 * @var ConceptEnum
+		 * @var Afip_Model_Enums_ConceptEnum
 		 */
 		protected static $singleton;
 		
@@ -41,7 +41,7 @@
 		/**
 		 * Returns a new singleton instance.
 		 *
-		 * @return ConceptEnum instance
+		 * @return Afip_Model_Enums_ConceptEnum instance
 		 */
 			public static function getInstance()
 		{

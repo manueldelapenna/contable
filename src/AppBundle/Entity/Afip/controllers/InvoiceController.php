@@ -1,5 +1,5 @@
 <?php
-class Quanbit_Afip_InvoiceController extends Mage_Adminhtml_Controller_Action
+class Afip_InvoiceController extends Mage_Adminhtml_Controller_Action
 {
 	public function printAction()
 	{
@@ -9,8 +9,8 @@ class Quanbit_Afip_InvoiceController extends Mage_Adminhtml_Controller_Action
 
 		$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($invoiceId);
 				
-		$dir = Quanbit_Afip_Model_Pdf_InvoicePrinterExecutor::getDirForAfipDocument($afipInvoice);
-		$filename = Quanbit_Afip_Model_Pdf_InvoicePrinterExecutor::getFilenameForAfipDocument($afipInvoice);
+		$dir = Afip_Model_Pdf_InvoicePrinterExecutor::getDirForAfipDocument($afipInvoice);
+		$filename = Afip_Model_Pdf_InvoicePrinterExecutor::getFilenameForAfipDocument($afipInvoice);
 		$path = "$dir/$filename";
 		
 		$pdf = file_get_contents($path);
@@ -33,20 +33,20 @@ class Quanbit_Afip_InvoiceController extends Mage_Adminhtml_Controller_Action
 			$invoice = Mage::getModel('sales/order_invoice')->load($invoiceId);
 			$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($invoiceId);
 		
-			if($afipInvoice->getStatus() == Quanbit_Afip_Model_Invoice::REJECTED){
-				$afipInvoice->updateAndSave($afipInvoice->getNumber(), $afipInvoice->getType(), NULL, NULL, NULL, NULL, Quanbit_Afip_Model_Invoice::PENDING);
+			if($afipInvoice->getStatus() == Afip_Model_Invoice::REJECTED){
+				$afipInvoice->updateAndSave($afipInvoice->getNumber(), $afipInvoice->getType(), NULL, NULL, NULL, NULL, Afip_Model_Invoice::PENDING);
 				$customerId = $invoice->getOrder()->getCustomerId();
 				$customer = Mage::getModel('customer/customer')->load($customerId);
 				
 				//No es Resp. Inscripto y la factura es A, se cambia la factura a B				
-				if($customer->getIvaCondition() != 2 && $afipInvoice->getType() == Quanbit_Afip_Model_Enums_TypeEnum::A){
-					$afipInvoice->setType(Quanbit_Afip_Model_Enums_TypeEnum::B);
+				if($customer->getIvaCondition() != 2 && $afipInvoice->getType() == Afip_Model_Enums_TypeEnum::A){
+					$afipInvoice->setType(Afip_Model_Enums_TypeEnum::B);
 					$afipInvoice->save();
 				}
 				
 				//Es Resp. Inscripto y la factura es B, se cambia la factura a A
-				if($customer->getIvaCondition() == 2 && $afipInvoice->getType() == Quanbit_Afip_Model_Enums_TypeEnum::B){
-					$afipInvoice->setType(Quanbit_Afip_Model_Enums_TypeEnum::A);
+				if($customer->getIvaCondition() == 2 && $afipInvoice->getType() == Afip_Model_Enums_TypeEnum::B){
+					$afipInvoice->setType(Afip_Model_Enums_TypeEnum::A);
 					$afipInvoice->save();
 				}
 				
@@ -54,9 +54,9 @@ class Quanbit_Afip_InvoiceController extends Mage_Adminhtml_Controller_Action
 				$invoice->save();
 				$this->_getSession()->addSuccess("El estado de la Factura AFIP ha cambiado a Pendiente");
 			}else{
-				throw new Quanbit_Afip_Exception_Lib_AfipInvoiceInvalidOperationException();
+				throw new Afip_Exception_Lib_AfipInvoiceInvalidOperationException();
 			}
-		}catch(Quanbit_Afip_Exception_Lib_AfipInvoiceInvalidOperationException $e){
+		}catch(Afip_Exception_Lib_AfipInvoiceInvalidOperationException $e){
 			$this->_getSession()->addError('No puede volver a autorizarse una Factura con estado distinto a "Rechazada"');
 		}catch(Exception $e){
 			$this->_getSession()->addError($e->getMessage());

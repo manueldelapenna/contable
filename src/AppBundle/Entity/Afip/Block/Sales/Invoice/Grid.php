@@ -29,7 +29,7 @@
  *
  * @author Magento Core Team <core@magentocommerce.com>
  */
-class Quanbit_Afip_Block_Sales_Invoice_Grid extends Mage_Adminhtml_Block_Widget_Grid {
+class Afip_Block_Sales_Invoice_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 	public function __construct() {
 		parent::__construct ();
 		$this->setId ( 'sales_invoice_grid' );
@@ -337,8 +337,8 @@ class Quanbit_Afip_Block_Sales_Invoice_Grid extends Mage_Adminhtml_Block_Widget_
 				$street = $streets[0];
 				
 				if(!is_null($invoice->getType())){
-					$invoiceType = Quanbit_Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($invoice->getType());
-					$afipStatus = Quanbit_Afip_Model_Invoice::getStatusName($invoice->getStatus());
+					$invoiceType = Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($invoice->getType());
+					$afipStatus = Afip_Model_Invoice::getStatusName($invoice->getStatus());
 				}else{
 					$invoiceType = "";
 					$afipStatus = "";
@@ -543,8 +543,8 @@ class Quanbit_Afip_Block_Sales_Invoice_Grid extends Mage_Adminhtml_Block_Widget_
 				$street = $streets[0];
 				
 				if(!is_null($invoice->getType())){
-					$invoiceType = Quanbit_Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($invoice->getType());
-					$afipStatus = Quanbit_Afip_Model_Invoice::getStatusName($invoice->getStatus());
+					$invoiceType = Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($invoice->getType());
+					$afipStatus = Afip_Model_Invoice::getStatusName($invoice->getStatus());
 				}else{
 					$invoiceType = "";
 					$afipStatus = "";

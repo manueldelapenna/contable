@@ -7,7 +7,7 @@
 	 * @author Eduardo Casey
 	 */
 
-	final class InvoiceManager
+	final class Afip_Model_InvoiceManager extends Mage_Core_Model_Abstract
 	{
 		/* Constants and Variables */
 		
@@ -31,7 +31,7 @@
 		
 		/**
 		 * The environment.
-		 * @var Environment_Environment instance | NULL
+		 * @var Afip_Model_Environment_Environment instance | NULL
 		 */
 		protected $environment;
 		
@@ -43,7 +43,7 @@
 		
 		/**
 		 * The logger.
-		 * @var Quanbit_Afip_Helper_FileLogger instance | NULL
+		 * @var Afip_Helper_FileLogger instance | NULL
 		 */
 		protected $logger;
 		
@@ -60,9 +60,9 @@
 		/**
 		 * Returns a new instance.
 		 *
-		 * @param Environment_Environment $environment
-		 * @param Quanbit_Afip_Helper_FileLogger $logger
-		 * @return InvoiceManager instance
+		 * @param Afip_Model_Environment_Environment $environment
+		 * @param Afip_Helper_FileLogger $logger
+		 * @return Afip_Model_InvoiceManager instance
 		 */
 		public static function getInstance($environment, $logger)
 		{
@@ -120,14 +120,14 @@
 		/**
 		 * Authorizes the given billing data on Webservice (WSFE).
 		 *
-		 * @param InvoiceData_InvoiceDataCollector $collector
+		 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_Exception Throws an exception when Webservice (WSFE) is not running or given collector is not an instance of InvoiceData_InvoiceDataCollector.
+		 * @throws Afip_Exception_Lib_Exception Throws an exception when Webservice (WSFE) is not running or given collector is not an instance of Afip_Model_InvoiceData_InvoiceDataCollector.
 		 */
 		public function authorize($collector)
 		{
 			$this->exceptionIfNoWebservice();
-			$this->exceptionIfClassMismatch($collector, "InvoiceData_InvoiceDataCollector");
+			$this->exceptionIfClassMismatch($collector, "Afip_Model_InvoiceData_InvoiceDataCollector");
 			
 			$this->log("BEGIN", __FUNCTION__);
 			
@@ -140,7 +140,7 @@
 					$this->log(" * Environment: " . $this->environment->getEnvironmentKey(), __FUNCTION__);
 					$this->log(" * Point of Sales: " . $this->environment->getPointOfSale(), __FUNCTION__);
 					$this->log(" * Taxpayer CUIT: " . $this->environment->getTaxpayerCuit(), __FUNCTION__);
-					$this->log(" * Type: " . Enums_TypeEnum::getInstance()->getValueFor($collector->getType()), __FUNCTION__);
+					$this->log(" * Type: " . Afip_Model_Enums_TypeEnum::getInstance()->getValueFor($collector->getType()), __FUNCTION__);
 					
 					
 					/* Retrieving last authorized number from Webservice (WSFE). */
@@ -163,7 +163,7 @@
 						/* Aborting process because there are no valid data. */
 						
 						$this->log(" * No data were sent to AFIP.", __FUNCTION__);
-						$collector->setStatus(Enums_AuthorizationStatusEnum::NO_VALID_DATA);
+						$collector->setStatus(Afip_Model_Enums_AuthorizationStatusEnum::NO_VALID_DATA);
 					}
 					else
 					{
@@ -193,17 +193,17 @@
 							$this->exceptionIfOperationHasErrors($this->lastResult);
 							$status = $this->lastResult->FECAESolicitarResult->FeCabResp->Resultado;
 						}
-						catch (Quanbit_Afip_Exception_Lib_SoapFaultException $e)
+						catch (Afip_Exception_Lib_SoapFaultException $e)
 						{
-							$status = Enums_AuthorizationStatusEnum::NO_RESULT_GIVEN;
+							$status = Afip_Model_Enums_AuthorizationStatusEnum::NO_RESULT_GIVEN;
 						}
 						
-						$this->log(" * Authorization result: " . Enums_AuthorizationStatusEnum::getInstance()->getValueFor($status), __FUNCTION__);
+						$this->log(" * Authorization result: " . Afip_Model_Enums_AuthorizationStatusEnum::getInstance()->getValueFor($status), __FUNCTION__);
 						
-						if ($status == Enums_AuthorizationStatusEnum::NO_RESULT_GIVEN)
+						if ($status == Afip_Model_Enums_AuthorizationStatusEnum::NO_RESULT_GIVEN)
 						{
 							/* Updating the status of collection. */
-							$collector->setStatus(Enums_AuthorizationStatusEnum::NO_RESULT_GIVEN);
+							$collector->setStatus(Afip_Model_Enums_AuthorizationStatusEnum::NO_RESULT_GIVEN);
 						}
 						else
 						{
@@ -233,7 +233,7 @@
 			{
 				/* Updating the status of collection on caught exception. */
 				
-				$collector->setStatus(Enums_AuthorizationStatusEnum::EXCEPTION);
+				$collector->setStatus(Afip_Model_Enums_AuthorizationStatusEnum::EXCEPTION);
 				
 				$this->log("Exception detected -> " . $e->getMessage(), __FUNCTION__);
 				$this->log("  |_ content (base64): {$this->encodeForLogger($e)}", __FUNCTION__);
@@ -246,7 +246,7 @@
 		 * Returns a collection of currencies from Webservice.
 		 *
 		 * @return array
-		 * @throws Quanbit_Afip_Exception_Lib_Exception
+		 * @throws Afip_Exception_Lib_Exception
 		 */
 		public function getCurrencyCollection()
 		{
@@ -257,7 +257,7 @@
 		 * Returns a collection of document types from Webservice.
 		 *
 		 * @return array
-		 * @throws Quanbit_Afip_Exception_Lib_Exception
+		 * @throws Afip_Exception_Lib_Exception
 		 */
 		public function getDocumentTypeCollection()
 		{
@@ -268,7 +268,7 @@
 		 * Returns a collection of invoice types from Webservice.
 		 *
 		 * @return array
-		 * @throws Quanbit_Afip_Exception_Lib_Exception
+		 * @throws Afip_Exception_Lib_Exception
 		 */
 		public function getInvoiceTypeCollection()
 		{
@@ -280,13 +280,13 @@
 		 *
 		 * @param int $type
 		 * @return int
-		 * @throws Quanbit_Afip_Exception_Lib_Exception
+		 * @throws Afip_Exception_Lib_Exception
 		 */
 		public function getLastAcceptedNumberFor($type)
 		{
 			$this->exceptionIfNoWebservice();
 			
-			Enums_TypeEnum::getInstance()->validateKey($type);
+			Afip_Model_Enums_TypeEnum::getInstance()->validateKey($type);
 			
 			$this->lastResult = $this->wsfeClient->FECompUltimoAutorizado(array("Auth" => $this->getAuthKey(), "PtoVta" => $this->environment->getPointOfSale(), "CbteTipo" => $type));
 			$this->exceptionIfOperationHasErrors($this->lastResult);
@@ -297,7 +297,7 @@
 		/**
 		 * Returns the associated logger.
 		 *
-		 * @return Quanbit_Afip_Helper_FileLogger
+		 * @return Afip_Helper_FileLogger
 		 */
 		public function getLogger()
 		{
@@ -308,7 +308,7 @@
 		 * Returns a collection of tax types from Webservice.
 		 *
 		 * @return array
-		 * @throws Quanbit_Afip_Exception_Lib_Exception
+		 * @throws Afip_Exception_Lib_Exception
 		 */
 		public function getTaxTypeCollection()
 		{
@@ -343,12 +343,12 @@
 			$report["pointOfSales"] = $this->environment->getPointOfSale();
 			$report["taxpayerCuit"] = $this->environment->getTaxpayerCuit();
 			$report["sendingDataLimit"] = $this->getSendingDataLimit();
-			$report["lastNumber"]["invoiceA"] = $this->getLastAcceptedNumberFor(Enums_TypeEnum::A);
-			$report["lastNumber"]["invoiceB"] = $this->getLastAcceptedNumberFor(Enums_TypeEnum::B);
-			$report["lastNumber"]["creditNoteA"] = $this->getLastAcceptedNumberFor(Enums_TypeEnum::A_CREDIT_NOTE);
-			$report["lastNumber"]["creditNoteB"] = $this->getLastAcceptedNumberFor(Enums_TypeEnum::B_CREDIT_NOTE);
-			$report["lastNumber"]["debitNoteA"] = $this->getLastAcceptedNumberFor(Enums_TypeEnum::A_DEBIT_NOTE);
-			$report["lastNumber"]["debitNoteB"] = $this->getLastAcceptedNumberFor(Enums_TypeEnum::B_DEBIT_NOTE);
+			$report["lastNumber"]["invoiceA"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::A);
+			$report["lastNumber"]["invoiceB"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::B);
+			$report["lastNumber"]["creditNoteA"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::A_CREDIT_NOTE);
+			$report["lastNumber"]["creditNoteB"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::B_CREDIT_NOTE);
+			$report["lastNumber"]["debitNoteA"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::A_DEBIT_NOTE);
+			$report["lastNumber"]["debitNoteB"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::B_DEBIT_NOTE);
 			
 			return $report;
 		}
@@ -404,11 +404,11 @@
 						new SoapClient($this->environment->getWsfeFilePath(), array("soap_version" => SOAP_1_2, "location" => $this->environment->getWsfeUrl(), "exceptions" => 0, "trace" => 1));
 					
 					if ($this->wsfeClient === NULL)
-						Quanbit_Afip_Exception_ExceptionFactory::throwFor("Cannot create a new SoapClient instance.");
+						Afip_Exception_ExceptionFactory::throwFor("Cannot create a new SoapClient instance.");
 				}
 			}
 			else
-				Quanbit_Afip_Exception_ExceptionFactory::throwFor("Cannot login when it is not authenticated.");
+				Afip_Exception_ExceptionFactory::throwFor("Cannot login when it is not authenticated.");
 		}
 		
 		/**
@@ -421,7 +421,7 @@
 		public function retrieveDataFor($type, $number)
 		{
 			$this->exceptionIfNoWebservice();
-			Enums_TypeEnum::getInstance()->validateKey($type);
+			Afip_Model_Enums_TypeEnum::getInstance()->validateKey($type);
 			
 			$operationData = array();
 			$operationData["Auth"] = $this->getAuthKey();
@@ -438,15 +438,15 @@
 		/**
 		 * Sets the environment.
 		 *
-		 * @param Environment_Environment $environment
+		 * @param Afip_Model_Environment_Environment $environment
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_Exception Throws an exception whether the given environment is invalid.
+		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given environment is invalid.
 		 */
 		public function setEnvironment($environment)
 		{
 			if ($this->environment === NULL)
 			{
-				$this->exceptionIfClassMismatch($environment, "Environment_Environment");
+				$this->exceptionIfClassMismatch($environment, "Afip_Model_Environment_Environment");
 				$this->environment = $environment;
 			}
 		}
@@ -454,15 +454,15 @@
 		/**
 		 * Sets the logger.
 		 *
-		 * @param Quanbit_Afip_Helper_FileLogger $logger
+		 * @param Afip_Helper_FileLogger $logger
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_Exception Throws an exception whether the given logger is invalid.
+		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given logger is invalid.
 		 */
 		public function setLogger($logger)
 		{
 			if ($this->logger === NULL)
 			{
-				$this->exceptionIfClassMismatch($logger, "Quanbit_Afip_Helper_FileLogger");
+				$this->exceptionIfClassMismatch($logger, "Afip_Helper_FileLogger");
 				
 				$this->logger = $logger;
 				$this->logger->open();
@@ -538,40 +538,40 @@
 		 * @param object $source
 		 * @param string $className
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_ClassMismatchException
+		 * @throws Afip_Exception_Lib_ClassMismatchException
 		 */
 		protected function exceptionIfClassMismatch($source, $className)
 		{
 			if (!(is_object($source) && ($source instanceof $className)))
-				Quanbit_Afip_Exception_ExceptionFactory::throwClassMismatch($className);
+				Afip_Exception_ExceptionFactory::throwClassMismatch($className);
 		}
 		
 		/**
 		 * Throws an exception whether the Webservices (WSFE) is not logged in or it is not running.
 		 *
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_Exception
+		 * @throws Afip_Exception_Lib_Exception
 		 */
 		protected function exceptionIfNoWebservice()
 		{
 			if ($this->isLoggedIn())
 			{
 				if (!$this->isWebserviceRunning())
-					Quanbit_Afip_Exception_ExceptionFactory::throwFor("Webservice is not running.");
+					Afip_Exception_ExceptionFactory::throwFor("Webservice is not running.");
 			}
 			else
-				Quanbit_Afip_Exception_ExceptionFactory::throwFor("Must be logged into Webservice before continuous.");
+				Afip_Exception_ExceptionFactory::throwFor("Must be logged into Webservice before continuous.");
 		}
 		
 		/**
 		 * Throws an exception whether there is not an environment.
 		 *
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_ClassMismatchException
+		 * @throws Afip_Exception_Lib_ClassMismatchException
 		 */
 		protected function exceptionIfNoEnvironment()
 		{
-			$this->exceptionIfClassMismatch($this->environment, "Environment_Environment");
+			$this->exceptionIfClassMismatch($this->environment, "Afip_Model_Environment_Environment");
 		}
 		
 		/**
@@ -579,13 +579,13 @@
 		 *
 		 * @param $source
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_SoapFaultException
-		 * @throws Quanbit_Afip_Exception_Lib_Exception
+		 * @throws Afip_Exception_Lib_SoapFaultException
+		 * @throws Afip_Exception_Lib_Exception
 		 */
 		protected function exceptionIfOperationHasErrors($source)
 		{
 			if (is_soap_fault($source))
-				Quanbit_Afip_Exception_ExceptionFactory::throwSoapFaultException($source);
+				Afip_Exception_ExceptionFactory::throwSoapFaultException($source);
 			else
 			{
 				if (is_object($source) && ($source instanceof stdClass))
@@ -598,7 +598,7 @@
 							$errors[$error->Code] = $this->normalizeStringValueForHtml($error->Msg);
 						
 						$errors = implode(" || ", $errors);
-						Quanbit_Afip_Exception_ExceptionFactory::throwFor("There are Webservice errors: <$errors>.");
+						Afip_Exception_ExceptionFactory::throwFor("There are Webservice errors: <$errors>.");
 					}
 				}
 			}
@@ -643,7 +643,7 @@
 		 *
 		 * @param string $operation
 		 * @return array
-		 * @throws Quanbit_Afip_Exception_Lib_Exception
+		 * @throws Afip_Exception_Lib_Exception
 		 */
 		protected function getCollectionFor($operation)
 		{
@@ -651,7 +651,7 @@
 			
 			$operation = trim((string) $operation);
 			if ($operation == "")
-				Quanbit_Afip_Exception_ExceptionFactory::throwFor("Cannot retrieve collection data. Null operation name given.");
+				Afip_Exception_ExceptionFactory::throwFor("Cannot retrieve collection data. Null operation name given.");
 			
 			$this->lastResult = $this->wsfeClient->$operation(array("Auth" => $this->getAuthKey()));
 			$this->exceptionIfOperationHasErrors($this->lastResult);
@@ -725,7 +725,7 @@
 		/**
 		 * Processes the billing data in given collector and returns a collection of valid billing data with their invoice numbers for Webservice (WSFE).
 		 *
-		 * @param InvoiceData_InvoiceDataCollector $collector
+		 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector
 		 * @return array
 		 */
 		protected function prepareBillingData($collector)
@@ -793,7 +793,7 @@
 				                   array(), !PKCS7_DETACHED);
 			
 			if (!$pkcs7)
-				Quanbit_Afip_Exception_ExceptionFactory::throwFor("Cannot generate a PKCS#7 signature.");
+				Afip_Exception_ExceptionFactory::throwFor("Cannot generate a PKCS#7 signature.");
 			
 			$draffFile = fopen($tempTicketFilenameDraff, "r");
 			$x = 0;
@@ -816,10 +816,10 @@
 		/**
 		 * Updates billing data with the given result from Webservice (WSFE).
 		 *
-		 * @param InvoiceData_InvoiceDataCollector $collector
+		 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector
 		 * @param array $resultCollection
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_Exception Throws an exception whether the given collection of results is not an array or it is empty.
+		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given collection of results is not an array or it is empty.
 		 */
 		protected function updateBillingData($collector, $resultCollection)
 		{
@@ -830,11 +830,11 @@
 				$collector->rewind();
 				while ($collector->valid())
 				{
-					if (($collector->current()->getStatus() != Enums_DataAuthorizationStatusEnum::INVALID) && ($collector->current()->getInvoiceNumber() == $resultCollection[$resultPointer]->CbteDesde))
+					if (($collector->current()->getStatus() != Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID) && ($collector->current()->getInvoiceNumber() == $resultCollection[$resultPointer]->CbteDesde))
 					{
-						if ($resultCollection[$resultPointer]->Resultado == Enums_DataAuthorizationStatusEnum::ACCEPTED)
+						if ($resultCollection[$resultPointer]->Resultado == Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED)
 							$collector->current()->accepted($resultCollection[$resultPointer]->CAE, $resultCollection[$resultPointer]->CAEFchVto, $resultCollection[$resultPointer]->CbteFch);
-						elseif ($resultCollection[$resultPointer]->Resultado == Enums_DataAuthorizationStatusEnum::REJECTED)
+						elseif ($resultCollection[$resultPointer]->Resultado == Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED)
 						{
 							$errors = array();
 							
@@ -864,7 +864,7 @@
 				}
 			}
 			else
-				Quanbit_Afip_Exception_ExceptionFactory::throwFor("The given collection of results is not an array or it is empty.");
+				Afip_Exception_ExceptionFactory::throwFor("The given collection of results is not an array or it is empty.");
 		}
 	}
 	

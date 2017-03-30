@@ -6,7 +6,7 @@ $defController = Mage::getBaseDir()
 
 require_once $defController;
 
-class Quanbit_Afip_Adminhtml_Sales_InvoiceController extends Mage_Adminhtml_Sales_InvoiceController
+class Afip_Adminhtml_Sales_InvoiceController extends Mage_Adminhtml_Sales_InvoiceController
 {
   	/**
      * Export orders with credit card information to CSV format

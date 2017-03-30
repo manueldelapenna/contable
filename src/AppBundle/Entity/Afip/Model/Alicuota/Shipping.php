@@ -4,7 +4,7 @@
  * @author manueldelapenna
  *
  */
-class Shipping extends Mage_Core_Model_Abstract
+class Afip_Model_Alicuota_Shipping extends Mage_Core_Model_Abstract
 {
 	const IVA_0250 = "2,5";
 	const IVA_0500 = "5";
@@ -25,7 +25,7 @@ class Shipping extends Mage_Core_Model_Abstract
 		$alicuotaAmounts[self::EXENTO] = 0;
 		
 		$alicuota = self::getAlicuotaForShipping();
-		$alicuotaAmounts[$alicuota] = $alicuotaAmounts[$alicuota] + Quanbit_Afip_Helper_Taxer::getFinalAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
+		$alicuotaAmounts[$alicuota] = $alicuotaAmounts[$alicuota] + Afip_Helper_Taxer::getFinalAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 				
 		return $alicuotaAmounts;
 	

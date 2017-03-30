@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Exception_Lib_SubclassResponsibilityException extends Quanbit_Afip_Exception_Lib_Exception
+	class Afip_Exception_Lib_SubclassResponsibilityException extends Afip_Exception_Lib_Exception
 	{
 		protected $methodName;
 		

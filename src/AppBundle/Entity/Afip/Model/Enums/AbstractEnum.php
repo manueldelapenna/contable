@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class AbstractEnum
+	abstract class Afip_Model_Enums_AbstractEnum
 	{
 		/* Public methods */
 		
@@ -94,12 +94,12 @@
 		 *
 		 * @param mixed $key
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_Exception Throws an exception whether the given key it is invalid.
+		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given key it is invalid.
 		 */
 		public function validateKey($key)
 		{
 			if (!$this->isValidKey($key))
-				Quanbit_Afip_Exception_ExceptionFactory::throwFor("The given {$this->getNameForPeople()} is not a valid option: <$key>.");
+				Afip_Exception_ExceptionFactory::throwFor("The given {$this->getNameForPeople()} is not a valid option: <$key>.");
 		}
 		
 		

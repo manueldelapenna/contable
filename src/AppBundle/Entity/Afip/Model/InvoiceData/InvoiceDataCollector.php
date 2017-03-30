@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class InvoiceDataCollector implements Iterator, Countable
+	class Afip_Model_InvoiceData_InvoiceDataCollector implements Iterator, Countable
 	{
 		/* Constants and Variables */
 		
@@ -53,8 +53,8 @@
 		/**
 		 * Returns a new instance.
 		 *
-		 * @param int $type The type of stored invoice data (e.g. Quanbit_Afip_Model_Enums_TypeEnum::A).
-		 * @return InvoiceDataCollector instance
+		 * @param int $type The type of stored invoice data (e.g. Afip_Model_Enums_TypeEnum::A).
+		 * @return Afip_Model_InvoiceData_InvoiceDataCollector instance
 		 */
 		public static function getInstance($type)
 		{
@@ -64,10 +64,10 @@
 		
 		public function __construct($type)
 		{
-			$helper = Quanbit_Afip_Model_Enums_TypeEnum::getInstance();
+			$helper = Afip_Model_Enums_TypeEnum::getInstance();
 			$helper->validateKey($type);
 			
-			$this->status = Quanbit_Afip_Model_Enums_AuthorizationStatusEnum::SCHEDULED;
+			$this->status = Afip_Model_Enums_AuthorizationStatusEnum::SCHEDULED;
 			$this->count = 0;
 			$this->invoiceType = $type;
 			$this->invoiceTypeName = $helper->getValueFor($this->invoiceType);
@@ -85,14 +85,14 @@
 		/**
 		 * Adds the given invoice data to collector.
 		 *
-		 * @param InvoiceData $data
+		 * @param Afip_Model_InvoiceData_InvoiceData $data
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given invoice data is not an instance of InvoiceData.
-		 * @throws Quanbit_Afip_Exception_Lib_Exception Throws an exception whether the given invoice data type mismatch with collector type.
+		 * @throws Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given invoice data is not an instance of Afip_Model_InvoiceData_InvoiceData.
+		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given invoice data type mismatch with collector type.
 		 */
-		public function add(InvoiceData $data)
+		public function add(Afip_Model_InvoiceData_InvoiceData $data)
 		{
-			if (is_object($data) && ($data instanceof InvoiceData))
+			if (is_object($data) && ($data instanceof Afip_Model_InvoiceData_InvoiceData))
 			{
 				if ($data->getInvoiceType() == $this->invoiceType)
 				{
@@ -100,10 +100,10 @@
 					$this->count++;
 				}
 				else
-					Quanbit_Afip_Exception_ExceptionFactory::throwFor("The type of given invoice data does not match with the type of collector. Expected <{$this->invoiceTypeName}>.");
+					Afip_Exception_ExceptionFactory::throwFor("The type of given invoice data does not match with the type of collector. Expected <{$this->invoiceTypeName}>.");
 			}
 			else
-				Quanbit_Afip_Exception_ExceptionFactory::throwClassMismatch("InvoiceData");
+				Afip_Exception_ExceptionFactory::throwClassMismatch("Afip_Model_InvoiceData_InvoiceData");
 		}
 		
 		/**
@@ -119,7 +119,7 @@
 		/**
 		 * Returns the current invoice data.
 		 *
-		 * @return InvoiceData instance
+		 * @return Afip_Model_InvoiceData_InvoiceData instance
 		 */
 		public function current()
 		{
@@ -133,7 +133,7 @@
 		 */
 		public function getNumberOfAcceptedInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED);
+			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED);
 		}
 		
 		/**
@@ -143,7 +143,7 @@
 		 */
 		public function getNumberOfInvalidInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID);
+			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID);
 		}
 		
 		/**
@@ -153,7 +153,7 @@
 		 */
 		public function getNumberOfRejectedInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED);
+			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED);
 		}
 		
 		/**
@@ -163,7 +163,7 @@
 		 */
 		public function getNumberOfScheduledInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::SCHEDULED);
+			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::SCHEDULED);
 		}
 		
 		/**
@@ -173,7 +173,7 @@
 		 */
 		public function getNumberOfValidInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum::VALID);
+			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::VALID);
 		}
 		
 		/**
@@ -193,7 +193,7 @@
 		 */
 		public function getStatusName()
 		{
-			return Quanbit_Afip_Model_Enums_AuthorizationStatusEnum::getInstance()->getValueFor($this->status);
+			return Afip_Model_Enums_AuthorizationStatusEnum::getInstance()->getValueFor($this->status);
 		}
 		
 		/**
@@ -213,7 +213,7 @@
 		 */
 		public function hasNormalEndingStatus()
 		{
-			return in_array($this->status, Quanbit_Afip_Model_Enums_AuthorizationStatusEnum::normalEndingStatus());
+			return in_array($this->status, Afip_Model_Enums_AuthorizationStatusEnum::normalEndingStatus());
 		}
 		
 		/**
@@ -250,11 +250,11 @@
 		 * Sets the status of AFIP operation.
 		 *
 		 * @param mixed $status
-		 * @throws Quanbit_Afip_Exception_Lib_Exception
+		 * @throws Afip_Exception_Lib_Exception
 		 */
 		public function setStatus($status)
 		{
-			Quanbit_Afip_Model_Enums_AuthorizationStatusEnum::getInstance()->validateKey($status);
+			Afip_Model_Enums_AuthorizationStatusEnum::getInstance()->validateKey($status);
 			$this->status = $status;
 		}
 		

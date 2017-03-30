@@ -6,13 +6,13 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class BillingTarget
+	abstract class Afip_Model_BillingTarget_BillingTarget
 	{
 		/* Constants and Variables */
 		
 		/**
 		 * The errors.
-		 * @var Quanbit_Afip_Helper_ErrorCollection instance
+		 * @var Afip_Helper_ErrorCollection instance
 		 */
 		protected $errors;
 		
@@ -47,7 +47,7 @@
 		/**
 		 * Returns the errors.
 		 *
-		 * @return Quanbit_Afip_Helper_ErrorCollection instance
+		 * @return Afip_Helper_ErrorCollection instance
 		 */
 		public function getErrors()
 		{
@@ -132,7 +132,7 @@
 		 */
 		protected function initialize()
 		{
-			$this->errors = Quanbit_Afip_Helper_ErrorCollection::getInstance();
+			$this->errors = Afip_Helper_ErrorCollection::getInstance();
 			$this->setNumber(NULL);
 			$this->setType(NULL);
 		}

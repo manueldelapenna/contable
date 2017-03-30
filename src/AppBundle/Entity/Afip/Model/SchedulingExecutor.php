@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of SchedulingExecutor
+ * Description of Afip_Model_SchedulingExecutor
  *
  * @author manueldelapenna
  */
-class SchedulingExecutor{
+class Afip_Model_SchedulingExecutor extends Mage_Core_Model_Abstract {
 	
 	/**
 	 * Process ID.
@@ -20,15 +20,15 @@ class SchedulingExecutor{
 		
 		if(Mage::getStoreConfig('afip/config/enable')) {
 			
-			$sem = new FileSemaphore(self::PROCESS_ID, NULL, 0, 1800);
+			$sem = new Afip_Model_FileSemaphore(self::PROCESS_ID, NULL, 0, 1800);
 						
 			if ($sem->isLock()){
 				$sem->executeWarningTimeAction();
 			}else{
 				$sem->lock();
 				try{
-					SchedulingExecutor::executeFor(Enums_TypeEnum::A);
-					SchedulingExecutor::executeFor(Enums_TypeEnum::B);
+					Afip_Model_SchedulingExecutor::executeFor(Afip_Model_Enums_TypeEnum::A);
+					Afip_Model_SchedulingExecutor::executeFor(Afip_Model_Enums_TypeEnum::B);
 				}catch(Exception $e){
 					Mage::logException($e);
 					echo $e->getMessage();
@@ -43,31 +43,31 @@ class SchedulingExecutor{
 	/**
 	 * Performs the Invoices authorization with AFIP for a specific billing type
 	 *
-	 * @param Enums_TypeEnum $billingType        	
+	 * @param Afip_Model_Enums_TypeEnum $billingType        	
 	 * @return void
 	 */
 	public static function executeFor($billingType) {
 		
-		$invoiceManager = SchedulingExecutor::createInvoiceManager();
+		$invoiceManager = Afip_Model_SchedulingExecutor::createInvoiceManager();
 		$lastAfipInvoiceNumber = $invoiceManager->getLastAcceptedNumberFor($billingType);
-		$lastRUInvoiceNumber = Invoice::getLastNumber($billingType);
+		$lastRUInvoiceNumber = Afip_Model_Invoice::getLastNumber($billingType);
 		
 		if($lastRUInvoiceNumber == $lastAfipInvoiceNumber) {
-			$pendingAfipInvoices = Invoice::getPendingForAuthorize($billingType);
-			Invoice::setNullNumberToPedingInvoices($billingType);
-			$collector = SchedulingExecutor::generateAfipInvoiceDataCollectorFromOrderInvoice($pendingAfipInvoices, $billingType);
+			$pendingAfipInvoices = Afip_Model_Invoice::getPendingForAuthorize($billingType);
+			Afip_Model_Invoice::setNullNumberToPedingInvoices($billingType);
+			$collector = Afip_Model_SchedulingExecutor::generateAfipInvoiceDataCollectorFromOrderInvoice($pendingAfipInvoices, $billingType);
 			$collector->assignInvoiceNumbersFrom($lastAfipInvoiceNumber);
-			$collector = SchedulingExecutor::iterateCollectorAndAssignInvoiceNumbers($collector);
+			$collector = Afip_Model_SchedulingExecutor::iterateCollectorAndAssignInvoiceNumbers($collector);
 			$invoiceManager->authorize($collector);
 							
 			// collector finish without errors
 			if($collector->hasNormalEndingStatus()) {
-				$collector = SchedulingExecutor::iterateCollectorAndUpdateInvoiceWithAfipResponse($collector);
+				$collector = Afip_Model_SchedulingExecutor::iterateCollectorAndUpdateInvoiceWithAfipResponse($collector);
 			}
 			
 			// exists previous lost responses
 		} else {
-			SchedulingExecutor::loadAndResendLostResponseInvoicesToAfip($invoiceManager, $lastRUInvoiceNumber, $lastAfipInvoiceNumber, $billingType);
+			Afip_Model_SchedulingExecutor::loadAndResendLostResponseInvoicesToAfip($invoiceManager, $lastRUInvoiceNumber, $lastAfipInvoiceNumber, $billingType);
 		}
 		
 	}
@@ -75,57 +75,57 @@ class SchedulingExecutor{
 	/**
 	 * Creates a new InvoiceManager for configurated environment
 	 *
-	 * @return InvoiceManager
+	 * @return Afip_Model_InvoiceManager
 	 */
 	public static function createInvoiceManager() {
 		if(Mage::getStoreConfig('afip/config/enable_prod')) {
-			$environment = Environment_ProductionEnvironment::getInstance();
+			$environment = Afip_Model_Environment_ProductionEnvironment::getInstance();
 		} else {
-			$environment = Environment_StagingEnvironment::getInstance();
+			$environment = Afip_Model_Environment_StagingEnvironment::getInstance();
 		}
 		
-		$logger = Quanbit_Afip_Helper_FileLogger::getInstance(NULL, Mage::getBaseDir('var') . '/log/afip');
-		$invoiceManager = InvoiceManager::getInstance($environment, $logger);
+		$logger = Afip_Helper_FileLogger::getInstance(NULL, Mage::getBaseDir('var') . '/log/afip');
+		$invoiceManager = Afip_Model_InvoiceManager::getInstance($environment, $logger);
 		return $invoiceManager;
 	}
 	
 	/**
-	 * Creates a InvoiceData_InvoiceDataCollector instance for a Mysql4_Invoice_Collection with a specific Enums_TypeEnum
+	 * Creates a Afip_Model_InvoiceData_InvoiceDataCollector instance for a Afip_Model_Mysql4_Invoice_Collection with a specific Afip_Model_Enums_TypeEnum
 	 *
-	 * @param Mysql4_Invoice_Collection $pendingAfipInvoices        	
-	 * @param Enums_TypeEnum $billingType        	
-	 * @return InvoiceData_InvoiceDataCollector
+	 * @param Afip_Model_Mysql4_Invoice_Collection $pendingAfipInvoices        	
+	 * @param Afip_Model_Enums_TypeEnum $billingType        	
+	 * @return Afip_Model_InvoiceData_InvoiceDataCollector
 	 */
 	public static function generateAfipInvoiceDataCollectorFromOrderInvoice($pendingAfipInvoices, $billingType) {
-		$collector = InvoiceData_InvoiceDataCollector::getInstance($billingType);
+		$collector = Afip_Model_InvoiceData_InvoiceDataCollector::getInstance($billingType);
 		foreach($pendingAfipInvoices as $afipInvoice) {
 			$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
-			$data = SchedulingExecutor::generateAfipInvoiceDataFromOrderInvoice($invoice, $billingType, $afipInvoice);
+			$data = Afip_Model_SchedulingExecutor::generateAfipInvoiceDataFromOrderInvoice($invoice, $billingType, $afipInvoice);
 			$collector->add($data);
 		}
 		return $collector;
 	}
 	
 	/**
-	 * Creates a InvoiceData_InvoiceData from a Mage_Sales_Order_Invoice
+	 * Creates a Afip_Model_InvoiceData_InvoiceData from a Mage_Sales_Order_Invoice
 	 *
 	 * @param Mage_Sales_Model_Order_Invoice $invoice        	
-	 * @param Enums_TypeEnum $billingType        	
-	 * @param Invoice $afipInvoice
-	 * @return InvoiceData_InvoiceData
+	 * @param Afip_Model_Enums_TypeEnum $billingType        	
+	 * @param Afip_Model_Invoice $afipInvoice
+	 * @return Afip_Model_InvoiceData_InvoiceData
 	 */
 	public static function generateAfipInvoiceDataFromOrderInvoice($invoice, $billingType, $afipInvoice) {
-		$invoiceData = new InvoiceData_InvoiceData();
-		$invoiceData->setConcept(Enums_ConceptEnum::PRODUCT);
+		$invoiceData = new Afip_Model_InvoiceData_InvoiceData();
+		$invoiceData->setConcept(Afip_Model_Enums_ConceptEnum::PRODUCT);
 		
 		$customer = Mage::getModel('customer/customer')->load($invoice->getOrder()->getCustomerId());
 		// taxvat = DNI/CUIT
 		$invoiceData->setDocumentNumber($customer->getTaxvat());
 		
-		if ($billingType == Enums_TypeEnum::A){
-			$invoiceData->setDocumentType(Enums_DocumentTypeEnum::CUIT);
+		if ($billingType == Afip_Model_Enums_TypeEnum::A){
+			$invoiceData->setDocumentType(Afip_Model_Enums_DocumentTypeEnum::CUIT);
 		}else{
-			$invoiceData->setDocumentType(Enums_DocumentTypeEnum::DNI);
+			$invoiceData->setDocumentType(Afip_Model_Enums_DocumentTypeEnum::DNI);
 		}
 		
 		$invoiceData->setId($invoice->getId());
@@ -133,8 +133,8 @@ class SchedulingExecutor{
 		$invoiceData->setInvoiceType($billingType);
 		$invoiceData->setStoreId($invoice->getStoreId());
 		
-		$itemsAlicuotaAmounts = Alicuota_Product::getAlicuotaAmountsFromInvoice($invoice, $afipInvoice);
-		$shippingAlicuotaAmounts = Alicuota_Shipping::getAlicuotaAmountsFromInvoice($invoice, $afipInvoice);
+		$itemsAlicuotaAmounts = Afip_Model_Alicuota_Product::getAlicuotaAmountsFromInvoice($invoice, $afipInvoice);
+		$shippingAlicuotaAmounts = Afip_Model_Alicuota_Shipping::getAlicuotaAmountsFromInvoice($invoice, $afipInvoice);
 
 		$invoiceData = self::completeTaxesAmounts($invoiceData, $invoice, $itemsAlicuotaAmounts, $shippingAlicuotaAmounts, $afipInvoice);		
 					
@@ -145,25 +145,25 @@ class SchedulingExecutor{
 	public static function completeTaxesAmounts($invoiceData, $invoice, $itemsAlicuotaAmounts, $shippingAlicuotaAmounts, $afipInvoice){
 		
 		/* Calcula totales (bruto) */
-		$totalAmount0250 = $itemsAlicuotaAmounts[Alicuota_Product::IVA_0250] + $shippingAlicuotaAmounts[Alicuota_Shipping::IVA_0250];
-		$totalAmount0500 = $itemsAlicuotaAmounts[Alicuota_Product::IVA_0500] + $shippingAlicuotaAmounts[Alicuota_Shipping::IVA_0500];
-		$totalAmount1050 = $itemsAlicuotaAmounts[Alicuota_Product::IVA_1050] + $shippingAlicuotaAmounts[Alicuota_Shipping::IVA_1050];
-		$totalAmount2100 = $itemsAlicuotaAmounts[Alicuota_Product::IVA_2100] + $shippingAlicuotaAmounts[Alicuota_Shipping::IVA_2100];
-		$totalAmount2700 = $itemsAlicuotaAmounts[Alicuota_Product::IVA_2700] + $shippingAlicuotaAmounts[Alicuota_Shipping::IVA_2700];
+		$totalAmount0250 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_0250] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_0250];
+		$totalAmount0500 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_0500] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_0500];
+		$totalAmount1050 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_1050] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_1050];
+		$totalAmount2100 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_2100] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_2100];
+		$totalAmount2700 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_2700] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_2700];
 		
 		/* Calcula netos */
-		$totalNeto0250 = Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount0250 / 1.025 ,2);
-		$totalNeto0500 = Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount0500 / 1.05 ,2);
-		$totalNeto1050 = Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount1050 / 1.105 ,2);
-		$totalNeto2100 = Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount2100 / 1.21 ,2);
-		$totalNeto2700 = Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount2700 / 1.27 ,2);
+		$totalNeto0250 = Afip_Helper_DataType_Number::truncate($totalAmount0250 / 1.025 ,2);
+		$totalNeto0500 = Afip_Helper_DataType_Number::truncate($totalAmount0500 / 1.05 ,2);
+		$totalNeto1050 = Afip_Helper_DataType_Number::truncate($totalAmount1050 / 1.105 ,2);
+		$totalNeto2100 = Afip_Helper_DataType_Number::truncate($totalAmount2100 / 1.21 ,2);
+		$totalNeto2700 = Afip_Helper_DataType_Number::truncate($totalAmount2700 / 1.27 ,2);
 		
 		/*total bruto*/
-		$totalAmount = Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount0250,2) +
-					   Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount0500,2) + 
-					   Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount1050,2) + 
-					   Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount2100,2) + 
-					   Quanbit_Afip_Helper_DataType_Number::truncate($totalAmount2700,2);
+		$totalAmount = Afip_Helper_DataType_Number::truncate($totalAmount0250,2) +
+					   Afip_Helper_DataType_Number::truncate($totalAmount0500,2) + 
+					   Afip_Helper_DataType_Number::truncate($totalAmount1050,2) + 
+					   Afip_Helper_DataType_Number::truncate($totalAmount2100,2) + 
+					   Afip_Helper_DataType_Number::truncate($totalAmount2700,2);
 		
 		//monto gravado
 		$taxableNetAmount = $totalNeto0250 + $totalNeto0500 + $totalNeto1050 + $totalNeto2100 + $totalNeto2700;
@@ -175,7 +175,7 @@ class SchedulingExecutor{
 		
 		//generar alicuota para cada IVA
 		if ($totalAmount0250 > 0){
-			$alicuota = Alicuota_Alicuota0250::getInstance();
+			$alicuota = Afip_Model_Alicuota_Alicuota0250::getInstance();
 			$alicuota->setBaseAmount($totalNeto0250);
 			$alicuota->setTaxAmount($totalAmount0250 - $totalNeto0250);
 			$invoiceData->addAlicuota($alicuota);
@@ -185,7 +185,7 @@ class SchedulingExecutor{
 		}
 		
 		if ($totalAmount0500 > 0){
-			$alicuota = Alicuota_Alicuota0500::getInstance();
+			$alicuota = Afip_Model_Alicuota_Alicuota0500::getInstance();
 			$alicuota->setBaseAmount($totalNeto0500);
 			$alicuota->setTaxAmount($totalAmount0500 - $totalNeto0500);
 			$invoiceData->addAlicuota($alicuota);
@@ -195,7 +195,7 @@ class SchedulingExecutor{
 		}
 		
 		if ($totalAmount1050 > 0){
-			$alicuota = Alicuota_Alicuota1050::getInstance();
+			$alicuota = Afip_Model_Alicuota_Alicuota1050::getInstance();
 			$alicuota->setBaseAmount($totalNeto1050);
 			$alicuota->setTaxAmount($totalAmount1050 - $totalNeto1050);
 			$invoiceData->addAlicuota($alicuota);
@@ -205,7 +205,7 @@ class SchedulingExecutor{
 		}
 		
 		if ($totalAmount2100 > 0){
-			$alicuota = Alicuota_Alicuota2100::getInstance();
+			$alicuota = Afip_Model_Alicuota_Alicuota2100::getInstance();
 			$alicuota->setBaseAmount($totalNeto2100);
 			$alicuota->setTaxAmount($totalAmount2100 - $totalNeto2100);
 			$invoiceData->addAlicuota($alicuota);
@@ -215,7 +215,7 @@ class SchedulingExecutor{
 		}
 		
 		if ($totalAmount2700 > 0){
-			$alicuota = Alicuota_Alicuota2700::getInstance();
+			$alicuota = Afip_Model_Alicuota_Alicuota2700::getInstance();
 			$alicuota->setBaseAmount($totalNeto2700);
 			$alicuota->setTaxAmount($totalAmount2700 - $totalNeto2700);
 			$invoiceData->addAlicuota($alicuota);
@@ -225,13 +225,13 @@ class SchedulingExecutor{
 		}
 		
 		// monto exento
-		$totalExento = $itemsAlicuotaAmounts[Alicuota_Product::EXENTO] + $shippingAlicuotaAmounts[Alicuota_Shipping::EXENTO];
+		$totalExento = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::EXENTO] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::EXENTO];
 		$invoiceData->setTaxExemptAmount($totalExento);
 		
 		$afipInvoice->setNetoExento($invoiceData->getTaxExemptAmount());
 		
 		// monto no gravado
-		$totalNoGravado = $itemsAlicuotaAmounts[Alicuota_Product::NO_GRAVADO] + $shippingAlicuotaAmounts[Alicuota_Shipping::NO_GRAVADO];
+		$totalNoGravado = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::NO_GRAVADO] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::NO_GRAVADO];
 		$invoiceData->setUntaxedNetAmount($totalNoGravado);
 		
 		$afipInvoice->setNetoNoGravado($invoiceData->getUntaxedNetAmount());
@@ -248,8 +248,8 @@ class SchedulingExecutor{
 	/**
 	 * Iterates the Invoice Data Collector and retrieve Invoices for assign number
 	 *
-	 * @param InvoiceData_InvoiceDataCollector $collector        	
-	 * @return InvoiceData_InvoiceDataCollector $collector
+	 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector        	
+	 * @return Afip_Model_InvoiceData_InvoiceDataCollector $collector
 	 */
 	public static function iterateCollectorAndAssignInvoiceNumbers($collector) {
 		$collector->rewind();
@@ -261,7 +261,7 @@ class SchedulingExecutor{
 			while($collector->valid()) {
 				$billingData = $collector->current();
 				$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($billingData->getId());
-				$afipInvoice->updateAndSave($billingData->getInvoiceNumber(), $afipInvoice->getType(), NULL, NULL, NULL, NULL, Invoice::PENDING);
+				$afipInvoice->updateAndSave($billingData->getInvoiceNumber(), $afipInvoice->getType(), NULL, NULL, NULL, NULL, Afip_Model_Invoice::PENDING);
 				$collector->next();
 			}
 			
@@ -276,8 +276,8 @@ class SchedulingExecutor{
 	/**
 	 * Iterates the Invoice Data Collector and retrieve Invoices for update with AFIP respones information
 	 *
-	 * @param InvoiceData_InvoiceDataCollector $collector        	
-	 * @return InvoiceData_InvoiceDataCollector $collector
+	 * @param Afip_Model_InvoiceData_InvoiceDataCollector $collector        	
+	 * @return Afip_Model_InvoiceData_InvoiceDataCollector $collector
 	 */
 	public static function iterateCollectorAndUpdateInvoiceWithAfipResponse($collector) {
 		$collector->rewind();
@@ -285,19 +285,19 @@ class SchedulingExecutor{
 			$afipBillingData = $collector->current();
 			$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($afipBillingData->getId());
 			
-			if($afipBillingData->getStatus() == Enums_DataAuthorizationStatusEnum::ACCEPTED) {
-				$afipInvoice->updateAndSave($afipInvoice->getNumber(), $afipInvoice->getType(), $afipBillingData->getCae(), $afipBillingData->getCaeDueDate(), $afipBillingData->getAuthDate(), NULL, Invoice::AUTHORIZED);
+			if($afipBillingData->getStatus() == Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED) {
+				$afipInvoice->updateAndSave($afipInvoice->getNumber(), $afipInvoice->getType(), $afipBillingData->getCae(), $afipBillingData->getCaeDueDate(), $afipBillingData->getAuthDate(), NULL, Afip_Model_Invoice::AUTHORIZED);
 				$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
 				$invoice->addComment("La Factura ha sido autorizada por la AFIP con el número " . $afipInvoice->getNumber(),false,false);
 				$invoice->save();
-			} else if(($afipBillingData->getStatus() == Enums_DataAuthorizationStatusEnum::INVALID) ||($afipBillingData->getStatus() == Enums_DataAuthorizationStatusEnum::REJECTED)) {
-				$afipInvoice->updateAndSave(NULL, $afipInvoice->getType(), NULL, NULL, NULL, $afipBillingData->getErrors()->getListAsString(), Invoice::REJECTED);
+			} else if(($afipBillingData->getStatus() == Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID) ||($afipBillingData->getStatus() == Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED)) {
+				$afipInvoice->updateAndSave(NULL, $afipInvoice->getType(), NULL, NULL, NULL, $afipBillingData->getErrors()->getListAsString(), Afip_Model_Invoice::REJECTED);
 				$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
 				$invoice->addComment("La Factura ha sido rechazada por la AFIP. Detalles: " . $afipBillingData->getErrors()->getListAsString(),false,false);
 				$invoice->save();
 				self::sendAfipInvoiceRejectedEmail($invoice, $afipInvoice);
 			} else {
-				$afipInvoice->updateAndSave(NULL, $afipInvoice->getType(), NULL, NULL, NULL, NULL, Invoice::PENDING);
+				$afipInvoice->updateAndSave(NULL, $afipInvoice->getType(), NULL, NULL, NULL, NULL, Afip_Model_Invoice::PENDING);
 			}
 			$collector->next();
 		}
@@ -308,17 +308,17 @@ class SchedulingExecutor{
 	/**
 	 * Resend an interval of Invoices with lost Response to AFIP
 	 *
-	 * @param InvoiceManager $invoiceManager        	
+	 * @param Afip_Model_InvoiceManager $invoiceManager        	
 	 * @param int $lastRUInvoiceNumber        	
 	 * @param int $lastAfipInvoiceNumber        	
-	 * @param Enums_TypeEnum $billingType        	
+	 * @param Afip_Model_Enums_TypeEnum $billingType        	
 	 * @return void
 	 */
 	public static function loadAndResendLostResponseInvoicesToAfip($invoiceManager, $lastRUInvoiceNumber, $lastAfipInvoiceNumber, $billingType) {
 		for($i = $lastRUInvoiceNumber; $i < $lastAfipInvoiceNumber; $i ++) {
 			$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByNumber($i + 1, $billingType);
 			$afipData = $invoiceManager->retrieveDataFor($billingType, $i + 1);
-			$afipInvoice->updateAndSave($i + 1, $afipInvoice->getType(), $afipData->CodAutorizacion, $afipData->FchVto, $afipData->FchProceso, NULL, Invoice::AUTHORIZED);
+			$afipInvoice->updateAndSave($i + 1, $afipInvoice->getType(), $afipData->CodAutorizacion, $afipData->FchVto, $afipData->FchProceso, NULL, Afip_Model_Invoice::AUTHORIZED);
 			$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
 			$invoice->addComment("La Factura ha sido autorizada por la AFIP con el número " . $afipInvoice->getNumber(),false,false);
 			$invoice->save();
@@ -329,7 +329,7 @@ class SchedulingExecutor{
 
 		if(!is_null(Mage::getStoreConfig('afip/config/afip_invoice_rejected_email'))){
 			
-			$templateId = 'quanbit_afip_invoice_rejected';
+			$templateId = 'afip_invoice_rejected';
 			$emailTemplate = Mage::getModel('core/email_template')->loadDefault($templateId);
 			
 			$orderNumber = $invoice->getOrder()->getIncrementId();

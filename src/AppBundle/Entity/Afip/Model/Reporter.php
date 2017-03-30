@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of SchedulingExecutor
+ * Description of Afip_Model_SchedulingExecutor
  *
  * @author manueldelapenna
  */
-class Reporter{
+class Afip_Model_Reporter extends Mage_Core_Model_Abstract {
 	
 	
 	/**
@@ -20,7 +20,7 @@ class Reporter{
 			
 			//facturas afip del dia anterior sin realizarce
 			$pending_invoices = Mage::getModel('afip/invoice')->getCollection()
-			->addFieldToFilter('status',array('eq' => Invoice::PENDING));
+			->addFieldToFilter('status',array('eq' => Afip_Model_Invoice::PENDING));
 			
 			$pending_invoices->getSelect()->joinInner(
 					array('sfi' => 'sales_flat_invoice'), 'main_table.order_invoice_id = sfi.entity_id and created_at < "'.$date_to_compare.'"', array('created_at')
@@ -29,7 +29,7 @@ class Reporter{
 			
 			 if(count($pending_invoices)){
 				
-				$templateId = 'quanbit_afip_invoices_pending';
+				$templateId = 'afip_invoices_pending';
 				$emailTemplate = Mage::getModel('core/email_template')->loadDefault($templateId);
 				
 				$vars = array('count' => count($pending_invoices),'date_to_compare'=>$today->format('d/m/Y'));
