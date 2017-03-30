@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class AfipInvoiceData_InvoiceDataCollector implements Iterator, Countable
+	class AfipInvoiceDataCollector implements Iterator, Countable
 	{
 		/* Constants and Variables */
 		
@@ -54,7 +54,7 @@
 		 * Returns a new instance.
 		 *
 		 * @param int $type The type of stored invoice data (e.g. TypeEnum::A).
-		 * @return AfipInvoiceData_InvoiceDataCollector instance
+		 * @return AfipInvoiceDataCollector instance
 		 */
 		public static function getInstance($type)
 		{
@@ -85,14 +85,14 @@
 		/**
 		 * Adds the given invoice data to collector.
 		 *
-		 * @param AfipInvoiceData_InvoiceData $data
+		 * @param AfipInvoiceData $data
 		 * @return void
-		 * @throws Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given invoice data is not an instance of AfipInvoiceData_InvoiceData.
+		 * @throws Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given invoice data is not an instance of AfipInvoiceData.
 		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given invoice data type mismatch with collector type.
 		 */
-		public function add(AfipInvoiceData_InvoiceData $data)
+		public function add(AfipInvoiceData $data)
 		{
-			if (is_object($data) && ($data instanceof AfipInvoiceData_InvoiceData))
+			if (is_object($data) && ($data instanceof AfipInvoiceData))
 			{
 				if ($data->getInvoiceType() == $this->invoiceType)
 				{
@@ -103,7 +103,7 @@
 					Afip_Exception_ExceptionFactory::throwFor("The type of given invoice data does not match with the type of collector. Expected <{$this->invoiceTypeName}>.");
 			}
 			else
-				Afip_Exception_ExceptionFactory::throwClassMismatch("AfipInvoiceData_InvoiceData");
+				Afip_Exception_ExceptionFactory::throwClassMismatch("AfipInvoiceData");
 		}
 		
 		/**
@@ -119,7 +119,7 @@
 		/**
 		 * Returns the current invoice data.
 		 *
-		 * @return AfipInvoiceData_InvoiceData instance
+		 * @return AfipInvoiceData instance
 		 */
 		public function current()
 		{

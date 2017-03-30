@@ -120,14 +120,14 @@
 		/**
 		 * Authorizes the given billing data on Webservice (WSFE).
 		 *
-		 * @param AfipInvoiceData_InvoiceDataCollector $collector
+		 * @param AfipInvoiceDataCollector $collector
 		 * @return void
-		 * @throws Afip_Exception_Lib_Exception Throws an exception when Webservice (WSFE) is not running or given collector is not an instance of AfipInvoiceData_InvoiceDataCollector.
+		 * @throws Afip_Exception_Lib_Exception Throws an exception when Webservice (WSFE) is not running or given collector is not an instance of AfipInvoiceDataCollector.
 		 */
 		public function authorize($collector)
 		{
 			$this->exceptionIfNoWebservice();
-			$this->exceptionIfClassMismatch($collector, "AfipInvoiceData_InvoiceDataCollector");
+			$this->exceptionIfClassMismatch($collector, "AfipInvoiceDataCollector");
 			
 			$this->log("BEGIN", __FUNCTION__);
 			
@@ -725,7 +725,7 @@
 		/**
 		 * Processes the billing data in given collector and returns a collection of valid billing data with their invoice numbers for Webservice (WSFE).
 		 *
-		 * @param AfipInvoiceData_InvoiceDataCollector $collector
+		 * @param AfipInvoiceDataCollector $collector
 		 * @return array
 		 */
 		protected function prepareBillingData($collector)
@@ -816,7 +816,7 @@
 		/**
 		 * Updates billing data with the given result from Webservice (WSFE).
 		 *
-		 * @param AfipInvoiceData_InvoiceDataCollector $collector
+		 * @param AfipInvoiceDataCollector $collector
 		 * @param array $resultCollection
 		 * @return void
 		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given collection of results is not an array or it is empty.

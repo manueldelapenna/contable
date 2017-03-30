@@ -90,14 +90,14 @@ class Afip_Model_SchedulingExecutor {
 	}
 	
 	/**
-	 * Creates a AfipInvoiceData_InvoiceDataCollector instance for a Afip_Model_Mysql4_Invoice_Collection with a specific TypeEnum
+	 * Creates a AfipInvoiceDataCollector instance for a Afip_Model_Mysql4_Invoice_Collection with a specific TypeEnum
 	 *
 	 * @param Afip_Model_Mysql4_Invoice_Collection $pendingAfipInvoices        	
 	 * @param TypeEnum $billingType        	
-	 * @return AfipInvoiceData_InvoiceDataCollector
+	 * @return AfipInvoiceDataCollector
 	 */
 	public static function generateAfipInvoiceDataCollectorFromOrderInvoice($pendingAfipInvoices, $billingType) {
-		$collector = AfipInvoiceData_InvoiceDataCollector::getInstance($billingType);
+		$collector = AfipInvoiceDataCollector::getInstance($billingType);
 		foreach($pendingAfipInvoices as $afipInvoice) {
 			$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
 			$data = Afip_Model_SchedulingExecutor::generateAfipInvoiceDataFromOrderInvoice($invoice, $billingType, $afipInvoice);
@@ -107,15 +107,15 @@ class Afip_Model_SchedulingExecutor {
 	}
 	
 	/**
-	 * Creates a AfipInvoiceData_InvoiceData from a Mage_Sales_Order_Invoice
+	 * Creates a AfipInvoiceData from a Mage_Sales_Order_Invoice
 	 *
 	 * @param Mage_Sales_Model_Order_Invoice $invoice        	
 	 * @param TypeEnum $billingType        	
 	 * @param AfipInvoice $afipInvoice
-	 * @return AfipInvoiceData_InvoiceData
+	 * @return AfipInvoiceData
 	 */
 	public static function generateAfipInvoiceDataFromOrderInvoice($invoice, $billingType, $afipInvoice) {
-		$invoiceData = new AfipInvoiceData_InvoiceData();
+		$invoiceData = new AfipInvoiceData();
 		$invoiceData->setConcept(ConceptEnum::PRODUCT);
 		
 		$customer = Mage::getModel('customer/customer')->load($invoice->getOrder()->getCustomerId());
@@ -248,8 +248,8 @@ class Afip_Model_SchedulingExecutor {
 	/**
 	 * Iterates the Invoice Data Collector and retrieve Invoices for assign number
 	 *
-	 * @param AfipInvoiceData_InvoiceDataCollector $collector        	
-	 * @return AfipInvoiceData_InvoiceDataCollector $collector
+	 * @param AfipInvoiceDataCollector $collector        	
+	 * @return AfipInvoiceDataCollector $collector
 	 */
 	public static function iterateCollectorAndAssignInvoiceNumbers($collector) {
 		$collector->rewind();
@@ -276,8 +276,8 @@ class Afip_Model_SchedulingExecutor {
 	/**
 	 * Iterates the Invoice Data Collector and retrieve Invoices for update with AFIP respones information
 	 *
-	 * @param AfipInvoiceData_InvoiceDataCollector $collector        	
-	 * @return AfipInvoiceData_InvoiceDataCollector $collector
+	 * @param AfipInvoiceDataCollector $collector        	
+	 * @return AfipInvoiceDataCollector $collector
 	 */
 	public static function iterateCollectorAndUpdateInvoiceWithAfipResponse($collector) {
 		$collector->rewind();
