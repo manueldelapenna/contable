@@ -31,7 +31,7 @@
 		
 		/**
 		 * The environment.
-		 * @var Afip_Model_Environment_Environment instance | NULL
+		 * @var Environment instance | NULL
 		 */
 		protected $environment;
 		
@@ -60,7 +60,7 @@
 		/**
 		 * Returns a new instance.
 		 *
-		 * @param Afip_Model_Environment_Environment $environment
+		 * @param Environment $environment
 		 * @param FileLoggerHelper $logger
 		 * @return InvoiceManager instance
 		 */
@@ -438,7 +438,7 @@
 		/**
 		 * Sets the environment.
 		 *
-		 * @param Afip_Model_Environment_Environment $environment
+		 * @param Environment $environment
 		 * @return void
 		 * @throws Afip_Exception_Lib_Exception Throws an exception whether the given environment is invalid.
 		 */
@@ -446,7 +446,7 @@
 		{
 			if ($this->environment === NULL)
 			{
-				$this->exceptionIfClassMismatch($environment, "Afip_Model_Environment_Environment");
+				$this->exceptionIfClassMismatch($environment, "Environment");
 				$this->environment = $environment;
 			}
 		}
@@ -571,7 +571,7 @@
 		 */
 		protected function exceptionIfNoEnvironment()
 		{
-			$this->exceptionIfClassMismatch($this->environment, "Afip_Model_Environment_Environment");
+			$this->exceptionIfClassMismatch($this->environment, "Environment");
 		}
 		
 		/**

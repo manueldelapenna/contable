@@ -60,9 +60,9 @@ class Afip_Model_Pdf_InvoicePrinterExecutor {
 	
 	public static function getPointOfSaleOfConfiguratedEnvironment() {
 		if (Mage::getStoreConfig ( 'afip/config/enable_prod' )) {
-			$environment = Afip_Model_Environment_ProductionEnvironment::getInstance ();
+			$environment = ProductionEnvironment::getInstance ();
 		} else {
-			$environment = Afip_Model_Environment_StagingEnvironment::getInstance ();
+			$environment = StagingEnvironment::getInstance ();
 		}
 		return $environment->getPointOfSale();
 	}

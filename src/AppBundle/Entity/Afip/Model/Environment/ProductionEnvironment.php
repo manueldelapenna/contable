@@ -6,12 +6,12 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	final class Afip_Model_Environment_ProductionEnvironment extends Afip_Model_Environment_Environment
+	final class ProductionEnvironment extends Environment
 	{
 		/**
 		 * Returns a new instance.
 		 *
-		 * @return Afip_Model_Environment_ProductionEnvironment instance
+		 * @return ProductionEnvironment instance
 		 */
 		public static function getInstance()
 		{

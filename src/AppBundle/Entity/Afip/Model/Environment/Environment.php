@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class Afip_Model_Environment_Environment
+	abstract class Environment
 	{
 		/* Constants and Variables */
 		

@@ -79,9 +79,9 @@ class Afip_Model_SchedulingExecutor {
 	 */
 	public static function createInvoiceManager() {
 		if(Mage::getStoreConfig('afip/config/enable_prod')) {
-			$environment = Afip_Model_Environment_ProductionEnvironment::getInstance();
+			$environment = ProductionEnvironment::getInstance();
 		} else {
-			$environment = Afip_Model_Environment_StagingEnvironment::getInstance();
+			$environment = StagingEnvironment::getInstance();
 		}
 		
 		$logger = FileLoggerHelper::getInstance(NULL, Mage::getBaseDir('var') . '/log/afip');

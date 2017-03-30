@@ -11,9 +11,9 @@ class Afip_GeneralController extends Mage_Core_Controller_Front_Action
 	public function verEstadoAfipAction(){
 	
 		if(Mage::getStoreConfig('afip/config/enable_prod')) {
-			$environment = Afip_Model_Environment_ProductionEnvironment::getInstance();
+			$environment = ProductionEnvironment::getInstance();
 		} else {
-			$environment = Afip_Model_Environment_StagingEnvironment::getInstance();
+			$environment = StagingEnvironment::getInstance();
 			
 		}
 
