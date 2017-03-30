@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Afip_Model_SchedulingExecutor
+ * Description of SchedulingExecutor
  *
  * @author manueldelapenna
  */
-class Afip_Model_SchedulingExecutor {
+class SchedulingExecutor {
 	
 	/**
 	 * Process ID.
@@ -27,8 +27,8 @@ class Afip_Model_SchedulingExecutor {
 			}else{
 				$sem->lock();
 				try{
-					Afip_Model_SchedulingExecutor::executeFor(TypeEnum::A);
-					Afip_Model_SchedulingExecutor::executeFor(TypeEnum::B);
+					SchedulingExecutor::executeFor(TypeEnum::A);
+					SchedulingExecutor::executeFor(TypeEnum::B);
 				}catch(Exception $e){
 					Mage::logException($e);
 					echo $e->getMessage();
@@ -48,26 +48,26 @@ class Afip_Model_SchedulingExecutor {
 	 */
 	public static function executeFor($billingType) {
 		
-		$invoiceManager = Afip_Model_SchedulingExecutor::createInvoiceManager();
+		$invoiceManager = SchedulingExecutor::createInvoiceManager();
 		$lastAfipInvoiceNumber = $invoiceManager->getLastAcceptedNumberFor($billingType);
 		$lastRUInvoiceNumber = AfipInvoice::getLastNumber($billingType);
 		
 		if($lastRUInvoiceNumber == $lastAfipInvoiceNumber) {
 			$pendingAfipInvoices = AfipInvoice::getPendingForAuthorize($billingType);
 			AfipInvoice::setNullNumberToPedingInvoices($billingType);
-			$collector = Afip_Model_SchedulingExecutor::generateAfipInvoiceDataCollectorFromOrderInvoice($pendingAfipInvoices, $billingType);
+			$collector = SchedulingExecutor::generateAfipInvoiceDataCollectorFromOrderInvoice($pendingAfipInvoices, $billingType);
 			$collector->assignInvoiceNumbersFrom($lastAfipInvoiceNumber);
-			$collector = Afip_Model_SchedulingExecutor::iterateCollectorAndAssignInvoiceNumbers($collector);
+			$collector = SchedulingExecutor::iterateCollectorAndAssignInvoiceNumbers($collector);
 			$invoiceManager->authorize($collector);
 							
 			// collector finish without errors
 			if($collector->hasNormalEndingStatus()) {
-				$collector = Afip_Model_SchedulingExecutor::iterateCollectorAndUpdateInvoiceWithAfipResponse($collector);
+				$collector = SchedulingExecutor::iterateCollectorAndUpdateInvoiceWithAfipResponse($collector);
 			}
 			
 			// exists previous lost responses
 		} else {
-			Afip_Model_SchedulingExecutor::loadAndResendLostResponseInvoicesToAfip($invoiceManager, $lastRUInvoiceNumber, $lastAfipInvoiceNumber, $billingType);
+			SchedulingExecutor::loadAndResendLostResponseInvoicesToAfip($invoiceManager, $lastRUInvoiceNumber, $lastAfipInvoiceNumber, $billingType);
 		}
 		
 	}
@@ -100,7 +100,7 @@ class Afip_Model_SchedulingExecutor {
 		$collector = AfipInvoiceDataCollector::getInstance($billingType);
 		foreach($pendingAfipInvoices as $afipInvoice) {
 			$invoice = Mage::getModel('sales/order_invoice')->load($afipInvoice->getOrderInvoiceId());
-			$data = Afip_Model_SchedulingExecutor::generateAfipInvoiceDataFromOrderInvoice($invoice, $billingType, $afipInvoice);
+			$data = SchedulingExecutor::generateAfipInvoiceDataFromOrderInvoice($invoice, $billingType, $afipInvoice);
 			$collector->add($data);
 		}
 		return $collector;

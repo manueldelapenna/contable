@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of Afip_Model_SchedulingExecutor
+ * Description of SchedulingExecutor
  *
  * @author manueldelapenna
  */

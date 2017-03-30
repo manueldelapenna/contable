@@ -3,7 +3,7 @@ class Afip_GeneralController extends Mage_Core_Controller_Front_Action
 {
 	public function pruebaAction(){
 
-		Afip_Model_SchedulingExecutor::execute();
+		SchedulingExecutor::execute();
 		PdfInvoicePrinterExecutor::execute();
 	
 	}
