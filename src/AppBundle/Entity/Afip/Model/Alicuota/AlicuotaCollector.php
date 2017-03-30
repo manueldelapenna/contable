@@ -61,12 +61,12 @@
 			$this->errors = ErrorCollectionHelper::getInstance();
 			
 			$this->flags = array();
-			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_0000] = NULL;
-			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_0250] = NULL;
-			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_0500] = NULL;
-			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_1050] = NULL;
-			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_2100] = NULL;
-			$this->flags[Afip_Model_Enums_TaxTypeEnum::IVA_2700] = NULL;
+			$this->flags[TaxTypeEnum::IVA_0000] = NULL;
+			$this->flags[TaxTypeEnum::IVA_0250] = NULL;
+			$this->flags[TaxTypeEnum::IVA_0500] = NULL;
+			$this->flags[TaxTypeEnum::IVA_1050] = NULL;
+			$this->flags[TaxTypeEnum::IVA_2100] = NULL;
+			$this->flags[TaxTypeEnum::IVA_2700] = NULL;
 			
 			$this->repository = array();
 			

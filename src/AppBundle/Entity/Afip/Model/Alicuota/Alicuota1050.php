@@ -34,7 +34,7 @@
 		
 		public function getTaxType()
 		{
-			return Afip_Model_Enums_TaxTypeEnum::IVA_1050;
+			return TaxTypeEnum::IVA_1050;
 		}
 		
 		

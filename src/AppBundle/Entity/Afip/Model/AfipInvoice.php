@@ -18,7 +18,7 @@ class AfipInvoice
     /**
      * Return max (last) AfipInvoice number for a specific billingType
      * 
-     * @param Afip_Model_Enums_TypeEnum $billingType
+     * @param TypeEnum $billingType
      * @return int number
      */
     public static function getLastNumber($billingType){
@@ -53,7 +53,7 @@ class AfipInvoice
     /**
      * Retrieve 250 pending AfipInvoice for a specific billingType
      *
-     * @param Afip_Model_Enums_TypeEnum $billingType
+     * @param TypeEnum $billingType
      * @return Afip_Model_Mysql4_Invoice_Collection
      */
     public static function getPendingForAuthorize($billingType){
@@ -122,7 +122,7 @@ class AfipInvoice
      * Retrieve AfipInvoice by number and billingType
      * 
      * @param AfipInvoice attribute value
-     * @param Afip_Model_Enums_TypeEnum $billingType
+     * @param TypeEnum $billingType
      * @return AfipInvoice
      */
     public function loadInvoiceByNumber($value, $billingType){
@@ -199,8 +199,8 @@ class AfipInvoice
      */
     public function getTypes(){
     
-    	$options[Afip_Model_Enums_TypeEnum::A] = "A";
-    	$options[Afip_Model_Enums_TypeEnum::B] = "B";
+    	$options[TypeEnum::A] = "A";
+    	$options[TypeEnum::B] = "B";
     	    
     	return $options;
     	 

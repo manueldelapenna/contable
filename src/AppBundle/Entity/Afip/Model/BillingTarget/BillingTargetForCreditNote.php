@@ -32,7 +32,7 @@
 		
 		protected function getValidTargetTypes()
 		{
-			$types = Afip_Model_Enums_TypeEnum::getTypesForCreditNote();
+			$types = TypeEnum::getTypesForCreditNote();
 			return $types;
 		}
 	}

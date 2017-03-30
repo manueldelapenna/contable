@@ -81,7 +81,7 @@
 		abstract public function getTaxPercent();
 		
 		/**
-		 * Returns the tax type (Afip_Model_Enums_TaxTypeEnum)
+		 * Returns the tax type (TaxTypeEnum)
 		 *
 		 * @return int
 		 */
@@ -133,7 +133,7 @@
 		 */
 		protected function getName()
 		{
-			return Afip_Model_Enums_TaxTypeEnum::getInstance()->getValueFor($this->getTaxType());
+			return TaxTypeEnum::getInstance()->getValueFor($this->getTaxType());
 		}
 		
 		protected function initialize()

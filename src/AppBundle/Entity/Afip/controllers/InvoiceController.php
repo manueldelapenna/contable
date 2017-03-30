@@ -39,14 +39,14 @@ class Afip_InvoiceController extends Mage_Adminhtml_Controller_Action
 				$customer = Mage::getModel('customer/customer')->load($customerId);
 				
 				//No es Resp. Inscripto y la factura es A, se cambia la factura a B				
-				if($customer->getIvaCondition() != 2 && $afipInvoice->getType() == Afip_Model_Enums_TypeEnum::A){
-					$afipInvoice->setType(Afip_Model_Enums_TypeEnum::B);
+				if($customer->getIvaCondition() != 2 && $afipInvoice->getType() == TypeEnum::A){
+					$afipInvoice->setType(TypeEnum::B);
 					$afipInvoice->save();
 				}
 				
 				//Es Resp. Inscripto y la factura es B, se cambia la factura a A
-				if($customer->getIvaCondition() == 2 && $afipInvoice->getType() == Afip_Model_Enums_TypeEnum::B){
-					$afipInvoice->setType(Afip_Model_Enums_TypeEnum::A);
+				if($customer->getIvaCondition() == 2 && $afipInvoice->getType() == TypeEnum::B){
+					$afipInvoice->setType(TypeEnum::A);
 					$afipInvoice->save();
 				}
 				

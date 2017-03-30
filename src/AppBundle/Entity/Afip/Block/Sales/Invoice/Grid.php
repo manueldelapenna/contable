@@ -337,7 +337,7 @@ class Afip_Block_Sales_Invoice_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 				$street = $streets[0];
 				
 				if(!is_null($invoice->getType())){
-					$invoiceType = Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($invoice->getType());
+					$invoiceType = TypeEnum::getLetterForBillingTypeKey($invoice->getType());
 					$afipStatus = Afip_Model_Invoice::getStatusName($invoice->getStatus());
 				}else{
 					$invoiceType = "";
@@ -543,7 +543,7 @@ class Afip_Block_Sales_Invoice_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 				$street = $streets[0];
 				
 				if(!is_null($invoice->getType())){
-					$invoiceType = Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($invoice->getType());
+					$invoiceType = TypeEnum::getLetterForBillingTypeKey($invoice->getType());
 					$afipStatus = Afip_Model_Invoice::getStatusName($invoice->getStatus());
 				}else{
 					$invoiceType = "";

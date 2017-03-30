@@ -140,7 +140,7 @@
 					$this->log(" * Environment: " . $this->environment->getEnvironmentKey(), __FUNCTION__);
 					$this->log(" * Point of Sales: " . $this->environment->getPointOfSale(), __FUNCTION__);
 					$this->log(" * Taxpayer CUIT: " . $this->environment->getTaxpayerCuit(), __FUNCTION__);
-					$this->log(" * Type: " . Afip_Model_Enums_TypeEnum::getInstance()->getValueFor($collector->getType()), __FUNCTION__);
+					$this->log(" * Type: " . TypeEnum::getInstance()->getValueFor($collector->getType()), __FUNCTION__);
 					
 					
 					/* Retrieving last authorized number from Webservice (WSFE). */
@@ -163,7 +163,7 @@
 						/* Aborting process because there are no valid data. */
 						
 						$this->log(" * No data were sent to AFIP.", __FUNCTION__);
-						$collector->setStatus(Afip_Model_Enums_AuthorizationStatusEnum::NO_VALID_DATA);
+						$collector->setStatus(AuthorizationStatusEnum::NO_VALID_DATA);
 					}
 					else
 					{
@@ -195,15 +195,15 @@
 						}
 						catch (Afip_Exception_Lib_SoapFaultException $e)
 						{
-							$status = Afip_Model_Enums_AuthorizationStatusEnum::NO_RESULT_GIVEN;
+							$status = AuthorizationStatusEnum::NO_RESULT_GIVEN;
 						}
 						
-						$this->log(" * Authorization result: " . Afip_Model_Enums_AuthorizationStatusEnum::getInstance()->getValueFor($status), __FUNCTION__);
+						$this->log(" * Authorization result: " . AuthorizationStatusEnum::getInstance()->getValueFor($status), __FUNCTION__);
 						
-						if ($status == Afip_Model_Enums_AuthorizationStatusEnum::NO_RESULT_GIVEN)
+						if ($status == AuthorizationStatusEnum::NO_RESULT_GIVEN)
 						{
 							/* Updating the status of collection. */
-							$collector->setStatus(Afip_Model_Enums_AuthorizationStatusEnum::NO_RESULT_GIVEN);
+							$collector->setStatus(AuthorizationStatusEnum::NO_RESULT_GIVEN);
 						}
 						else
 						{
@@ -233,7 +233,7 @@
 			{
 				/* Updating the status of collection on caught exception. */
 				
-				$collector->setStatus(Afip_Model_Enums_AuthorizationStatusEnum::EXCEPTION);
+				$collector->setStatus(AuthorizationStatusEnum::EXCEPTION);
 				
 				$this->log("Exception detected -> " . $e->getMessage(), __FUNCTION__);
 				$this->log("  |_ content (base64): {$this->encodeForLogger($e)}", __FUNCTION__);
@@ -286,7 +286,7 @@
 		{
 			$this->exceptionIfNoWebservice();
 			
-			Afip_Model_Enums_TypeEnum::getInstance()->validateKey($type);
+			TypeEnum::getInstance()->validateKey($type);
 			
 			$this->lastResult = $this->wsfeClient->FECompUltimoAutorizado(array("Auth" => $this->getAuthKey(), "PtoVta" => $this->environment->getPointOfSale(), "CbteTipo" => $type));
 			$this->exceptionIfOperationHasErrors($this->lastResult);
@@ -343,12 +343,12 @@
 			$report["pointOfSales"] = $this->environment->getPointOfSale();
 			$report["taxpayerCuit"] = $this->environment->getTaxpayerCuit();
 			$report["sendingDataLimit"] = $this->getSendingDataLimit();
-			$report["lastNumber"]["invoiceA"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::A);
-			$report["lastNumber"]["invoiceB"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::B);
-			$report["lastNumber"]["creditNoteA"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::A_CREDIT_NOTE);
-			$report["lastNumber"]["creditNoteB"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::B_CREDIT_NOTE);
-			$report["lastNumber"]["debitNoteA"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::A_DEBIT_NOTE);
-			$report["lastNumber"]["debitNoteB"] = $this->getLastAcceptedNumberFor(Afip_Model_Enums_TypeEnum::B_DEBIT_NOTE);
+			$report["lastNumber"]["invoiceA"] = $this->getLastAcceptedNumberFor(TypeEnum::A);
+			$report["lastNumber"]["invoiceB"] = $this->getLastAcceptedNumberFor(TypeEnum::B);
+			$report["lastNumber"]["creditNoteA"] = $this->getLastAcceptedNumberFor(TypeEnum::A_CREDIT_NOTE);
+			$report["lastNumber"]["creditNoteB"] = $this->getLastAcceptedNumberFor(TypeEnum::B_CREDIT_NOTE);
+			$report["lastNumber"]["debitNoteA"] = $this->getLastAcceptedNumberFor(TypeEnum::A_DEBIT_NOTE);
+			$report["lastNumber"]["debitNoteB"] = $this->getLastAcceptedNumberFor(TypeEnum::B_DEBIT_NOTE);
 			
 			return $report;
 		}
@@ -421,7 +421,7 @@
 		public function retrieveDataFor($type, $number)
 		{
 			$this->exceptionIfNoWebservice();
-			Afip_Model_Enums_TypeEnum::getInstance()->validateKey($type);
+			TypeEnum::getInstance()->validateKey($type);
 			
 			$operationData = array();
 			$operationData["Auth"] = $this->getAuthKey();
@@ -830,11 +830,11 @@
 				$collector->rewind();
 				while ($collector->valid())
 				{
-					if (($collector->current()->getStatus() != Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID) && ($collector->current()->getInvoiceNumber() == $resultCollection[$resultPointer]->CbteDesde))
+					if (($collector->current()->getStatus() != DataAuthorizationStatusEnum::INVALID) && ($collector->current()->getInvoiceNumber() == $resultCollection[$resultPointer]->CbteDesde))
 					{
-						if ($resultCollection[$resultPointer]->Resultado == Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED)
+						if ($resultCollection[$resultPointer]->Resultado == DataAuthorizationStatusEnum::ACCEPTED)
 							$collector->current()->accepted($resultCollection[$resultPointer]->CAE, $resultCollection[$resultPointer]->CAEFchVto, $resultCollection[$resultPointer]->CbteFch);
-						elseif ($resultCollection[$resultPointer]->Resultado == Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED)
+						elseif ($resultCollection[$resultPointer]->Resultado == DataAuthorizationStatusEnum::REJECTED)
 						{
 							$errors = array();
 							

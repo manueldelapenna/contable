@@ -53,7 +53,7 @@
 		/**
 		 * Returns a new instance.
 		 *
-		 * @param int $type The type of stored invoice data (e.g. Afip_Model_Enums_TypeEnum::A).
+		 * @param int $type The type of stored invoice data (e.g. TypeEnum::A).
 		 * @return AfipInvoiceData_InvoiceDataCollector instance
 		 */
 		public static function getInstance($type)
@@ -64,10 +64,10 @@
 		
 		public function __construct($type)
 		{
-			$helper = Afip_Model_Enums_TypeEnum::getInstance();
+			$helper = TypeEnum::getInstance();
 			$helper->validateKey($type);
 			
-			$this->status = Afip_Model_Enums_AuthorizationStatusEnum::SCHEDULED;
+			$this->status = AuthorizationStatusEnum::SCHEDULED;
 			$this->count = 0;
 			$this->invoiceType = $type;
 			$this->invoiceTypeName = $helper->getValueFor($this->invoiceType);
@@ -133,7 +133,7 @@
 		 */
 		public function getNumberOfAcceptedInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED);
+			return $this->getNumberOfInvoiceDataInStatus(DataAuthorizationStatusEnum::ACCEPTED);
 		}
 		
 		/**
@@ -143,7 +143,7 @@
 		 */
 		public function getNumberOfInvalidInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID);
+			return $this->getNumberOfInvoiceDataInStatus(DataAuthorizationStatusEnum::INVALID);
 		}
 		
 		/**
@@ -153,7 +153,7 @@
 		 */
 		public function getNumberOfRejectedInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED);
+			return $this->getNumberOfInvoiceDataInStatus(DataAuthorizationStatusEnum::REJECTED);
 		}
 		
 		/**
@@ -163,7 +163,7 @@
 		 */
 		public function getNumberOfScheduledInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::SCHEDULED);
+			return $this->getNumberOfInvoiceDataInStatus(DataAuthorizationStatusEnum::SCHEDULED);
 		}
 		
 		/**
@@ -173,7 +173,7 @@
 		 */
 		public function getNumberOfValidInvoiceData()
 		{
-			return $this->getNumberOfInvoiceDataInStatus(Afip_Model_Enums_DataAuthorizationStatusEnum::VALID);
+			return $this->getNumberOfInvoiceDataInStatus(DataAuthorizationStatusEnum::VALID);
 		}
 		
 		/**
@@ -193,7 +193,7 @@
 		 */
 		public function getStatusName()
 		{
-			return Afip_Model_Enums_AuthorizationStatusEnum::getInstance()->getValueFor($this->status);
+			return AuthorizationStatusEnum::getInstance()->getValueFor($this->status);
 		}
 		
 		/**
@@ -213,7 +213,7 @@
 		 */
 		public function hasNormalEndingStatus()
 		{
-			return in_array($this->status, Afip_Model_Enums_AuthorizationStatusEnum::normalEndingStatus());
+			return in_array($this->status, AuthorizationStatusEnum::normalEndingStatus());
 		}
 		
 		/**
@@ -254,7 +254,7 @@
 		 */
 		public function setStatus($status)
 		{
-			Afip_Model_Enums_AuthorizationStatusEnum::getInstance()->validateKey($status);
+			AuthorizationStatusEnum::getInstance()->validateKey($status);
 			$this->status = $status;
 		}
 		

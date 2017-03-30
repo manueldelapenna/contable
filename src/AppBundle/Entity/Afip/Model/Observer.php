@@ -52,9 +52,9 @@ class Observer {
 							$customer = Mage::getModel('customer/customer')->load($invoice->getCustomerId());
 							//resp. inscripto
 							if ($customer->getIvaCondition() == 2){
-								$afipInvoice->setType(Afip_Model_Enums_TypeEnum::A);
+								$afipInvoice->setType(TypeEnum::A);
 							}else{
-								$afipInvoice->setType(Afip_Model_Enums_TypeEnum::B);
+								$afipInvoice->setType(TypeEnum::B);
 							}
 							
 							$afipInvoice->save();

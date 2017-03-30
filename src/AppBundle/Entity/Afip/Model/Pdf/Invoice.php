@@ -19,10 +19,10 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 		$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($invoice->getId());
 		$this->barcode = new Afip_Model_Pdf_Barcode_Barcode();
 		$this->barcode->addCUIT(33709315329);
-		$this->barcode->addInvoiceType(Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType()));
+		$this->barcode->addInvoiceType(TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType()));
 		$this->barcode->addPOS(Afip_Model_Pdf_InvoicePrinterExecutor::getPointOfSaleOfConfiguratedEnvironment());
 		
-		if ($afipInvoice->getType() == Afip_Model_Enums_TypeEnum::A){
+		if ($afipInvoice->getType() == TypeEnum::A){
 			$pdf = Zend_Pdf::load(Mage::getModuleDir('etc', 'Afip') . "/pdfTemplates/invoiceATemplate.pdf");
 		}else{
 			if($invoice->getOrder()->getOrderCurrencyCode() == 'ARS'){
@@ -76,7 +76,7 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 			if ($isItemParent){
 				$taxPercent = AlicuotaProduct::getAlicuotaForProduct($product);
 				
-				if($billingType == Afip_Model_Enums_TypeEnum::A){
+				if($billingType == TypeEnum::A){
 					$itemTotal = TaxerHelper::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 					$itemTotal = TaxerHelper::adjustAmount($itemTotal, $adjustCents, $taxPercent);
 					
@@ -106,7 +106,7 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 		if($invoice->getShippingAmount() > 0){
 			$taxPercent = AlicuotaShipping::getAlicuotaForShipping();
 			$shippingDescription = "Envío " . $invoice->getOrder()->getShippingDescription();
-			if($billingType == Afip_Model_Enums_TypeEnum::A){
+			if($billingType == TypeEnum::A){
 				$shippingTotal = TaxerHelper::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 				if ($taxPercent != AlicuotaProduct::NO_GRAVADO && $taxPercent != AlicuotaProduct::EXENTO){
 					$this->addItem(1, $shippingDescription, $shippingTotal, $shippingTotal, $taxPercent);
@@ -129,7 +129,7 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 		$ivaAmount = $afipInvoice->getIva_0250() + $afipInvoice->getIva_0500() + $afipInvoice->getIva_1050() + $afipInvoice->getIva_2100() + $afipInvoice->getIva_2700();
 		$netoAmount = $afipInvoice->getNeto_0250() + $afipInvoice->getNeto_0500() + $afipInvoice->getNeto_1050() + $afipInvoice->getNeto_2100() + $afipInvoice->getNeto_2700() + $afipInvoice->getNetoExento();
 		
-		if ($afipInvoice->getType() == Afip_Model_Enums_TypeEnum::A){
+		if ($afipInvoice->getType() == TypeEnum::A){
 			
 			$this->setTaxAmount0250($afipInvoice->getNeto_0250(), $afipInvoice->getIva_0250());
 			$this->setTaxAmount0500($afipInvoice->getNeto_0500(), $afipInvoice->getIva_0500());
@@ -245,7 +245,7 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 		$ivaAmount = $afipInvoice->getIva_0250() + $afipInvoice->getIva_0500() + $afipInvoice->getIva_1050() + $afipInvoice->getIva_2100() + $afipInvoice->getIva_2700();
 		$netoAmount = $afipInvoice->getNeto_0250() + $afipInvoice->getNeto_0500() + $afipInvoice->getNeto_1050() + $afipInvoice->getNeto_2100() + $afipInvoice->getNeto_2700() + $afipInvoice->getNetoExento();
 		//Factura B
-		if($afipInvoice->getType() == Afip_Model_Enums_TypeEnum::B){
+		if($afipInvoice->getType() == TypeEnum::B){
 			//>= $1000
 			if(($customer->getIvaCondition() == 1 || $customer->getIvaCondition() == 4) && ($ivaAmount + $netoAmount) >= 1000){
 				if(strlen($customer->getTaxvat()) == 11){
@@ -346,7 +346,7 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 	protected function setSubtotalAmount($value, $type)
 	{
 		$this->setNumbersFont(10);
-		if ($type ==  Afip_Model_Enums_TypeEnum::A){
+		if ($type ==  TypeEnum::A){
 			for($i=0;$i<$this->copies;$i++){
 				$this->_getPdf()->pages[$i]->drawText($this->asMonospacedNumber($value,11), 498, 126, 'UTF-8');
 			}
@@ -367,7 +367,7 @@ class Afip_Model_Pdf_Invoice extends Mage_Sales_Model_Order_Pdf_Invoice {
 	protected function setTotalAmount($value, $type)
 	{
 		$this->setNumbersFont(10);
-		if ($type ==  Afip_Model_Enums_TypeEnum::A){
+		if ($type ==  TypeEnum::A){
 			for($i=0;$i<$this->copies;$i++){
 				$this->_getPdf()->pages[$i]->drawText($this->asMonospacedNumber($value,11), 498, 86, 'UTF-8');
 			}

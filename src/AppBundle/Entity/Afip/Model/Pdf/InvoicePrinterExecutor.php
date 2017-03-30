@@ -74,7 +74,7 @@ class Afip_Model_Pdf_InvoicePrinterExecutor {
 		$month = date_format($date,'m');
 		$day = date_format($date, 'd');
 		
-		$afipType = Afip_Model_Enums_TypeEnum::getInstance()->getValueFor($afipInvoice->getType());
+		$afipType = TypeEnum::getInstance()->getValueFor($afipInvoice->getType());
 		$dir = Mage::getBaseDir()."/afip/$afipType/$year/$month/$day";
 		
 		return $dir;
@@ -83,7 +83,7 @@ class Afip_Model_Pdf_InvoicePrinterExecutor {
 	
 	public static function getFilenameForAfipDocument(AfipInvoice $afipInvoice) {
 		
-		$invoiceLetter = Afip_Model_Enums_TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType());
+		$invoiceLetter = TypeEnum::getLetterForBillingTypeKey($afipInvoice->getType());
 			
 		$pointOfSale = self::getPointOfSaleOfConfiguratedEnvironment();
 		$normalizedPointOfSale = str_pad($pointOfSale, 4, 0, STR_PAD_LEFT);

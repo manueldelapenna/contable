@@ -34,14 +34,14 @@ class Afip_GeneralController extends Mage_Core_Controller_Front_Action
 		echo "<h2>Factura A</h2>";
 		
 		echo "<h3>&Uacute;ltimo N&uacute;mero de AFIP: " . $reporte['lastNumber']['invoiceA'] ."</h3>";
-		echo "<h3>&Uacute;ltimo N&uacute;mero de RU: " . Afip_Model_Invoice::getLastNumber(Afip_Model_Enums_TypeEnum::A) ."</h3>";
+		echo "<h3>&Uacute;ltimo N&uacute;mero de RU: " . Afip_Model_Invoice::getLastNumber(TypeEnum::A) ."</h3>";
 		
 		echo "<br>";
 		
 		echo "<h2>Factura B</h2>";
 		
 		echo "<h3>&Uacute;ltimo N&uacute;mero de AFIP: " . $reporte['lastNumber']['invoiceB'] ."</h3>";
-		echo "<h3>&Uacute;ltimo N&uacute;mero de RU: " . Afip_Model_Invoice::getLastNumber(Afip_Model_Enums_TypeEnum::B) ."</h3>";
+		echo "<h3>&Uacute;ltimo N&uacute;mero de RU: " . Afip_Model_Invoice::getLastNumber(TypeEnum::B) ."</h3>";
 				
 		die;
 	

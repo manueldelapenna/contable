@@ -156,12 +156,12 @@
 		 */
 		public function accepted($cae, $caeDueDate, $authDate)
 		{
-			if ($this->status == Afip_Model_Enums_DataAuthorizationStatusEnum::VALID)
+			if ($this->status == DataAuthorizationStatusEnum::VALID)
 			{
 				$this->setCae($cae);
 				if (isset($this->cae) && ($this->cae != ""))
 				{
-					$this->status = Afip_Model_Enums_DataAuthorizationStatusEnum::ACCEPTED;
+					$this->status = DataAuthorizationStatusEnum::ACCEPTED;
 					$this->caeDueDate = $this->getDateFrom($caeDueDate);
 					$this->authDate = $this->getDateFrom($authDate);
 				}
@@ -271,7 +271,7 @@
 		 */
 		public function getCurrencyName()
 		{
-			return Afip_Model_Enums_CurrencyEnum::PESOS;
+			return CurrencyEnum::PESOS;
 		}
 		
 		/**
@@ -461,12 +461,12 @@
 			
 			if ($this->errors->isEmpty())
 			{
-				$this->status = Afip_Model_Enums_DataAuthorizationStatusEnum::VALID;
+				$this->status = DataAuthorizationStatusEnum::VALID;
 				return true;
 			}
 			else
 			{
-				$this->status = Afip_Model_Enums_DataAuthorizationStatusEnum::INVALID;
+				$this->status = DataAuthorizationStatusEnum::INVALID;
 				return false;
 			}
 		}
@@ -479,7 +479,7 @@
 		 */
 		public function rejected($errors = array())
 		{
-			if ($this->status == Afip_Model_Enums_DataAuthorizationStatusEnum::VALID)
+			if ($this->status == DataAuthorizationStatusEnum::VALID)
 			{
 				if (is_array($errors) && (count($errors) > 0))
 				{
@@ -489,7 +489,7 @@
 				else
 					$this->errors->add("UNKNOWN");
 				
-				$this->status = Afip_Model_Enums_DataAuthorizationStatusEnum::REJECTED;
+				$this->status = DataAuthorizationStatusEnum::REJECTED;
 			}
 		}
 		
@@ -653,7 +653,7 @@
 		{
 			$this->alicuotas = AlicuotaCollector::getInstance();
 			$this->authDate = NULL;
-			$this->authStatus = Afip_Model_Enums_DataAuthorizationStatusEnum::SCHEDULED;
+			$this->authStatus = DataAuthorizationStatusEnum::SCHEDULED;
 			$this->cae = NULL;
 			$this->concept = NULL;
 			$this->billingTarget = NULL;
@@ -708,12 +708,12 @@
 			
 			/* Checking basic fields */
 			
-			$documentHelper = Afip_Model_Enums_DocumentTypeEnum::getInstance();
+			$documentHelper = DocumentTypeEnum::getInstance();
 			
-			if (!Afip_Model_Enums_TypeEnum::getInstance()->isValidKey($this->invoiceType))
+			if (!TypeEnum::getInstance()->isValidKey($this->invoiceType))
 				$this->errors->add("El tipo de facturación no es una opción válida.");
 			
-			if (!Afip_Model_Enums_ConceptEnum::getInstance()->isValidKey($this->concept))
+			if (!ConceptEnum::getInstance()->isValidKey($this->concept))
 				$this->errors->add("El concepto de facturacón no es válido.");
 			
 			if (!$documentHelper->isValidKey($this->documentType))
@@ -760,36 +760,36 @@
 			
 			
 			/* Checking fields related with billing type */
-			if (in_array($this->invoiceType, Afip_Model_Enums_TypeEnum::getTypesForBlockA()))
+			if (in_array($this->invoiceType, TypeEnum::getTypesForBlockA()))
 			{
 				if ($this->getStoreId() != 1){
 					$this->errors->add("Únicamente tienda ARG puede realizar comprobantes de tipo A.");
 				}
 				
-				if ($this->documentType != Afip_Model_Enums_DocumentTypeEnum::CUIT)
-					$this->errors->add("El tipo de documento debe ser '" . $documentHelper->getValueFor(Afip_Model_Enums_DocumentTypeEnum::CUIT) . "' para una factura, nota de débito o nota de crédito de tipo 'A'.");
+				if ($this->documentType != DocumentTypeEnum::CUIT)
+					$this->errors->add("El tipo de documento debe ser '" . $documentHelper->getValueFor(DocumentTypeEnum::CUIT) . "' para una factura, nota de débito o nota de crédito de tipo 'A'.");
 				
 				if ($this->documentNumber == 0)
 					$this->errors->add("El número de documento es obligatorio para facturas, notas de crédito y notas de débito de tipo A.");
 			}
-			elseif (in_array($this->invoiceType, Afip_Model_Enums_TypeEnum::getTypesForBlockB()))
+			elseif (in_array($this->invoiceType, TypeEnum::getTypesForBlockB()))
 			{
 				if ($this->getTotalAmount() >= 1000)
 				{
-					if ($this->documentType == Afip_Model_Enums_DocumentTypeEnum::UNKNOWN)
-						$this->errors->add("El tipo de documento no puede ser '" . $documentHelper->getValueFor(Afip_Model_Enums_DocumentTypeEnum::UNKNOWN) . "' para facturas, notas de crédito o notas de débito de tipo B con un monto mayor o igual a $1.000.");
+					if ($this->documentType == DocumentTypeEnum::UNKNOWN)
+						$this->errors->add("El tipo de documento no puede ser '" . $documentHelper->getValueFor(DocumentTypeEnum::UNKNOWN) . "' para facturas, notas de crédito o notas de débito de tipo B con un monto mayor o igual a $1.000.");
 					
 					if ($this->documentNumber == 0)
 						$this->errors->add("El número de documento debe estar definido para facturas, notas de crédito y débito de tipo B con un monto mayor o igual a $1.000");
 				}
 				else
 				{
-					if ($this->documentType == Afip_Model_Enums_DocumentTypeEnum::UNKNOWN)
+					if ($this->documentType == DocumentTypeEnum::UNKNOWN)
 					{
 						if ($this->documentNumber != 0)
 							$this->errors->add(
 								"El número de documento debe ser 0 (cero) para facturas, notas de crédito o notas de débito de tipo B con monto inferior a $1.000 y tipo de documento igual a '" .
-								$documentHelper->getValueFor(Afip_Model_Enums_DocumentTypeEnum::UNKNOWN) . "'."
+								$documentHelper->getValueFor(DocumentTypeEnum::UNKNOWN) . "'."
 							);
 					}
 					else
@@ -797,19 +797,19 @@
 						if ($this->documentNumber == 0)
 							$this->errors->add(
 								"El número de documento debe ser mayor a 0 (cero) para facturas, notas de crédito o notas de débito de tipo B con monto inferior a $1.000 y tipo de documento distinto de '" .
-								$documentHelper->getValueFor(Afip_Model_Enums_DocumentTypeEnum::UNKNOWN) . "'."
+								$documentHelper->getValueFor(DocumentTypeEnum::UNKNOWN) . "'."
 							);
 					}
 				}
 			}
 			
-			if (Afip_Model_Enums_TypeEnum::canHasBillingTarget($this->invoiceType))
+			if (TypeEnum::canHasBillingTarget($this->invoiceType))
 			{
 				if ($this->hasBillingTarget())
 				{
 					if ($this->getBillingTarget()->isValid())
 					{
-						if (!Afip_Model_Enums_TypeEnum::areCompatible($this->getInvoiceType(), $this->getBillingTarget()->getType()))
+						if (!TypeEnum::areCompatible($this->getInvoiceType(), $this->getBillingTarget()->getType()))
 							$this->errors->add("El tipo del comprobante a autorizar y el comprobante asociado no son compatibles.");
 					}
 					else
