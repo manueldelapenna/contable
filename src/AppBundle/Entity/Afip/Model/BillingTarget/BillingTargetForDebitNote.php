@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Model_BillingTarget_BillingTargetForDebitNote extends Afip_Model_BillingTarget_BillingTarget
+	class BillingTargetForDebitNote extends BillingTarget
 	{
 		/* Public methods */
 		

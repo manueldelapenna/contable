@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class Afip_Model_BillingTarget_BillingTarget
+	abstract class BillingTarget
 	{
 		/* Constants and Variables */
 		
