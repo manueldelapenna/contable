@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Model_Alicuota_AlicuotaCollector implements Iterator, Countable
+	class AlicuotaCollector implements Iterator, Countable
 	{
 		/* Constants and Variables */
 		
@@ -47,7 +47,7 @@
 		/**
 		 * Returns a new instance.
 		 *
-		 * @return Afip_Model_Alicuota_AlicuotaCollector instance
+		 * @return AlicuotaCollector instance
 		 */
 		public static function getInstance()
 		{
@@ -82,13 +82,13 @@
 		/**
 		 * Adds the given alicuota to collector.
 		 *
-		 * @param Afip_Model_Alicuota_Alicuota $alicuota
+		 * @param Alicuota $alicuota
 		 * @return void
-		 * @throws Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given alicuota is not an instance of Afip_Model_Alicuota_Alicuota.
+		 * @throws Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given alicuota is not an instance of Alicuota.
 		 */
 		public function add($alicuota)
 		{
-			if (is_object($alicuota) && ($alicuota instanceof Afip_Model_Alicuota_Alicuota))
+			if (is_object($alicuota) && ($alicuota instanceof Alicuota))
 			{
 				if ($alicuota->isValid())
 				{
@@ -98,7 +98,7 @@
 				}
 			}
 			else
-				Afip_Exception_ExceptionFactory::throwClassMismatch("Afip_Model_Alicuota_Alicuota");
+				Afip_Exception_ExceptionFactory::throwClassMismatch("Alicuota");
 		}
 		
 		/**
@@ -135,7 +135,7 @@
 		 * Returns the current alicuota.
 		 *
 		 * @see Iterator::current()
-		 * @return Afip_Model_Alicuota_Alicuota instance
+		 * @return Alicuota instance
 		 */
 		public function current()
 		{
@@ -226,8 +226,8 @@
 		/**
 		 * Returns the stored alicuota for given alicuota.
 		 *
-		 * @param Afip_Model_Alicuota_Alicuota $alicuota
-		 * @return Afip_Model_Alicuota_Alicuota instance
+		 * @param Alicuota $alicuota
+		 * @return Alicuota instance
 		 */
 		protected function getStoredAlicuotaFor($alicuota)
 		{

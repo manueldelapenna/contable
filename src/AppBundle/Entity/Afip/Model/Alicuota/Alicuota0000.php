@@ -6,14 +6,14 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Afip_Model_Alicuota_Alicuota0000 extends Afip_Model_Alicuota_Alicuota
+	class Alicuota0000 extends Alicuota
 	{
 		/* Public methods */
 		
 		/**
 		 * Returns a new instance.
 		 *
-		 * @return Afip_Model_Alicuota_Alicuota0000 instance
+		 * @return Alicuota0000 instance
 		 */
 		public static function getInstance()
 		{

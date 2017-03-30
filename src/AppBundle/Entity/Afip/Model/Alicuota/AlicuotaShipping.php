@@ -4,7 +4,7 @@
  * @author manueldelapenna
  *
  */
-class Afip_Model_Alicuota_Shipping
+class AlicuotaShipping
 {
 	const IVA_0250 = "2,5";
 	const IVA_0500 = "5";

@@ -20,7 +20,7 @@ class TaxerHelper{
 		$itemTotal = self::getFinalAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR);
 		
 		$product = Mage::getModel('catalog/product')->load($item->getProductId());
-		$alicuota = self::normalizeAlicuota(Afip_Model_Alicuota_Product::getAlicuotaForProduct($product));
+		$alicuota = self::normalizeAlicuota(AlicuotaProduct::getAlicuotaForProduct($product));
 		
 		$itemNeto = $itemTotal / ($alicuota/100 + 1);
 				
@@ -61,7 +61,7 @@ class TaxerHelper{
 		$itemTotal = self::getFinalAmountForShippingItem($invoice, $orderCurrencyCode, $afipInvoice, $currencyAR);
 		
 		$shippingAmount = $invoice->getShippingAmount() - $invoice->getOrder()->getShippingDiscountAmount();
-		$alicuota = self::normalizeAlicuota(Afip_Model_Alicuota_Shipping::getAlicuotaForShipping());
+		$alicuota = self::normalizeAlicuota(AlicuotaShipping::getAlicuotaForShipping());
 		
 		$itemNeto = NumberDataTypeHelper::truncate($itemTotal / ($alicuota/100 + 1), 2);
 				
@@ -134,7 +134,7 @@ class TaxerHelper{
 	}
 	
 	protected static function normalizeAlicuota($alicuota){
-		if($alicuota == Afip_Model_Alicuota_Product::EXENTO || $alicuota == Afip_Model_Alicuota_Shipping::NO_GRAVADO){
+		if($alicuota == AlicuotaProduct::EXENTO || $alicuota == AlicuotaShipping::NO_GRAVADO){
 			$alicuota = 0;
 		}
 		return $alicuota;
@@ -152,35 +152,35 @@ class TaxerHelper{
 	
 	public static function calculateAdjustTaxAmounts($invoice, $afipInvoice){
 	
-		$netTotals[Afip_Model_Alicuota_Product::IVA_0250] = 0;
-		$netTotals[Afip_Model_Alicuota_Product::IVA_0500] = 0;
-		$netTotals[Afip_Model_Alicuota_Product::IVA_1050] = 0;
-		$netTotals[Afip_Model_Alicuota_Product::IVA_2100] = 0;
-		$netTotals[Afip_Model_Alicuota_Product::IVA_2700] = 0;
-		$netTotals[Afip_Model_Alicuota_Product::EXENTO] = 0;
+		$netTotals[AlicuotaProduct::IVA_0250] = 0;
+		$netTotals[AlicuotaProduct::IVA_0500] = 0;
+		$netTotals[AlicuotaProduct::IVA_1050] = 0;
+		$netTotals[AlicuotaProduct::IVA_2100] = 0;
+		$netTotals[AlicuotaProduct::IVA_2700] = 0;
+		$netTotals[AlicuotaProduct::EXENTO] = 0;
 	
 		$items = $invoice->getAllItems();
 		
 		foreach($items as $item){
 			$product = Mage::getModel('catalog/product')->load($item->getProductId());
-			$isItemParent = Afip_Model_Alicuota_Product::isParentItem($item);
+			$isItemParent = AlicuotaProduct::isParentItem($item);
 			if ($isItemParent){
-				$taxPercent = Afip_Model_Alicuota_Product::getAlicuotaForProduct($product);
+				$taxPercent = AlicuotaProduct::getAlicuotaForProduct($product);
 				$itemPrice = TaxerHelper::getNetoAmountForProductItem($item, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 				$netTotals[$taxPercent] += $itemPrice;
 			}
 		}
 		
-		$taxPercent = Afip_Model_Alicuota_Shipping::getAlicuotaForShipping();
+		$taxPercent = AlicuotaShipping::getAlicuotaForShipping();
 		$shippingPrice = TaxerHelper::getNetoAmountForShippingItem($invoice, $invoice->getOrder()->getOrderCurrencyCode(), $afipInvoice);
 		$netTotals[$taxPercent] += $shippingPrice;
 	
-		$adjustCents[Afip_Model_Alicuota_Product::IVA_0250] = $afipInvoice->getNeto_0250() - $netTotals[Afip_Model_Alicuota_Product::IVA_0250];
-		$adjustCents[Afip_Model_Alicuota_Product::IVA_0500] = $afipInvoice->getNeto_0500() - $netTotals[Afip_Model_Alicuota_Product::IVA_0500];
-		$adjustCents[Afip_Model_Alicuota_Product::IVA_1050] = $afipInvoice->getNeto_1050() - $netTotals[Afip_Model_Alicuota_Product::IVA_1050];
-		$adjustCents[Afip_Model_Alicuota_Product::IVA_2100] = $afipInvoice->getNeto_2100() - $netTotals[Afip_Model_Alicuota_Product::IVA_2100];
-		$adjustCents[Afip_Model_Alicuota_Product::IVA_2700] = $afipInvoice->getNeto_2700() - $netTotals[Afip_Model_Alicuota_Product::IVA_2700];
-		$adjustCents[Afip_Model_Alicuota_Product::EXENTO] = $afipInvoice->getNetoExento() - $netTotals[Afip_Model_Alicuota_Product::EXENTO];
+		$adjustCents[AlicuotaProduct::IVA_0250] = $afipInvoice->getNeto_0250() - $netTotals[AlicuotaProduct::IVA_0250];
+		$adjustCents[AlicuotaProduct::IVA_0500] = $afipInvoice->getNeto_0500() - $netTotals[AlicuotaProduct::IVA_0500];
+		$adjustCents[AlicuotaProduct::IVA_1050] = $afipInvoice->getNeto_1050() - $netTotals[AlicuotaProduct::IVA_1050];
+		$adjustCents[AlicuotaProduct::IVA_2100] = $afipInvoice->getNeto_2100() - $netTotals[AlicuotaProduct::IVA_2100];
+		$adjustCents[AlicuotaProduct::IVA_2700] = $afipInvoice->getNeto_2700() - $netTotals[AlicuotaProduct::IVA_2700];
+		$adjustCents[AlicuotaProduct::EXENTO] = $afipInvoice->getNetoExento() - $netTotals[AlicuotaProduct::EXENTO];
 	
 		foreach($adjustCents as $key => $value){
 			$adjustCents[$key] = 100 * round($value, 2);

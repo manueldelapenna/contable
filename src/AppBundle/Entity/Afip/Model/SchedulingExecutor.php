@@ -133,8 +133,8 @@ class Afip_Model_SchedulingExecutor {
 		$invoiceData->setInvoiceType($billingType);
 		$invoiceData->setStoreId($invoice->getStoreId());
 		
-		$itemsAlicuotaAmounts = Afip_Model_Alicuota_Product::getAlicuotaAmountsFromInvoice($invoice, $afipInvoice);
-		$shippingAlicuotaAmounts = Afip_Model_Alicuota_Shipping::getAlicuotaAmountsFromInvoice($invoice, $afipInvoice);
+		$itemsAlicuotaAmounts = AlicuotaProduct::getAlicuotaAmountsFromInvoice($invoice, $afipInvoice);
+		$shippingAlicuotaAmounts = AlicuotaShipping::getAlicuotaAmountsFromInvoice($invoice, $afipInvoice);
 
 		$invoiceData = self::completeTaxesAmounts($invoiceData, $invoice, $itemsAlicuotaAmounts, $shippingAlicuotaAmounts, $afipInvoice);		
 					
@@ -145,11 +145,11 @@ class Afip_Model_SchedulingExecutor {
 	public static function completeTaxesAmounts($invoiceData, $invoice, $itemsAlicuotaAmounts, $shippingAlicuotaAmounts, $afipInvoice){
 		
 		/* Calcula totales (bruto) */
-		$totalAmount0250 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_0250] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_0250];
-		$totalAmount0500 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_0500] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_0500];
-		$totalAmount1050 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_1050] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_1050];
-		$totalAmount2100 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_2100] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_2100];
-		$totalAmount2700 = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::IVA_2700] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::IVA_2700];
+		$totalAmount0250 = $itemsAlicuotaAmounts[AlicuotaProduct::IVA_0250] + $shippingAlicuotaAmounts[AlicuotaShipping::IVA_0250];
+		$totalAmount0500 = $itemsAlicuotaAmounts[AlicuotaProduct::IVA_0500] + $shippingAlicuotaAmounts[AlicuotaShipping::IVA_0500];
+		$totalAmount1050 = $itemsAlicuotaAmounts[AlicuotaProduct::IVA_1050] + $shippingAlicuotaAmounts[AlicuotaShipping::IVA_1050];
+		$totalAmount2100 = $itemsAlicuotaAmounts[AlicuotaProduct::IVA_2100] + $shippingAlicuotaAmounts[AlicuotaShipping::IVA_2100];
+		$totalAmount2700 = $itemsAlicuotaAmounts[AlicuotaProduct::IVA_2700] + $shippingAlicuotaAmounts[AlicuotaShipping::IVA_2700];
 		
 		/* Calcula netos */
 		$totalNeto0250 = NumberDataTypeHelper::truncate($totalAmount0250 / 1.025 ,2);
@@ -175,7 +175,7 @@ class Afip_Model_SchedulingExecutor {
 		
 		//generar alicuota para cada IVA
 		if ($totalAmount0250 > 0){
-			$alicuota = Afip_Model_Alicuota_Alicuota0250::getInstance();
+			$alicuota = Alicuota0250::getInstance();
 			$alicuota->setBaseAmount($totalNeto0250);
 			$alicuota->setTaxAmount($totalAmount0250 - $totalNeto0250);
 			$invoiceData->addAlicuota($alicuota);
@@ -185,7 +185,7 @@ class Afip_Model_SchedulingExecutor {
 		}
 		
 		if ($totalAmount0500 > 0){
-			$alicuota = Afip_Model_Alicuota_Alicuota0500::getInstance();
+			$alicuota = Alicuota0500::getInstance();
 			$alicuota->setBaseAmount($totalNeto0500);
 			$alicuota->setTaxAmount($totalAmount0500 - $totalNeto0500);
 			$invoiceData->addAlicuota($alicuota);
@@ -195,7 +195,7 @@ class Afip_Model_SchedulingExecutor {
 		}
 		
 		if ($totalAmount1050 > 0){
-			$alicuota = Afip_Model_Alicuota_Alicuota1050::getInstance();
+			$alicuota = Alicuota1050::getInstance();
 			$alicuota->setBaseAmount($totalNeto1050);
 			$alicuota->setTaxAmount($totalAmount1050 - $totalNeto1050);
 			$invoiceData->addAlicuota($alicuota);
@@ -205,7 +205,7 @@ class Afip_Model_SchedulingExecutor {
 		}
 		
 		if ($totalAmount2100 > 0){
-			$alicuota = Afip_Model_Alicuota_Alicuota2100::getInstance();
+			$alicuota = Alicuota2100::getInstance();
 			$alicuota->setBaseAmount($totalNeto2100);
 			$alicuota->setTaxAmount($totalAmount2100 - $totalNeto2100);
 			$invoiceData->addAlicuota($alicuota);
@@ -215,7 +215,7 @@ class Afip_Model_SchedulingExecutor {
 		}
 		
 		if ($totalAmount2700 > 0){
-			$alicuota = Afip_Model_Alicuota_Alicuota2700::getInstance();
+			$alicuota = Alicuota2700::getInstance();
 			$alicuota->setBaseAmount($totalNeto2700);
 			$alicuota->setTaxAmount($totalAmount2700 - $totalNeto2700);
 			$invoiceData->addAlicuota($alicuota);
@@ -225,13 +225,13 @@ class Afip_Model_SchedulingExecutor {
 		}
 		
 		// monto exento
-		$totalExento = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::EXENTO] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::EXENTO];
+		$totalExento = $itemsAlicuotaAmounts[AlicuotaProduct::EXENTO] + $shippingAlicuotaAmounts[AlicuotaShipping::EXENTO];
 		$invoiceData->setTaxExemptAmount($totalExento);
 		
 		$afipInvoice->setNetoExento($invoiceData->getTaxExemptAmount());
 		
 		// monto no gravado
-		$totalNoGravado = $itemsAlicuotaAmounts[Afip_Model_Alicuota_Product::NO_GRAVADO] + $shippingAlicuotaAmounts[Afip_Model_Alicuota_Shipping::NO_GRAVADO];
+		$totalNoGravado = $itemsAlicuotaAmounts[AlicuotaProduct::NO_GRAVADO] + $shippingAlicuotaAmounts[AlicuotaShipping::NO_GRAVADO];
 		$invoiceData->setUntaxedNetAmount($totalNoGravado);
 		
 		$afipInvoice->setNetoNoGravado($invoiceData->getUntaxedNetAmount());

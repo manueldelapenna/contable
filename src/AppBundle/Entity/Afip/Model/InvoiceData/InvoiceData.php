@@ -12,7 +12,7 @@
 		
 		/**
 		 * The alicuotas.
-		 * @var Afip_Model_Alicuota_AlicuotaCollector instance
+		 * @var AlicuotaCollector instance
 		 */
 		protected $alicuotas;
 		
@@ -173,10 +173,10 @@
 		/**
 		 * Adds an alicuota.
 		 *
-		 * @param Afip_Model_Alicuota_Alicuota $alicuota
+		 * @param Alicuota $alicuota
 		 * @return void
 		 */
-		public function addAlicuota(Afip_Model_Alicuota_Alicuota $alicuota)
+		public function addAlicuota(Alicuota $alicuota)
 		{
 			$this->alicuotas->add($alicuota);
 		}
@@ -217,7 +217,7 @@
 		/**
 		 * Returns the alicuota collection.
 		 *
-		 * @return Afip_Model_Alicuota_AlicuotaCollector instance
+		 * @return AlicuotaCollector instance
 		 */
 		public function getAlicuotas()
 		{
@@ -651,7 +651,7 @@
 		 */
 		protected function initialize()
 		{
-			$this->alicuotas = Afip_Model_Alicuota_AlicuotaCollector::getInstance();
+			$this->alicuotas = AlicuotaCollector::getInstance();
 			$this->authDate = NULL;
 			$this->authStatus = Afip_Model_Enums_DataAuthorizationStatusEnum::SCHEDULED;
 			$this->cae = NULL;
