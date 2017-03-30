@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum extends Quanbit_Afip_Model_Enums_AbstractEnum
+	class DataAuthorizationStatusEnum extends AbstractEnum
 	{
 		/* Contants and Variables */
 		
@@ -43,7 +43,7 @@
 		
 		/**
 		 * A singleton instance.
-		 * @var Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum
+		 * @var DataAuthorizationStatusEnum
 		 */
 		protected static $singleton;
 		
@@ -54,7 +54,7 @@
 		/**
 		 * Returns a new singleton instance.
 		 *
-		 * @return Quanbit_Afip_Model_Enums_DataAuthorizationStatusEnum instance
+		 * @return DataAuthorizationStatusEnum instance
 		 */
 		public static function getInstance()
 		{

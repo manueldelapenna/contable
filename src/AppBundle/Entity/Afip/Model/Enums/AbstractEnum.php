@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class Quanbit_Afip_Model_Enums_AbstractEnum
+	abstract class AbstractEnum
 	{
 		/* Public methods */
 		

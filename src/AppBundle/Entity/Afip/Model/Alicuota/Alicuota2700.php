@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Model_Alicuota_Alicuota2700 extends Quanbit_Afip_Model_Alicuota_Alicuota
+	class Alicuota2700 extends Alicuota
 	{
 		/* Public methods */
 		

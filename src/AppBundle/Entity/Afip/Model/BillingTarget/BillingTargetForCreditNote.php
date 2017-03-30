@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Model_BillingTarget_BillingTargetForCreditNote extends Quanbit_Afip_Model_BillingTarget_BillingTarget
+	class BillingTargetForCreditNote extends BillingTarget
 	{
 		/* Public methods */
 		

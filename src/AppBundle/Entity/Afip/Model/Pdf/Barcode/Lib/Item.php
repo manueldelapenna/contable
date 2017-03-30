@@ -10,7 +10,7 @@
  * @package Barcode
  */
 
-class Quanbit_Afip_Model_Pdf_Barcode_Lib_Item {
+class Item {
 	
 	/**
 	 * Item Value

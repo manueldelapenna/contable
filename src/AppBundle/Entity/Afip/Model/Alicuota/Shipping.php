@@ -4,7 +4,7 @@
  * @author manueldelapenna
  *
  */
-class Quanbit_Afip_Model_Alicuota_Shipping extends Mage_Core_Model_Abstract
+class Shipping extends Mage_Core_Model_Abstract
 {
 	const IVA_0250 = "2,5";
 	const IVA_0500 = "5";

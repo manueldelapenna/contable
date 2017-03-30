@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Quanbit_Afip_Model_Pdf_InvoicePrinterExecutor
+ * Description of InvoicePrinterExecutor
  *
  * @author manueldelapenna
  */
-class Quanbit_Afip_Model_Pdf_InvoicePrinterExecutor
+class InvoicePrinterExecutor{
 	
 	/**
 	 * Process ID.

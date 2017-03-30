@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Model_Enums_TaxTypeEnum extends Quanbit_Afip_Model_Enums_AbstractEnum
+	class TaxTypeEnum extends AbstractEnum
 	{
 		/* Contants and Variables */
 		
@@ -49,7 +49,7 @@
 		
 		/**
 		 * A singleton instance.
-		 * @var Quanbit_Afip_Model_Enums_TaxTypeEnum
+		 * @var TaxTypeEnum
 		 */
 		protected static $singleton;
 		
@@ -60,7 +60,7 @@
 		/**
 		 * Returns a new singleton instance.
 		 *
-		 * @return Quanbit_Afip_Model_Enums_TaxTypeEnum instance
+		 * @return TaxTypeEnum instance
 		 */
 		public static function getInstance()
 		{

@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Model_InvoiceData_InvoiceData
+	class InvoiceData
 	{
 		/* Constants and Variables */
 		
@@ -132,7 +132,7 @@
 		/**
 		 * Returns a new instance.
 		 *
-		 * @return Quanbit_Afip_Model_InvoiceData_InvoiceData intance
+		 * @return InvoiceData intance
 		 */
 		public static function getInstance()
 		{

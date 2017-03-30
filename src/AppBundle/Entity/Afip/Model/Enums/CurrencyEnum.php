@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Model_Enums_CurrencyEnum extends Quanbit_Afip_Model_Enums_AbstractEnum
+	class CurrencyEnum extends AbstractEnum
 	{
 		/* Contants and Variables */
 		
@@ -30,7 +30,7 @@
 		
 		/**
 		 * A singleton instance.
-		 * @var Quanbit_Afip_Model_Enums_CurrencyEnum
+		 * @var CurrencyEnum
 		 */
 		protected static $singleton;
 		
@@ -41,7 +41,7 @@
 		/**
 		 * Returns a new singleton instance.
 		 *
-		 * @return Quanbit_Afip_Model_Enums_CurrencyEnum instance
+		 * @return CurrencyEnum instance
 		 */
 			public static function getInstance()
 		{

@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	abstract class Quanbit_Afip_Model_Alicuota_Alicuota
+	abstract class Alicuota
 	{
 		/* Constants and Variables */
 		

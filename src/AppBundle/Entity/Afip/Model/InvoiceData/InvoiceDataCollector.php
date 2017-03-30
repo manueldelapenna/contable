@@ -6,7 +6,7 @@
 	 * @author Quanbit Software SA
 	 * @author Eduardo Casey
 	 */
-	class Quanbit_Afip_Model_InvoiceData_InvoiceDataCollector implements Iterator, Countable
+	class InvoiceDataCollector implements Iterator, Countable
 	{
 		/* Constants and Variables */
 		
@@ -54,7 +54,7 @@
 		 * Returns a new instance.
 		 *
 		 * @param int $type The type of stored invoice data (e.g. Quanbit_Afip_Model_Enums_TypeEnum::A).
-		 * @return Quanbit_Afip_Model_InvoiceData_InvoiceDataCollector instance
+		 * @return InvoiceDataCollector instance
 		 */
 		public static function getInstance($type)
 		{
@@ -85,14 +85,14 @@
 		/**
 		 * Adds the given invoice data to collector.
 		 *
-		 * @param Quanbit_Afip_Model_InvoiceData_InvoiceData $data
+		 * @param InvoiceData $data
 		 * @return void
-		 * @throws Quanbit_Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given invoice data is not an instance of Quanbit_Afip_Model_InvoiceData_InvoiceData.
+		 * @throws Quanbit_Afip_Exception_Lib_ClassMismatchException Throws an exception whether the given invoice data is not an instance of InvoiceData.
 		 * @throws Quanbit_Afip_Exception_Lib_Exception Throws an exception whether the given invoice data type mismatch with collector type.
 		 */
-		public function add(Quanbit_Afip_Model_InvoiceData_InvoiceData $data)
+		public function add(InvoiceData $data)
 		{
-			if (is_object($data) && ($data instanceof Quanbit_Afip_Model_InvoiceData_InvoiceData))
+			if (is_object($data) && ($data instanceof InvoiceData))
 			{
 				if ($data->getInvoiceType() == $this->invoiceType)
 				{
@@ -103,7 +103,7 @@
 					Quanbit_Afip_Exception_ExceptionFactory::throwFor("The type of given invoice data does not match with the type of collector. Expected <{$this->invoiceTypeName}>.");
 			}
 			else
-				Quanbit_Afip_Exception_ExceptionFactory::throwClassMismatch("Quanbit_Afip_Model_InvoiceData_InvoiceData");
+				Quanbit_Afip_Exception_ExceptionFactory::throwClassMismatch("InvoiceData");
 		}
 		
 		/**
@@ -119,7 +119,7 @@
 		/**
 		 * Returns the current invoice data.
 		 *
-		 * @return Quanbit_Afip_Model_InvoiceData_InvoiceData instance
+		 * @return InvoiceData instance
 		 */
 		public function current()
 		{
