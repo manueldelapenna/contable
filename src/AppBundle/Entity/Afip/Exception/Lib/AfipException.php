@@ -23,7 +23,6 @@ class AfipException extends \Exception{
 		
 		parent::__construct ( $message, $code );
 		
-		$this->addMessage ( new Mage_Core_Model_Message_Error ( $code ) );
 	}
 	public function __toString() {
 		return (($this->getCode () == 0) ? "" : "[{$this->getCode()}] ") . "{$this->getMessage()} ({$this->getFile()}:{$this->getLine()})";
