@@ -160,11 +160,9 @@ class CreditNoteController extends Controller
      */
     public function showAction(CreditNote $creditNote)
     {
-        $deleteForm = $this->createDeleteForm($creditNote);
-
         return $this->render('creditnote/show.html.twig', array(
             'creditNote' => $creditNote,
-            'delete_form' => $deleteForm->createView(),
+            
         ));
     }
 }

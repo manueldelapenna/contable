@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\DebitNoteAccountMovement;
 use AppBundle\Entity\AccountMovement;
+use AppBundle\Entity\PurchaseOrder;
+use AppBundle\Entity\DebitNoteItem;
 
 /**
  * Debitnote controller.
@@ -52,23 +54,41 @@ class DebitNoteController extends Controller {
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request) {
-        $debitNote = new Debitnote();
-        $form = $this->createForm('AppBundle\Form\DebitNoteType', $debitNote);
+        $em = $this->getDoctrine()->getManager();
+        $orderState = $em->getRepository('AppBundle:OrderState')->find(1);
+        
+        $salesConditions = $this->getDoctrine()->getRepository('AppBundle:SalesCondition')->findAll();
+        
+        $purchaseOrder = new Purchaseorder();
+        $purchaseOrder->setDiscountAmount(0);
+        $purchaseOrder->setShippingAmount(0);
+        
+        $purchaseOrder->setOrderState($orderState);
+        $form = $this->createForm('AppBundle\Form\PurchaseOrderType', $purchaseOrder);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $em = $this->getDoctrine()->getManager();
+            
+            //levanta condicion de venta
+            $salesCondition = $this->getDoctrine()->getRepository('AppBundle:SalesCondition')->find($request->request->get('sales-condition-id'));
             $em->getConnection()->beginTransaction();
-
+            
             try {
-                if(($debitNote->getSalesCondition()->getId() == 2) && is_null($debitNote->getCustomer()->getAccount())) {
+                //si la condicion es CTA CTE y el cliente no tiene cuenta, tira error
+                if(($salesCondition->getId() == 2) && is_null($purchaseOrder->getCustomer()->getAccount())){
                     throw new Exception('El cliente seleccionado no posee CTA CTE. Cree una cuenta para dicho usuario o cambie la condición de venta.');
                 }
+                $debitNote = DebitNote::createFromOrder($purchaseOrder, $salesCondition);
+                
+                foreach($purchaseOrder->getOrderItems() as $item){
 
-                //si es cuenta corriente se pone el total pagado en 0 y se genera el movimiento, sino el total
-                if($debitNote->getSalesCondition()->getId() == 2) {
-                    $debitNote->setTotalPayed(0);
+                    //crea y guarda item
+                    $debitNoteItem = DebitNoteItem::createForDebitNoteFromOrderItem($debitNote, $item);
+                    $em->persist($debitNoteItem);
+                }
+                
+                // Si la condicion de venta es CTA CTE, genera el movimiento en la cuenta del cliente
+                if($salesCondition->getId() == 2){
 
                     $detail = AccountMovement::DEBITNOTE_MOVEMENT;
                     $amount = $debitNote->getTotal();
@@ -81,27 +101,45 @@ class DebitNoteController extends Controller {
 
                     $em->persist($account);
                     $em->persist($movement);
-                } else {
+                    $debitNote->setTotalPayed(0);
+                }else{
                     $debitNote->setTotalPayed($debitNote->getTotal());
                 }
-                $em->persist($debitNote);
-                $em->flush();
                 
+                $em->persist($debitNote);
+
+                $em->flush();
                 $em->getConnection()->commit();
-            } catch (Exception $e) {
-                $em->getConnection()->rollBack();
 
                 $this->get('session')->getFlashBag()->add(
-                        'danger', 'Se produjeron errores al intentar guardar los cambios. ' . $e->getMessage()
+                        'success', 'Los cambios fueron guardados correctamente'
+                );
+
+                return $this->redirectToRoute('debitnote_show', array('id' => $debitNote->getId()));
+                    
+            } catch (Exception $e) {
+                $em->getConnection()->rollBack();
+                
+                $this->get('session')->getFlashBag()->add(
+                    'danger', 'Se produjeron errores al intentar guardar los cambios. ' . $e->getMessage()
                 );
             }
-
-            return $this->redirectToRoute('debitnote_show', array('id' => $debitNote->getId()));
         }
+        
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->get('session')->getFlashBag()->add(
+                    'danger', 'Se produjeron errores al intentar guardar los cambios.'
+            );
+        }
+        
+        $salesConditionSelected = $request->request->get('sales-condition-id');
 
         return $this->render('debitnote/new.html.twig', array(
-                    'debitNote' => $debitNote,
-                    'form' => $form->createView(),
+            'purchaseOrder' => $purchaseOrder,
+            'form' => $form->createView(),
+            'isNew' => 1,
+            'salesConditions' => $salesConditions,
+            'salesConditionSelected' => $salesConditionSelected,
         ));
     }
 
@@ -112,11 +150,9 @@ class DebitNoteController extends Controller {
      * @Method("GET")
      */
     public function showAction(DebitNote $debitNote) {
-        $deleteForm = $this->createDeleteForm($debitNote);
 
         return $this->render('debitnote/show.html.twig', array(
                     'debitNote' => $debitNote,
-                    'delete_form' => $deleteForm->createView(),
         ));
     }
 

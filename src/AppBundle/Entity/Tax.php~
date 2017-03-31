@@ -305,4 +305,38 @@ class Tax
     {
         return $this->creditNoteItems;
     }
+
+    /**
+     * Add debitNoteItem
+     *
+     * @param \AppBundle\Entity\Product $debitNoteItem
+     *
+     * @return Tax
+     */
+    public function addDebitNoteItem(\AppBundle\Entity\Product $debitNoteItem)
+    {
+        $this->debitNoteItems[] = $debitNoteItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove debitNoteItem
+     *
+     * @param \AppBundle\Entity\Product $debitNoteItem
+     */
+    public function removeDebitNoteItem(\AppBundle\Entity\Product $debitNoteItem)
+    {
+        $this->debitNoteItems->removeElement($debitNoteItem);
+    }
+
+    /**
+     * Get debitNoteItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDebitNoteItems()
+    {
+        return $this->debitNoteItems;
+    }
 }

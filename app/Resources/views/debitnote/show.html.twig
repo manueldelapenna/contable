@@ -14,16 +14,20 @@
                 <td>{% if debitNote.date %}{{ debitNote.date|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
+                <th>Subtotal</th>
+                <td>{{ debitNote.subtotal }}</td>
+            </tr>
+            <tr>
+                <th>Discountamount</th>
+                <td>{{ debitNote.discountAmount }}</td>
+            </tr>
+            <tr>
+                <th>Shippingamount</th>
+                <td>{{ debitNote.shippingAmount }}</td>
+            </tr>
+            <tr>
                 <th>Total</th>
                 <td>{{ debitNote.total }}</td>
-            </tr>
-            <tr>
-                <th>Totalpayed</th>
-                <td>{{ debitNote.totalPayed }}</td>
-            </tr>
-            <tr>
-                <th>Concept</th>
-                <td>{{ debitNote.concept }}</td>
             </tr>
         </tbody>
     </table>

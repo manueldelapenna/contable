@@ -63,7 +63,7 @@ class BudgetItem
     
     /**
      * @ORM\ManyToOne(targetEntity="Tax", inversedBy="budgetItems")
-     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id", nullable=false)
      */
     private $tax;
     

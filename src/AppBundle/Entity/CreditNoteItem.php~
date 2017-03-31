@@ -63,7 +63,7 @@ class CreditNoteItem
     
     /**
      * @ORM\ManyToOne(targetEntity="Tax", inversedBy="budgetItems")
-     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id", nullable=false)
      */
     private $tax;
     
@@ -80,6 +80,7 @@ class CreditNoteItem
         $creditNoteItem->setProductCode($orderItem->getProductCode());
         $creditNoteItem->setProductDescription($orderItem->getProductDescription());
         $creditNoteItem->setProductQuantity($orderItem->getProductQuantity());
+        $creditNoteItem->setTax($orderItem->getTax());
         $creditNoteItem->setUnitPrice($orderItem->getUnitPrice());
         
         return $creditNoteItem;

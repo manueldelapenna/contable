@@ -29,6 +29,42 @@ class DebitNote
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="subtotal", type="decimal", precision=12, scale=4)
+     *
+     *  * @Assert\Range(
+     *      min = 0.0001,
+     *      minMessage = "El valor debe ser mayor a 0",
+     * )
+     */
+    private $subtotal;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="discount_amount", type="decimal", precision=12, scale=4)
+     * 
+     * @Assert\Range(
+     *      min = 0.00,
+     *      minMessage = "El valor debe ser mayor o igual a 0",
+     * )
+     */
+    private $discountAmount;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="shipping_amount", type="decimal", precision=12, scale=4)
+     * 
+     * @Assert\Range(
+     *      min = 0.00,
+     *      minMessage = "El valor debe ser mayor o igual a 0",
+     * )
+     */
+    private $shippingAmount;
 
     /**
      * @var float
@@ -40,6 +76,7 @@ class DebitNote
      *      minMessage = "El valor debe ser mayor a 0",
      * )
      */
+    
     private $total;
     
     /**
@@ -68,16 +105,23 @@ class DebitNote
      */
     private $salesCondition;
     
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="concept", type="string", length=255, nullable=false)
-     */
-    private $concept;
-    
     public function __construct()
     {
         $this->setDate(new \DateTime("now"));
+    }
+    
+    public static function createFromOrder(PurchaseOrder $purchaseOrder, SalesCondition $salesCondition){
+        
+        $debitNote = new self();
+        $debitNote->setCustomer($purchaseOrder->getCustomer());
+        $debitNote->setSalesCondition($salesCondition);
+        $debitNote->setSalesPoint($purchaseOrder->getSalesPoint());
+        $debitNote->setDiscountAmount($purchaseOrder->getDiscountAmount());
+        $debitNote->setShippingAmount($purchaseOrder->getShippingAmount());
+        $debitNote->setSubtotal($purchaseOrder->getSubtotal());
+        $debitNote->setTotal($purchaseOrder->getTotal());
+        
+        return $debitNote;
     }
     
     public function __toString() {
@@ -214,31 +258,6 @@ class DebitNote
         return $this->salesCondition;
     }
 
-
-    /**
-     * Set concept
-     *
-     * @param string $concept
-     *
-     * @return DebitNote
-     */
-    public function setConcept($concept)
-    {
-        $this->concept = $concept;
-
-        return $this;
-    }
-
-    /**
-     * Get concept
-     *
-     * @return string
-     */
-    public function getConcept()
-    {
-        return $this->concept;
-    }
-
     /**
      * Set totalPayed
      *
@@ -261,5 +280,77 @@ class DebitNote
     public function getTotalPayed()
     {
         return $this->totalPayed;
+    }
+
+    /**
+     * Set subtotal
+     *
+     * @param string $subtotal
+     *
+     * @return DebitNote
+     */
+    public function setSubtotal($subtotal)
+    {
+        $this->subtotal = $subtotal;
+
+        return $this;
+    }
+
+    /**
+     * Get subtotal
+     *
+     * @return string
+     */
+    public function getSubtotal()
+    {
+        return $this->subtotal;
+    }
+
+    /**
+     * Set discountAmount
+     *
+     * @param string $discountAmount
+     *
+     * @return DebitNote
+     */
+    public function setDiscountAmount($discountAmount)
+    {
+        $this->discountAmount = $discountAmount;
+
+        return $this;
+    }
+
+    /**
+     * Get discountAmount
+     *
+     * @return string
+     */
+    public function getDiscountAmount()
+    {
+        return $this->discountAmount;
+    }
+
+    /**
+     * Set shippingAmount
+     *
+     * @param string $shippingAmount
+     *
+     * @return DebitNote
+     */
+    public function setShippingAmount($shippingAmount)
+    {
+        $this->shippingAmount = $shippingAmount;
+
+        return $this;
+    }
+
+    /**
+     * Get shippingAmount
+     *
+     * @return string
+     */
+    public function getShippingAmount()
+    {
+        return $this->shippingAmount;
     }
 }

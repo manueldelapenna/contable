@@ -63,7 +63,7 @@ class DebitNoteItem
     
     /**
      * @ORM\ManyToOne(targetEntity="Tax", inversedBy="budgetItems")
-     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id", nullable=false)
      */
     private $tax;
     
@@ -80,6 +80,7 @@ class DebitNoteItem
         $debitNoteItem->setProductCode($orderItem->getProductCode());
         $debitNoteItem->setProductDescription($orderItem->getProductDescription());
         $debitNoteItem->setProductQuantity($orderItem->getProductQuantity());
+        $debitNoteItem->setTax($orderItem->getTax());
         $debitNoteItem->setUnitPrice($orderItem->getUnitPrice());
         
         return $debitNoteItem;
