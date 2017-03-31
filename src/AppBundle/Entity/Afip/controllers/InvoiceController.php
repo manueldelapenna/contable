@@ -33,8 +33,8 @@ class Afip_InvoiceController extends Mage_Adminhtml_Controller_Action
 			$invoice = Mage::getModel('sales/order_invoice')->load($invoiceId);
 			$afipInvoice = Mage::getModel('afip/invoice')->loadInvoiceByOrderInvoiceId($invoiceId);
 		
-			if($afipInvoice->getStatus() == Afip_Model_Invoice::REJECTED){
-				$afipInvoice->updateAndSave($afipInvoice->getNumber(), $afipInvoice->getType(), NULL, NULL, NULL, NULL, Afip_Model_Invoice::PENDING);
+			if($afipInvoice->getStatus() == AfipInvoice::REJECTED){
+				$afipInvoice->updateAndSave($afipInvoice->getNumber(), $afipInvoice->getType(), NULL, NULL, NULL, NULL, AfipInvoice::PENDING);
 				$customerId = $invoice->getOrder()->getCustomerId();
 				$customer = Mage::getModel('customer/customer')->load($customerId);
 				

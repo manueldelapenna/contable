@@ -50,7 +50,7 @@ abstract class FileDataTypeHelper {
         if (empty(self::$mimeTypes)) {
             $dom = new DOMDocument("1.0", "UTF-8");
 
-            if ($dom->load(Mage::getBaseDir('code') . "/local/Quanbit/Afip/etc/dataTypes/qFileHelper.config.xml", LIBXML_NOBLANKS) && $dom->validate()) {
+            if ($dom->load(__DIR__. "/../../etc/dataTypes/qFileHelper.config.xml", LIBXML_NOBLANKS) && $dom->validate()) {
                 self::$mimeTypes = array();
 
                 $mimeTypeCollection = $dom->getElementsByTagName("mimeType");

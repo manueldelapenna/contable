@@ -11,8 +11,8 @@ class TaxerHelper{
 	 * Returns neto amount unitary price for product item
 	 * @param Mage_Sales_Model_Order_Invoice_Item $item
 	 * @param string $orderCurrencyCode
-	 * @param boolean $currencyAR
-	 * @param Afip_Model_Invoice $afipInvoice
+	 * @param AfipInvoice $afipInvoice
+         * @param boolean $currencyAR
 	 * @return float
 	 */
 	public static function getNetoUnitaryAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
@@ -34,7 +34,7 @@ class TaxerHelper{
 	 * @param Mage_Sales_Model_Order_Invoice_Item $item
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Afip_Model_Invoice $afipInvoice
+	 * @param AfipInvoice $afipInvoice
 	 * @return float
 	 */
 	public static function getNetoAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
@@ -52,7 +52,7 @@ class TaxerHelper{
 	 * @param Mage_Sales_Model_Order_Invoice $invoice
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Afip_Model_Invoice $afipInvoice
+	 * @param AfipInvoice $afipInvoice
 	 * @return float
 	 */
 	public static function getNetoAmountForShippingItem($invoice, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
@@ -73,7 +73,7 @@ class TaxerHelper{
 	 * @param Mage_Sales_Model_Order_Invoice_Item $item
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Afip_Model_Invoice $afipInvoice
+	 * @param AfipInvoice $afipInvoice
 	 * @return float
 	 */
 	public static function getFinalUnitaryAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
@@ -88,7 +88,7 @@ class TaxerHelper{
 	 * @param Mage_Sales_Model_Order_Invoice_Item $item
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Afip_Model_Invoice $afipInvoice
+	 * @param AfipInvoice $afipInvoice
 	 * @return float
 	 */
 	public static function getFinalAmountForProductItem($item, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
@@ -119,7 +119,7 @@ class TaxerHelper{
 	 * @param Mage_Sales_Model_Order_Invoice $invoice
 	 * @param string $orderCurrencyCode
 	 * @param boolean $currencyAR
-	 * @param Afip_Model_Invoice $afipInvoice
+	 * @param AfipInvoice $afipInvoice
 	 * @return float
 	 */
 	public static function getFinalAmountForShippingItem($invoice, $orderCurrencyCode, $afipInvoice, $currencyAR = TRUE)
