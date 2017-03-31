@@ -203,4 +203,28 @@ class BudgetItem
     {
         return $this->budget;
     }
+
+    /**
+     * Set tax
+     *
+     * @param \AppBundle\Entity\Tax $tax
+     *
+     * @return BudgetItem
+     */
+    public function setTax(\AppBundle\Entity\Tax $tax = null)
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * Get tax
+     *
+     * @return \AppBundle\Entity\Tax
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
 }

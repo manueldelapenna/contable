@@ -238,4 +238,28 @@ class DebitNote
     {
         return $this->concept;
     }
+
+    /**
+     * Set totalPayed
+     *
+     * @param string $totalPayed
+     *
+     * @return DebitNote
+     */
+    public function setTotalPayed($totalPayed)
+    {
+        $this->totalPayed = $totalPayed;
+
+        return $this;
+    }
+
+    /**
+     * Get totalPayed
+     *
+     * @return string
+     */
+    public function getTotalPayed()
+    {
+        return $this->totalPayed;
+    }
 }

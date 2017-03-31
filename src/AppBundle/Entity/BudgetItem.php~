@@ -62,6 +62,12 @@ class BudgetItem
     private $unitPrice;
     
     /**
+     * @ORM\ManyToOne(targetEntity="Tax", inversedBy="budgetItems")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     */
+    private $tax;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Budget", inversedBy="budgetItems")
      * @ORM\JoinColumn(name="budget_id", referencedColumnName="id", onDelete="CASCADE")
      */

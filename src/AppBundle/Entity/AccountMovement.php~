@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class AccountMovement
 {
+    const CREDITNOTE_MOVEMENT = 'Nota de Crédito';
+    const DEBITNOTE_MOVEMENT = 'Nota de Débito';
+    const INVOICE_MOVEMENT = 'Factura';
+    const PAYMENT_MOVEMENT = 'Recibo';
 
     /**
      * @var int

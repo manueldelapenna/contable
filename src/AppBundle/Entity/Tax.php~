@@ -43,6 +43,21 @@ class Tax
      */
     private $products;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="tax")
+     */
+    private $orderItems;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="tax")
+     */
+    private $budgetItems;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="tax")
+     */
+    private $invoiceItems;
+    
     public function __construct() {
         $this->products = new ArrayCollection();
     }

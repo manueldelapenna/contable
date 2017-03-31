@@ -62,6 +62,12 @@ class InvoiceItem
     private $unitPrice;
     
     /**
+     * @ORM\ManyToOne(targetEntity="Tax", inversedBy="invoiceItems")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     */
+    private $tax;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="invoiceItems")
      * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id", onDelete="CASCADE")
      */

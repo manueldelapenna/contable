@@ -60,6 +60,12 @@ class OrderItem
      * )
      */
     private $unitPrice;
+    /**
+     * @ORM\ManyToOne(targetEntity="Tax", inversedBy="orderItems")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     */
+    private $tax;
+    
     
     /**
      * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems")
