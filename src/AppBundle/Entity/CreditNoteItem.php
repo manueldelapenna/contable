@@ -62,8 +62,14 @@ class CreditNoteItem
     private $unitPrice;
     
     /**
+     * @ORM\ManyToOne(targetEntity="Tax", inversedBy="budgetItems")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id", nullable=false)
+     */
+    private $tax;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="CreditNote", inversedBy="creditNoteItems")
-     * @ORM\JoinColumn(name="creditNote_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="creditNote_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     private $creditNote;
     
@@ -74,6 +80,7 @@ class CreditNoteItem
         $creditNoteItem->setProductCode($orderItem->getProductCode());
         $creditNoteItem->setProductDescription($orderItem->getProductDescription());
         $creditNoteItem->setProductQuantity($orderItem->getProductQuantity());
+        $creditNoteItem->setTax($orderItem->getTax());
         $creditNoteItem->setUnitPrice($orderItem->getUnitPrice());
         
         return $creditNoteItem;
@@ -208,5 +215,29 @@ class CreditNoteItem
     public function getCreditNote()
     {
         return $this->creditNote;
+    }
+
+    /**
+     * Set tax
+     *
+     * @param \AppBundle\Entity\Tax $tax
+     *
+     * @return CreditNoteItem
+     */
+    public function setTax(\AppBundle\Entity\Tax $tax = null)
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * Get tax
+     *
+     * @return \AppBundle\Entity\Tax
+     */
+    public function getTax()
+    {
+        return $this->tax;
     }
 }

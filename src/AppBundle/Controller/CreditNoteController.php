@@ -167,40 +167,4 @@ class CreditNoteController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
-    /**
-     * Deletes a creditNote entity.
-     *
-     * @Route("/{id}", name="creditnote_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, CreditNote $creditNote)
-    {
-        $form = $this->createDeleteForm($creditNote);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($creditNote);
-            $em->flush($creditNote);
-        }
-
-        return $this->redirectToRoute('creditnote_index');
-    }
-
-    /**
-     * Creates a form to delete a creditNote entity.
-     *
-     * @param CreditNote $creditNote The creditNote entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(CreditNote $creditNote)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('creditnote_delete', array('id' => $creditNote->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
 }

@@ -69,7 +69,7 @@ class BudgetItem
     
     /**
      * @ORM\ManyToOne(targetEntity="Budget", inversedBy="budgetItems")
-     * @ORM\JoinColumn(name="budget_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="budget_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     private $budget;
 
@@ -202,5 +202,29 @@ class BudgetItem
     public function getBudget()
     {
         return $this->budget;
+    }
+
+    /**
+     * Set tax
+     *
+     * @param \AppBundle\Entity\Tax $tax
+     *
+     * @return BudgetItem
+     */
+    public function setTax(\AppBundle\Entity\Tax $tax = null)
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * Get tax
+     *
+     * @return \AppBundle\Entity\Tax
+     */
+    public function getTax()
+    {
+        return $this->tax;
     }
 }

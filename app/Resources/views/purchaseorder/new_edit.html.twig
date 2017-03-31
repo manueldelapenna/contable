@@ -7,8 +7,9 @@
             <td class="{{ item.productCode.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productCode) }}{{ form_errors(item.productCode) }}</td>
             <td class="{{ item.productQuantity.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productQuantity, { 'attr': {'onchange': 'updateTotals(' ~ i ~ ' )', 'onkeyup': 'updateTotals(' ~ i ~ ' )'} }) }}{{ form_errors(item.productQuantity) }}</td>
             <td class="{{ item.productDescription.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.productDescription) }}{{ form_errors(item.productDescription) }}</td>
+            <td class="{{ item.tax.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.tax) }}{{ form_errors(item.tax) }}</td>
             <td class="{{ item.unitPrice.vars.errors|length > 0 ? 'has-error' : '' }}">{{ form_widget(item.unitPrice, { 'attr': {'onchange': 'updateTotals(' ~ i ~ ' )', 'onkeyup': 'updateTotals(' ~ i ~ ' )'} }) }}{{ form_errors(item.unitPrice) }}</td>
-            <td class=""><div class="input-group"><span class="input-group-addon">$ </span><input id="total-item-{{i}}" class="form-control text-right" type='text' readonly></div></td>
+            <td class=""><div class="input-group"><input id="total-item-{{i}}" class="form-control text-right" type='text' readonly><span class="input-group-addon">$ </span></div></td>
         </tr>
 {% endmacro %}
 
@@ -84,7 +85,8 @@
                                             <td style="width: 150px; text-align: center; vertical-align: middle;"><strong>Código</strong></td>
                                             <td style="width: 90px; text-align: center; vertical-align: middle;" class="text-right"><strong>Cantidad</strong></td>
                                             <td style="text-align: center; vertical-align: middle;"><strong>Descripcion</strong></td>
-                                            <td style="width: 150px; text-align: center; vertical-align: middle;" class="text-right"><strong>Precio unitario</strong></td>
+                                            <td style="width: 130px; text-align: center; vertical-align: middle;"><strong>IVA</strong></td>
+                                            <td style="width: 150px; text-align: center; vertical-align: middle;" class="text-right"><strong>P. unitario (c/IVA)</strong></td>
                                             <td style="width: 200px; text-align: center; vertical-align: middle;" class="text-right"><strong>Total ítem</strong></td>
                                         </tr>
                                     </thead>
@@ -107,6 +109,7 @@
                                             <td class="highrow"></td>
                                             <td class="highrow"></td>
                                             <td class="highrow"></td>
+                                            <td class="highrow"></td>
                                             <td class="highrow text-right"><strong>Subtotal</strong></td>
                                             <td class="highrow text-right {{ form.subtotal.vars.errors|length > 0 ? 'has-error' : '' }}">
                                                 {{ form_widget(form.subtotal) }}
@@ -114,6 +117,7 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td class="emptyrow"></td>
                                             <td class="emptyrow"></td>
                                             <td class="emptyrow"></td>
                                             <td class="emptyrow"></td>
@@ -129,6 +133,7 @@
                                             <td class="emptyrow"></td>
                                             <td class="emptyrow"></td>
                                             <td class="emptyrow"></td>
+                                            <td class="emptyrow"></td>
                                             <td class="emptyrow text-right"><strong>Envío</strong></td>
                                             <td class="highrow text-right {{ form.shippingAmount.vars.errors|length > 0 ? 'has-error' : '' }}">
                                                 {{ form_widget(form.shippingAmount) }}
@@ -136,6 +141,7 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td class="emptyrow"></td>
                                             <td class="emptyrow"></td>
                                             <td class="emptyrow"></td>
                                             <td class="emptyrow"></td>
@@ -329,7 +335,9 @@
                             if(result.length > 0){
                                 $('#appbundle_purchaseorder_orderItems_' + index + '_productDescription').val(result[0].name);
                                 $('#appbundle_purchaseorder_orderItems_' + index + '_unitPrice').val(result[0].price);
-                                updateTotals(index);;
+                                $('#appbundle_purchaseorder_orderItems_' + index + '_tax').val(result[0].tax_id);
+                                
+                                updateTotals(index);
                             }
                             
                             

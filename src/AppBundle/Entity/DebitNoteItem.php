@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * CreditNoteItem
+ * DebitNoteItem
  *
- * @ORM\Table(name="credit_note_item")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CreditNoteItemRepository")
+ * @ORM\Table(name="debit_note_item")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DebitNoteItemRepository")
  */
-class CreditNoteItem
+class DebitNoteItem
 {
     /**
      * @var int
@@ -63,26 +63,27 @@ class CreditNoteItem
     
     /**
      * @ORM\ManyToOne(targetEntity="Tax", inversedBy="budgetItems")
-     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id", nullable=false)
      */
     private $tax;
     
     /**
-     * @ORM\ManyToOne(targetEntity="CreditNote", inversedBy="creditNoteItems")
-     * @ORM\JoinColumn(name="creditNote_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @ORM\ManyToOne(targetEntity="DebitNote", inversedBy="debitNoteItems")
+     * @ORM\JoinColumn(name="debitNote_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
-    private $creditNote;
+    private $debitNote;
     
-    public static function createForCreditNoteFromOrderItem(CreditNote $creditNote, OrderItem $orderItem){
+    public static function createForDebitNoteFromOrderItem(DebitNote $debitNote, OrderItem $orderItem){
         
-        $creditNoteItem = new self();
-        $creditNoteItem->setCreditNote($creditNote);
-        $creditNoteItem->setProductCode($orderItem->getProductCode());
-        $creditNoteItem->setProductDescription($orderItem->getProductDescription());
-        $creditNoteItem->setProductQuantity($orderItem->getProductQuantity());
-        $creditNoteItem->setUnitPrice($orderItem->getUnitPrice());
+        $debitNoteItem = new self();
+        $debitNoteItem->setDebitNote($debitNote);
+        $debitNoteItem->setProductCode($orderItem->getProductCode());
+        $debitNoteItem->setProductDescription($orderItem->getProductDescription());
+        $debitNoteItem->setProductQuantity($orderItem->getProductQuantity());
+        $debitNoteItem->setTax($orderItem->getTax());
+        $debitNoteItem->setUnitPrice($orderItem->getUnitPrice());
         
-        return $creditNoteItem;
+        return $debitNoteItem;
     }
 
     /**
@@ -100,7 +101,7 @@ class CreditNoteItem
      *
      * @param string $productCode
      *
-     * @return CreditNoteItem
+     * @return DebitNoteItem
      */
     public function setProductCode($productCode)
     {
@@ -124,7 +125,7 @@ class CreditNoteItem
      *
      * @param float $productQuantity
      *
-     * @return CreditNoteItem
+     * @return DebitNoteItem
      */
     public function setProductQuantity($productQuantity)
     {
@@ -148,7 +149,7 @@ class CreditNoteItem
      *
      * @param string $productDescription
      *
-     * @return CreditNoteItem
+     * @return DebitNoteItem
      */
     public function setProductDescription($productDescription)
     {
@@ -172,7 +173,7 @@ class CreditNoteItem
      *
      * @param float $unitPrice
      *
-     * @return CreditNoteItem
+     * @return DebitNoteItem
      */
     public function setUnitPrice($unitPrice)
     {
@@ -193,27 +194,27 @@ class CreditNoteItem
 
 
     /**
-     * Set creditNote
+     * Set debitNote
      *
-     * @param \AppBundle\Entity\CreditNote $creditNote
+     * @param \AppBundle\Entity\DebitNote $debitNote
      *
-     * @return CreditNoteItem
+     * @return DebitNoteItem
      */
-    public function setCreditNote(\AppBundle\Entity\CreditNote $creditNote = null)
+    public function setDebitNote(\AppBundle\Entity\DebitNote $debitNote = null)
     {
-        $this->creditNote = $creditNote;
+        $this->debitNote = $debitNote;
 
         return $this;
     }
 
     /**
-     * Get creditNote
+     * Get debitNote
      *
-     * @return \AppBundle\Entity\CreditNote
+     * @return \AppBundle\Entity\DebitNote
      */
-    public function getCreditNote()
+    public function getDebitNote()
     {
-        return $this->creditNote;
+        return $this->debitNote;
     }
 
     /**
@@ -221,7 +222,7 @@ class CreditNoteItem
      *
      * @param \AppBundle\Entity\Tax $tax
      *
-     * @return CreditNoteItem
+     * @return DebitNoteItem
      */
     public function setTax(\AppBundle\Entity\Tax $tax = null)
     {

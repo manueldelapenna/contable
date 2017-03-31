@@ -56,6 +56,16 @@ class Tax
     /**
      * @ORM\OneToMany(targetEntity="Product", mappedBy="tax")
      */
+    private $creditNoteItems;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="tax")
+     */
+    private $debitNoteItems;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="tax")
+     */
     private $invoiceItems;
     
     public function __construct() {
@@ -158,5 +168,141 @@ class Tax
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * Add orderItem
+     *
+     * @param \AppBundle\Entity\Product $orderItem
+     *
+     * @return Tax
+     */
+    public function addOrderItem(\AppBundle\Entity\Product $orderItem)
+    {
+        $this->orderItems[] = $orderItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove orderItem
+     *
+     * @param \AppBundle\Entity\Product $orderItem
+     */
+    public function removeOrderItem(\AppBundle\Entity\Product $orderItem)
+    {
+        $this->orderItems->removeElement($orderItem);
+    }
+
+    /**
+     * Get orderItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrderItems()
+    {
+        return $this->orderItems;
+    }
+
+    /**
+     * Add budgetItem
+     *
+     * @param \AppBundle\Entity\Product $budgetItem
+     *
+     * @return Tax
+     */
+    public function addBudgetItem(\AppBundle\Entity\Product $budgetItem)
+    {
+        $this->budgetItems[] = $budgetItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove budgetItem
+     *
+     * @param \AppBundle\Entity\Product $budgetItem
+     */
+    public function removeBudgetItem(\AppBundle\Entity\Product $budgetItem)
+    {
+        $this->budgetItems->removeElement($budgetItem);
+    }
+
+    /**
+     * Get budgetItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBudgetItems()
+    {
+        return $this->budgetItems;
+    }
+
+    /**
+     * Add invoiceItem
+     *
+     * @param \AppBundle\Entity\Product $invoiceItem
+     *
+     * @return Tax
+     */
+    public function addInvoiceItem(\AppBundle\Entity\Product $invoiceItem)
+    {
+        $this->invoiceItems[] = $invoiceItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove invoiceItem
+     *
+     * @param \AppBundle\Entity\Product $invoiceItem
+     */
+    public function removeInvoiceItem(\AppBundle\Entity\Product $invoiceItem)
+    {
+        $this->invoiceItems->removeElement($invoiceItem);
+    }
+
+    /**
+     * Get invoiceItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInvoiceItems()
+    {
+        return $this->invoiceItems;
+    }
+
+    /**
+     * Add creditNoteItem
+     *
+     * @param \AppBundle\Entity\Product $creditNoteItem
+     *
+     * @return Tax
+     */
+    public function addCreditNoteItem(\AppBundle\Entity\Product $creditNoteItem)
+    {
+        $this->creditNoteItems[] = $creditNoteItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove creditNoteItem
+     *
+     * @param \AppBundle\Entity\Product $creditNoteItem
+     */
+    public function removeCreditNoteItem(\AppBundle\Entity\Product $creditNoteItem)
+    {
+        $this->creditNoteItems->removeElement($creditNoteItem);
+    }
+
+    /**
+     * Get creditNoteItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCreditNoteItems()
+    {
+        return $this->creditNoteItems;
     }
 }

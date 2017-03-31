@@ -15,7 +15,7 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
         
         return $this->getEntityManager()
             ->createQuery(
-                "SELECT p.code, p.name, p.price FROM AppBundle:Product p where p.$attribute = :value"
+                "SELECT p.code, p.name, t.id as tax_id, p.price FROM AppBundle:Product p join p.tax t where p.$attribute = :value"
             )
             ->setParameter('value', $value)
             ->getResult();

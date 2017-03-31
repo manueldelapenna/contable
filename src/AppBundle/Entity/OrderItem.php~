@@ -69,7 +69,7 @@ class OrderItem
     
     /**
      * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     private $order;
 	
@@ -214,5 +214,29 @@ class OrderItem
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Set tax
+     *
+     * @param \AppBundle\Entity\Tax $tax
+     *
+     * @return OrderItem
+     */
+    public function setTax(\AppBundle\Entity\Tax $tax = null)
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * Get tax
+     *
+     * @return \AppBundle\Entity\Tax
+     */
+    public function getTax()
+    {
+        return $this->tax;
     }
 }

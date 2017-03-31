@@ -56,6 +56,16 @@ class Tax
     /**
      * @ORM\OneToMany(targetEntity="Product", mappedBy="tax")
      */
+    private $creditNoteItems;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="tax")
+     */
+    private $debitNoteItems;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="tax")
+     */
     private $invoiceItems;
     
     public function __construct() {
@@ -260,5 +270,73 @@ class Tax
     public function getInvoiceItems()
     {
         return $this->invoiceItems;
+    }
+
+    /**
+     * Add creditNoteItem
+     *
+     * @param \AppBundle\Entity\Product $creditNoteItem
+     *
+     * @return Tax
+     */
+    public function addCreditNoteItem(\AppBundle\Entity\Product $creditNoteItem)
+    {
+        $this->creditNoteItems[] = $creditNoteItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove creditNoteItem
+     *
+     * @param \AppBundle\Entity\Product $creditNoteItem
+     */
+    public function removeCreditNoteItem(\AppBundle\Entity\Product $creditNoteItem)
+    {
+        $this->creditNoteItems->removeElement($creditNoteItem);
+    }
+
+    /**
+     * Get creditNoteItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCreditNoteItems()
+    {
+        return $this->creditNoteItems;
+    }
+
+    /**
+     * Add debitNoteItem
+     *
+     * @param \AppBundle\Entity\Product $debitNoteItem
+     *
+     * @return Tax
+     */
+    public function addDebitNoteItem(\AppBundle\Entity\Product $debitNoteItem)
+    {
+        $this->debitNoteItems[] = $debitNoteItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove debitNoteItem
+     *
+     * @param \AppBundle\Entity\Product $debitNoteItem
+     */
+    public function removeDebitNoteItem(\AppBundle\Entity\Product $debitNoteItem)
+    {
+        $this->debitNoteItems->removeElement($debitNoteItem);
+    }
+
+    /**
+     * Get debitNoteItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDebitNoteItems()
+    {
+        return $this->debitNoteItems;
     }
 }

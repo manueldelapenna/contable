@@ -120,38 +120,4 @@ class DebitNoteController extends Controller {
         ));
     }
 
-    /**
-     * Deletes a debitNote entity.
-     *
-     * @Route("/{id}", name="debitnote_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, DebitNote $debitNote) {
-        $form = $this->createDeleteForm($debitNote);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($debitNote);
-            $em->flush($debitNote);
-        }
-
-        return $this->redirectToRoute('debitnote_index');
-    }
-
-    /**
-     * Creates a form to delete a debitNote entity.
-     *
-     * @param DebitNote $debitNote The debitNote entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(DebitNote $debitNote) {
-        return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('debitnote_delete', array('id' => $debitNote->getId())))
-                        ->setMethod('DELETE')
-                        ->getForm()
-        ;
-    }
-
 }

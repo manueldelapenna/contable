@@ -63,13 +63,13 @@ class InvoiceItem
     
     /**
      * @ORM\ManyToOne(targetEntity="Tax", inversedBy="invoiceItems")
-     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id", nullable=false)
      */
     private $tax;
     
     /**
      * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="invoiceItems")
-     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     private $invoice;
 

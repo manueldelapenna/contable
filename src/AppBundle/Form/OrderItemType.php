@@ -19,6 +19,7 @@ class OrderItemType extends AbstractType
         $builder->add('productCode', TextType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'item-product-code', 'onchange' => 'updateFromCode(this);')))
                 ->add('productQuantity', NumberType::class, array('attr' => array('autocomplete' => 'off', 'class' => 'text-right')))
                 ->add('productDescription', TextType::class, array('attr' => array('autocomplete' => 'off')))
+                ->add('tax')
                 ->add('unitPrice', MoneyType::class, array('currency' => 'USD', 'scale' => 4, 'attr' => array('autocomplete' => 'off', 'class' => 'text-right', 'onchange' => 'updateTotals(this)', 'onkeyup' => 'updateTotals(this)')));
     }
     

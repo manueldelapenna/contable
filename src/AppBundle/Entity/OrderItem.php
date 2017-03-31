@@ -62,14 +62,14 @@ class OrderItem
     private $unitPrice;
     /**
      * @ORM\ManyToOne(targetEntity="Tax", inversedBy="orderItems")
-     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tax_id", referencedColumnName="id", nullable=false)
      */
     private $tax;
     
     
     /**
      * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="orderItems")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     private $order;
 	
