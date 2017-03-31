@@ -105,7 +105,7 @@
 		{
 			$filename = trim(basename((string) $filename));
 			if (($filename == ""))
-				Afip_Exception_ExceptionFactory::throwFor(__CLASS__ . ":: Invalid given filename for method: <" . __FUNCTION__ . ">.");
+				ExceptionFactory::throwFor(__CLASS__ . ":: Invalid given filename for method: <" . __FUNCTION__ . ">.");
 			
 			return "{$this->getTempDirectoryPath()}/{$this->getEnvironmentKey()}__$filename";
 		}

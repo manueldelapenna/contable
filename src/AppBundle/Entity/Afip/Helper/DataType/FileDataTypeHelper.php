@@ -47,7 +47,7 @@
 				return self::$defaultMimeType;
 			}
 			else
-				Afip_Exception_ExceptionFactory::throwFor(__CLASS__ . ": No given filename.");
+				ExceptionFactory::throwFor(__CLASS__ . ": No given filename.");
 		}
 		
 		
@@ -72,7 +72,7 @@
 					self::$defaultMimeType = $dom->getElementById($dom->getElementsByTagName("defaultMimeType")->item(0)->getAttribute("id"))->getAttribute("type");
 				}
 				else
-					Afip_Exception_ExceptionFactory::throwFor(__CLASS__ . ": Cannot load the MIME database.");
+					ExceptionFactory::throwFor(__CLASS__ . ": Cannot load the MIME database.");
 			}
 		}
 	}

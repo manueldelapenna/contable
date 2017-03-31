@@ -99,7 +99,7 @@
 		public function validateKey($key)
 		{
 			if (!$this->isValidKey($key))
-				Afip_Exception_ExceptionFactory::throwFor("The given {$this->getNameForPeople()} is not a valid option: <$key>.");
+				ExceptionFactory::throwFor("The given {$this->getNameForPeople()} is not a valid option: <$key>.");
 		}
 		
 		

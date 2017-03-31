@@ -404,11 +404,11 @@
 						new SoapClient($this->environment->getWsfeFilePath(), array("soap_version" => SOAP_1_2, "location" => $this->environment->getWsfeUrl(), "exceptions" => 0, "trace" => 1));
 					
 					if ($this->wsfeClient === NULL)
-						Afip_Exception_ExceptionFactory::throwFor("Cannot create a new SoapClient instance.");
+						ExceptionFactory::throwFor("Cannot create a new SoapClient instance.");
 				}
 			}
 			else
-				Afip_Exception_ExceptionFactory::throwFor("Cannot login when it is not authenticated.");
+				ExceptionFactory::throwFor("Cannot login when it is not authenticated.");
 		}
 		
 		/**
@@ -543,7 +543,7 @@
 		protected function exceptionIfClassMismatch($source, $className)
 		{
 			if (!(is_object($source) && ($source instanceof $className)))
-				Afip_Exception_ExceptionFactory::throwClassMismatch($className);
+				ExceptionFactory::throwClassMismatch($className);
 		}
 		
 		/**
@@ -557,10 +557,10 @@
 			if ($this->isLoggedIn())
 			{
 				if (!$this->isWebserviceRunning())
-					Afip_Exception_ExceptionFactory::throwFor("Webservice is not running.");
+					ExceptionFactory::throwFor("Webservice is not running.");
 			}
 			else
-				Afip_Exception_ExceptionFactory::throwFor("Must be logged into Webservice before continuous.");
+				ExceptionFactory::throwFor("Must be logged into Webservice before continuous.");
 		}
 		
 		/**
@@ -585,7 +585,7 @@
 		protected function exceptionIfOperationHasErrors($source)
 		{
 			if (is_soap_fault($source))
-				Afip_Exception_ExceptionFactory::throwSoapFaultException($source);
+				ExceptionFactory::throwSoapFaultException($source);
 			else
 			{
 				if (is_object($source) && ($source instanceof stdClass))
@@ -598,7 +598,7 @@
 							$errors[$error->Code] = $this->normalizeStringValueForHtml($error->Msg);
 						
 						$errors = implode(" || ", $errors);
-						Afip_Exception_ExceptionFactory::throwFor("There are Webservice errors: <$errors>.");
+						ExceptionFactory::throwFor("There are Webservice errors: <$errors>.");
 					}
 				}
 			}
@@ -651,7 +651,7 @@
 			
 			$operation = trim((string) $operation);
 			if ($operation == "")
-				Afip_Exception_ExceptionFactory::throwFor("Cannot retrieve collection data. Null operation name given.");
+				ExceptionFactory::throwFor("Cannot retrieve collection data. Null operation name given.");
 			
 			$this->lastResult = $this->wsfeClient->$operation(array("Auth" => $this->getAuthKey()));
 			$this->exceptionIfOperationHasErrors($this->lastResult);
@@ -793,7 +793,7 @@
 				                   array(), !PKCS7_DETACHED);
 			
 			if (!$pkcs7)
-				Afip_Exception_ExceptionFactory::throwFor("Cannot generate a PKCS#7 signature.");
+				ExceptionFactory::throwFor("Cannot generate a PKCS#7 signature.");
 			
 			$draffFile = fopen($tempTicketFilenameDraff, "r");
 			$x = 0;
@@ -864,7 +864,7 @@
 				}
 			}
 			else
-				Afip_Exception_ExceptionFactory::throwFor("The given collection of results is not an array or it is empty.");
+				ExceptionFactory::throwFor("The given collection of results is not an array or it is empty.");
 		}
 	}
 	

@@ -100,10 +100,10 @@
 					$this->count++;
 				}
 				else
-					Afip_Exception_ExceptionFactory::throwFor("The type of given invoice data does not match with the type of collector. Expected <{$this->invoiceTypeName}>.");
+					ExceptionFactory::throwFor("The type of given invoice data does not match with the type of collector. Expected <{$this->invoiceTypeName}>.");
 			}
 			else
-				Afip_Exception_ExceptionFactory::throwClassMismatch("AfipInvoiceData");
+				ExceptionFactory::throwClassMismatch("AfipInvoiceData");
 		}
 		
 		/**

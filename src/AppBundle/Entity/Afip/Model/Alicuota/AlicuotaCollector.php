@@ -98,7 +98,7 @@
 				}
 			}
 			else
-				Afip_Exception_ExceptionFactory::throwClassMismatch("Alicuota");
+				ExceptionFactory::throwClassMismatch("Alicuota");
 		}
 		
 		/**

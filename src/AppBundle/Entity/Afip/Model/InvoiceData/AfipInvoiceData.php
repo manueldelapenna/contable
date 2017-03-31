@@ -166,7 +166,7 @@
 					$this->authDate = $this->getDateFrom($authDate);
 				}
 				else
-					Afip_Exception_ExceptionFactory::throwFor("No valid CAE given.");
+					ExceptionFactory::throwFor("No valid CAE given.");
 			}
 		}
 		
