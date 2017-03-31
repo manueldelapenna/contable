@@ -20,7 +20,7 @@ class AppKernel extends Kernel
             new Sg\DatatablesBundle\SgDatatablesBundle(),
             new FOS\UserBundle\FOSUserBundle(),
 	    new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
-            new AfipBundle\AfipBundle(),
+            //new AfipBundle\AfipBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
