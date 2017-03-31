@@ -86,14 +86,17 @@ class DebitNoteDatatable extends AbstractDatatableView
             ->add('date', 'datetime', array(
                 'title' => 'Date',
             ))
+            ->add('subtotal', 'column', array(
+                'title' => 'Subtotal',
+            ))
+            ->add('discountAmount', 'column', array(
+                'title' => 'DiscountAmount',
+            ))
+            ->add('shippingAmount', 'column', array(
+                'title' => 'ShippingAmount',
+            ))
             ->add('total', 'column', array(
                 'title' => 'Total',
-            ))
-            ->add('totalPayed', 'column', array(
-                'title' => 'TotalPayed',
-            ))
-            ->add('concept', 'column', array(
-                'title' => 'Concept',
             ))
             ->add('customer.id', 'column', array(
                 'title' => 'Customer Id',
