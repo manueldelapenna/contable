@@ -1,7 +1,7 @@
-afip:
-    resource: "@AfipBundle/Controller/"
-    type:     annotation
-    prefix:   /
+#afip:
+#    resource: "@AfipBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
 
 app:
     resource: "@AppBundle/Controller/"
