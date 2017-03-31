@@ -3,7 +3,7 @@
 	/**
 	 * Helper for alicuotas collection for AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class AlicuotaCollector implements Iterator, Countable

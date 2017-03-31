@@ -3,7 +3,7 @@
 	/**
 	 * Enumerative for invoice currency for AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class CurrencyEnum extends AbstractEnum

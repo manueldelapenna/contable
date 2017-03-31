@@ -3,7 +3,7 @@
 	/**
 	 * Billing target for Debit Notes.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class BillingTargetForDebitNote extends BillingTarget

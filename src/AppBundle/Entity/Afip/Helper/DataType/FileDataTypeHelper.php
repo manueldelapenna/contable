@@ -3,7 +3,7 @@
 /**
  * Helper for File types.
  *
- * @author Quanbit Software SA
+ 
  * @author Eduardo Casey
  */
 abstract class FileDataTypeHelper {

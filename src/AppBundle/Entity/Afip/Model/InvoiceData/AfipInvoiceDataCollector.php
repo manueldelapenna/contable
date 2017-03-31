@@ -3,7 +3,7 @@
 	/**
 	 * Helper for invoice data collection for AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class AfipInvoiceDataCollector implements Iterator, Countable

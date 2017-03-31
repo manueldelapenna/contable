@@ -3,7 +3,7 @@
 	/**
 	 * Factory class for exceptions.
 	 * 
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	abstract class ExceptionFactory

@@ -3,7 +3,7 @@
 	/**
 	 * Helper for String types.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	abstract class StringDataTypeHelper

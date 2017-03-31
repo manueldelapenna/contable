@@ -3,7 +3,7 @@
 	/**
 	 * Exception class for Subclass Responsbility.
 	 * 
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class SubclassResponsibilityException extends AfipException

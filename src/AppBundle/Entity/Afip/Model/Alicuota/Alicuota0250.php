@@ -3,7 +3,7 @@
 	/**
 	 * Helper for alicuotas of 2.50% for AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author manueldelapenna
 	 */
 	class Alicuota0250 extends Alicuota

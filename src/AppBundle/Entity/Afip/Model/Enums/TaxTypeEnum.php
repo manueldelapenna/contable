@@ -3,7 +3,7 @@
 	/**
 	 * Enumerative for ax types for AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class TaxTypeEnum extends AbstractEnum

@@ -3,7 +3,7 @@
 	/**
 	 * Enumerative for invoice concept types for AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class ConceptEnum extends AbstractEnum

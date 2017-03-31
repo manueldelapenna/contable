@@ -3,7 +3,7 @@
 	/**
 	 * Helper for date types.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class DateDataTypeHelper

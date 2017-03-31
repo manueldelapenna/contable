@@ -2,7 +2,7 @@
 /**
  * Taxer class.
  *
- * @author Quanbit Sofware SA
+ 
  * @author manueldelapenna
  */
 class TaxerHelper{

@@ -3,7 +3,7 @@
 	/**
 	 * Abstract helper for environment of AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	abstract class Environment

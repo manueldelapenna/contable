@@ -3,7 +3,7 @@
 	/**
 	 * Exception class for Undefined Class.
 	 * 
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class UndefinedClassException extends AfipException

@@ -3,7 +3,7 @@
 	/**
 	 * Class for error list.
 	 * 
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class ErrorCollectionHelper

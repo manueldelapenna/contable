@@ -2,7 +2,7 @@
 /**
 	 * Base exception class.
 	 * 
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 class AfipException extends \Exception{

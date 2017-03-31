@@ -3,7 +3,7 @@
 	/**
 	 * Enumerative for invoice authorization status for AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class AuthorizationStatusEnum extends AbstractEnum

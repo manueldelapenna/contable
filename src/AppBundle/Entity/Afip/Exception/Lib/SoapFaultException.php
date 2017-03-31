@@ -3,7 +3,7 @@
 	/**
 	 * Exception class for Soap Faults.
 	 * 
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class SoapFaultException extends AfipException

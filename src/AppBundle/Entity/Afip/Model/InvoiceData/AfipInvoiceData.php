@@ -3,7 +3,7 @@
 	/**
 	 * Helper for invoice data for AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class AfipInvoiceData

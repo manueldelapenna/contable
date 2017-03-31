@@ -3,7 +3,7 @@
 	/**
 	 * Enumerative for document types for AFIP Invoice Manager.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class DocumentTypeEnum extends AbstractEnum

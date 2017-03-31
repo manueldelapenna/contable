@@ -3,7 +3,7 @@
 	/**
 	 * Helper for AFIP authorization of invoices.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 

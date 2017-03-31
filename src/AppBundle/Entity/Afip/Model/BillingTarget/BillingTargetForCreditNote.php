@@ -3,7 +3,7 @@
 	/**
 	 * Billing target for Credit Notes.
 	 *
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class BillingTargetForCreditNote extends BillingTarget

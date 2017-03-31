@@ -3,7 +3,7 @@
 	/**
 	 * FileLogger class.
 	 *
-	 * @author Quanbit Sofware SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class FileLoggerHelper

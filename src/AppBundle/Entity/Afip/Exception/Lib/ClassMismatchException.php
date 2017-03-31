@@ -3,7 +3,7 @@
 	/**
 	 * Exception class for Class missmatch.
 	 * 
-	 * @author Quanbit Software SA
+	 
 	 * @author Eduardo Casey
 	 */
 	class ClassMismatchException extends AfipException
