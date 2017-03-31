@@ -29,7 +29,7 @@
  *
  * @author Magento Core Team <core@magentocommerce.com>
  */
-class Afip_Block_Sales_Invoice_Grid extends Mage_Adminhtml_Block_Widget_Grid {
+class Afip_Block_Sales_Invoice_Grid {
 	public function __construct() {
 		parent::__construct ();
 		$this->setId ( 'sales_invoice_grid' );
