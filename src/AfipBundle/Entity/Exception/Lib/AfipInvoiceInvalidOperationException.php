@@ -1,14 +1,14 @@
 <?php
-	
-	/**
-	 * Exception class for AfipInvoiceInvalidOperation.
-	 * 
-	 
-	 * @author manueldelapenna
-	 */
-	class AfipInvoiceInvalidOperationException extends AfipException
-	{
-		
-	}
-	
+
+namespace AfipBundle\Entity\Exception\Lib;
+/**
+ * Exception class for AfipInvoiceInvalidOperation.
+ * 
+
+ * @author manueldelapenna
+ */
+class AfipInvoiceInvalidOperationException extends AfipException {
+    
+}
+
 ?>

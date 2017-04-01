@@ -1,4 +1,6 @@
 <?php
+
+namespace AfipBundle\Entity\Exception\Lib;
 /**
 	 * Base exception class.
 	 * 
