@@ -1,5 +1,6 @@
 <?php
-	
+
+namespace AfipBundle\Entity\Helper\DataType;
 	/**
 	 * Helper for Numeric types.
 	 *

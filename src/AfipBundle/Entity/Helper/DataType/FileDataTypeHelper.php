@@ -1,5 +1,7 @@
 <?php
 
+namespace AfipBundle\Entity\Helper\DataType;
+
 /**
  * Helper for File types.
  *
@@ -48,7 +50,7 @@ abstract class FileDataTypeHelper {
 
     private static function loadMimeTypeCollection() {
         if (empty(self::$mimeTypes)) {
-            $dom = new DOMDocument("1.0", "UTF-8");
+            $dom = new \DOMDocument("1.0", "UTF-8");
 
             if ($dom->load(__DIR__. "/../../etc/dataTypes/qFileHelper.config.xml", LIBXML_NOBLANKS) && $dom->validate()) {
                 self::$mimeTypes = array();

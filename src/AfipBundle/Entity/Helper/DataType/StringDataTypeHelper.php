@@ -1,4 +1,6 @@
 <?php
+
+namespace AfipBundle\Entity\Helper\DataType;
 	
 	/**
 	 * Helper for String types.
